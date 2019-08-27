@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 // Import defined mongoose models
 import User from './user';
+import LandingPage from './landingPage'
 
 const connectDB = () => {
     if(process.env.DB_USER != ''){
@@ -14,7 +15,8 @@ const connectDB = () => {
 
 // Set app models to be made available
 const models = {
-    User
+    User,
+    LandingPage
 };
 
 export {
