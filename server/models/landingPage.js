@@ -2,19 +2,22 @@
 import mongoose from 'mongoose';
 
 const landingPageSchema = new mongoose.Schema({
-    LogoURL: String,
+    LogoImgURL: String,
     ShowcasedTopicsIDs: [mongoose.Schema.Types.ObjectId],
-    Sections: [
+    Sections: {type: [
         {
-            Title: {type: String, trim: true},
+            Title: {type: String, trim: true, maxlength: 150},
             Elements: [{
-                IconURL: String,
-                ElementTitle: String,
-                ElementDescription: String,
+                IconImgURL: String,
+                ElementTitle: {type: String, maxlength: 50},
+                ElementDescription: {type: String, maxlength: 200}
             }],
-            BackgroundURL: String
+            BackgroundImgURL: String,
+            Description: {type: String, maxlength: 200}
         }
-    ]
+    ], required: true}
+}, {
+    timestamps: true
 });
 
 const LandingPage = mongoose.model('LandingPage', landingPageSchema);
