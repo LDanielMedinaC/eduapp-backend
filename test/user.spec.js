@@ -22,7 +22,7 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
         res.should.have.status(200);
@@ -32,7 +32,7 @@ describe('/POST user', () => {
         res.body.should.have.property('phone');
         res.body.should.have.property('country');
         res.body.should.have.property('language');
-        document();
+         
       });
   });
 
@@ -45,15 +45,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(1)
-        document();
+         
       });
   });
 
@@ -66,15 +66,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(1)
-        document();
+         
       });
   });
 
@@ -86,15 +86,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(2)
-        document();
+         
       });
   });
 
@@ -107,15 +107,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(3)
-        document();
+         
       });
   });
 
@@ -128,15 +128,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(4)
-        document();
+         
       });
   });
 
@@ -149,15 +149,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(5)
-        document();
+         
       });
   });
 
@@ -169,15 +169,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(5)
-        document();
+         
       });
   });
 
@@ -190,15 +190,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(6)
-        document();
+         
       });
   });
 
@@ -211,15 +211,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(8)
-        document();
+         
       });
   });
 
@@ -232,15 +232,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(8)
-        document();
+         
       });
   });
 
@@ -252,15 +252,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(9)
-        document();
+         
       });
   });
 
@@ -273,15 +273,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(10)
-        document();
+         
       });
   });
 
@@ -294,15 +294,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(10)
-        document();
+         
       });
   });
 
@@ -315,15 +315,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(10)
-        document();
+         
       });
   });
 
