@@ -10,10 +10,10 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 /*
-* Test /Post
+* Test POST to /user
 */
-describe('/POST user', () => {
-  it('should create a new user', () => {
+describe('POST /user', () => {
+  it('Should create a new user', () => {
     let new_user = {
       email: 'user@mail.com',
       name: 'User user',
@@ -156,7 +156,7 @@ describe('/POST user', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(5)
+        res.body.error.code.should.be.eql(4)
          
       });
   });
@@ -197,7 +197,7 @@ describe('/POST user', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(6)
+        res.body.error.code.should.be.eql(4)
          
       });
   });
@@ -206,7 +206,7 @@ describe('/POST user', () => {
     let new_user = {
       email: 'a@',
       name: 'User user',
-      phone: '222222222',
+      phone: '2222222222',
       country: 'Mexico',
       language: 'es'
     };
@@ -218,7 +218,7 @@ describe('/POST user', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(8)
+        res.body.error.code.should.be.eql(7)
          
       });
   });
@@ -227,7 +227,27 @@ describe('/POST user', () => {
     let new_user = {
       email: 'abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij@mail.com',
       name: 'User user',
-      phone: '222222222',
+      phone: '2222222222',
+      country: 'Mexico',
+      language: 'es'
+    };
+    chai.request(server)
+      .post('/users')
+      .send(new_user)
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        res.body.error.should.have.property('code');
+        res.body.error.code.should.be.eql(7)
+         
+      });
+  });
+
+  it('No email', () => {
+    let new_user = {
+      name: 'User user',
+      phone: '2222222222',
       country: 'Mexico',
       language: 'es'
     };
@@ -244,10 +264,11 @@ describe('/POST user', () => {
       });
   });
 
-  it('No email', () => {
+  it('@ at 0', () => {
     let new_user = {
+      email: '@useremail.com',
       name: 'User user',
-      phone: '222222222',
+      phone: '2222222222',
       country: 'Mexico',
       language: 'es'
     };
@@ -264,32 +285,11 @@ describe('/POST user', () => {
       });
   });
 
-  it('@ at 0', () => {
-    let new_user = {
-      email: '@useremail.com',
-      name: 'User user',
-      phone: '222222222',
-      country: 'Mexico',
-      language: 'es'
-    };
-    chai.request(server)
-      .post('/users')
-      .send(new_user)
-      .end((err, res) => {
-        res.should.have.status(400);
-        res.body.should.be.a('object');
-        res.body.should.have.property('error');
-        res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(10)
-         
-      });
-  });
-
   it('@ at end', () => {
     let new_user = {
       email: 'useremail.com@',
       name: 'User user',
-      phone: '222222222',
+      phone: '2222222222',
       country: 'Mexico',
       language: 'es'
     };
@@ -301,7 +301,7 @@ describe('/POST user', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(10)
+        res.body.error.code.should.be.eql(9)
          
       });
   });
@@ -310,7 +310,7 @@ describe('/POST user', () => {
     let new_user = {
       email: 'useremail.com',
       name: 'User user',
-      phone: '222222222',
+      phone: '2222222222',
       country: 'Mexico',
       language: 'es'
     };
@@ -322,7 +322,7 @@ describe('/POST user', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(10)
+        res.body.error.code.should.be.eql(9)
          
       });
   });
