@@ -5,7 +5,7 @@ import User from './user';
 import LandingPage from './landingPage'
 
 const connectDB = () => {
-    if(process.env.DB_USER != ''){
+    if(process.env.DB_LOCATION == 'remote'){
         return mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`);
     }
     else{
@@ -18,6 +18,7 @@ const models = {
     User,
     LandingPage
 };
+
 
 export {
     connectDB
