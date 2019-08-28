@@ -13,9 +13,6 @@ const userSchema = new mongoose.Schema({
         type: Number,
         unique: true
     },
-    password: { // Hash
-        type: String
-    },
     country: {
         type: String
     },
