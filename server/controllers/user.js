@@ -1,5 +1,4 @@
 const User = require('../models').User;
-const validator = require('validator');
 
 function validateUser(user) {
     // Should validate user
@@ -26,7 +25,7 @@ module.exports = {
                 }
             );
         }
-        
+
         res.status(200).json('All ok');
     }
 }
