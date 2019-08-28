@@ -13,13 +13,9 @@ const connectDB = () => {
     }
 };
 
-// Set app models to be made available
-const models = {
-    User,
-    LandingPage
-};
-
 module.exports = {
     connectDB,
-    models
+    // Models
+    User,
+    LandingPage
 };
