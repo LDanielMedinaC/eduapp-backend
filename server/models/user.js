@@ -1,5 +1,5 @@
 // Mongoose schema definition for user entity
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -13,9 +13,6 @@ const userSchema = new mongoose.Schema({
         type: Number,
         unique: true
     },
-    password: { // Hash
-        type: String
-    },
     country: {
         type: String
     },
@@ -25,4 +22,4 @@ const userSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model('User', userSchema);
-export default User;
+module.exports = User;
