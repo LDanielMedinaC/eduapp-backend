@@ -7,9 +7,12 @@ module.exports = (app) => {
     app.route('/users')
     .post(userController.create);
 
-    //Landing Page routes
+    // Landing Page routes
     app.route('/landingpages')
     .get(landing_pageController.show);
+
+    app.route('/landingpages/:pageId')
+    .put(landing_pageController.update);
 
     // Catch all the routes. This one must always be at the end.
     app.get('*', (req, res) => res.status(200).send({
