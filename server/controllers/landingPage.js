@@ -11,11 +11,13 @@ module.exports = {
 
         var query;
         
-        //If requesting for a particular ID
+        query = LandingPage.findOne();
+
+        /*//If requesting for a particular ID
         if (req.body._id)
             query = LandingPage.findById(req.body._id);
         else //if no id specified, return latest
-            query = LandingPage.findOne({}, {}, {sort: {'created_at' : -1}});
+            query = LandingPage.findOne({}, {}, {sort: {'created_at' : -1}});*/
 
         query.exec((err, lp) => {
             
@@ -54,9 +56,20 @@ module.exports = {
                 // Landing page exists, update
                 page.LogoImgURL = landingPage.LogoImgURL || page.LogoImgURL;
                 page.ShowcasedTopicsIDs = landingPage.ShowcasedTopicsIDs || page.ShowcasedTopicsIDs;
-                page.Sections = landingPage.Sections || landingPage.Sections || [];
+                page.Sections = landingPage.Sections || page.Sections || [];
 
                 console.log(page);
+
+                //run validators on fields, return if error occurs
+                var err = page.validateSync();
+                if (err)
+                    return res.status(400).send({
+                        error: {
+                            status: 400,
+                            description: err,
+                            code: 2
+                        }
+                    })
 
                 page.save()
                 .then((updatedPage) => res.status(200).send(updatedPage))
