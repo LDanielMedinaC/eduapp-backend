@@ -10,6 +10,17 @@ module.exports = {
     create(req, res) {
         let user = req.body;
 
+        // Validate Firebase uid
+        if(!user.uid) {
+            return res.status(400).send({
+                error: {
+                    status: 400,
+                    description: "No Firebase UID was provided.",
+                    code: 11
+                }
+            });
+        }
+
         // Validate name field
         if(!user.name) {
             return res.status(400).send({
@@ -106,6 +117,7 @@ module.exports = {
             });
         }
 
+        // Create app user
         return new User(user)
         .save()
         .then((postedUser) => {
