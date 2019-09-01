@@ -1,7 +1,7 @@
 const expect = require('chai').expect
 
-describe('test', () => {
-  it('should return a string', () => {
-    expect('ci with travis').to.equal('ci with travis');
+describe('Moka-Chai smoke test', () => {
+  it('Should return a string', () => {
+    expect('CI with Travis').to.equal('CI with Travis');
   });
 });

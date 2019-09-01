@@ -31,13 +31,24 @@ module.exports = {
             });
         }
 
+        let nameRegex = /^[A-Za-zÑñÁáÉéÍíÓóÚuÜü ]+$/g;
+        if(!user.name.match(nameRegex)) {
+            return res.status(400).send({
+                error: {
+                    status: 400,
+                    description: 'Invalid name. Use Spanish characters.',
+                    code: 3
+                }
+            });
+        }
+
         // Validate phone number
         if(!user.phone) {
             return res.status(400).send({
                 error: {
                     status: 400,
                     description: 'No phone number was provided.',
-                    code: 4
+                    code: 5
                 }
             });
         }
@@ -47,7 +58,18 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'Invalid phone number. Should be 10-digit.',
-                    code: 3
+                    code: 4
+                }
+            });
+        }
+
+        let phoneRegex = /\d{10,10}/g;
+        if(!user.phone.match(phoneRegex)) {
+            return res.status(400).send({
+                error: {
+                    status: 400,
+                    description: 'Invalid phone number.',
+                    code: 6
                 }
             });
         }
@@ -58,7 +80,7 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'No email was provided.',
-                    code: 6
+                    code: 8
                 }
             });
         }
@@ -68,7 +90,7 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'Invalid email length. Should be [3, 320].',
-                    code: 5
+                    code: 7
                 }
             });
         }
@@ -79,18 +101,24 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'Invalid email format. Should be user@domain.',
-                    code: 7
+                    code: 9
                 }
             });
         }
 
-        new User({name:'Rafa'})
+        return new User(user)
         .save()
-        .then(() => {
-            res.status(200).json('All ok');
+        .then((postedUser) => {
+            res.status(200).send(postedUser);
         })
         .catch((err) => {
-            res.status(500).json(err);
+            res.status(500).send({
+                error: {
+                    status: 500,
+                    description: `Database error: ${err.errmsg}`,
+                    code: 10
+                }
+            });
         });
     }
 }

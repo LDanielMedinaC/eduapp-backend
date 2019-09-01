@@ -10,10 +10,10 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 /*
-* Test /Post
+* Test POST to /user
 */
-describe('/POST user', () => {
-  it('should create a new user', () => {
+describe('POST /user', () => {
+  it('Should create a new user', () => {
     let new_user = {
       email: 'user@mail.com',
       name: 'User user',
@@ -22,7 +22,7 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
         res.should.have.status(200);
@@ -32,7 +32,7 @@ describe('/POST user', () => {
         res.body.should.have.property('phone');
         res.body.should.have.property('country');
         res.body.should.have.property('language');
-        document();
+         
       });
   });
 
@@ -45,15 +45,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(1)
-        document();
+         
       });
   });
 
@@ -66,15 +66,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(1)
-        document();
+         
       });
   });
 
@@ -86,15 +86,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(2)
-        document();
+         
       });
   });
 
@@ -107,15 +107,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(3)
-        document();
+         
       });
   });
 
@@ -128,15 +128,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(4)
-        document();
+         
       });
   });
 
@@ -149,15 +149,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(5)
-        document();
+        res.body.error.code.should.be.eql(4)
+         
       });
   });
 
@@ -169,15 +169,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(5)
-        document();
+         
       });
   });
 
@@ -190,15 +190,15 @@ describe('/POST user', () => {
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(6)
-        document();
+        res.body.error.code.should.be.eql(4)
+         
       });
   });
 
@@ -206,20 +206,20 @@ describe('/POST user', () => {
     let new_user = {
       email: 'a@',
       name: 'User user',
-      phone: '222222222',
+      phone: '2222222222',
       country: 'Mexico',
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(8)
-        document();
+        res.body.error.code.should.be.eql(7)
+         
       });
   });
 
@@ -227,40 +227,40 @@ describe('/POST user', () => {
     let new_user = {
       email: 'abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij@mail.com',
       name: 'User user',
-      phone: '222222222',
+      phone: '2222222222',
       country: 'Mexico',
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(8)
-        document();
+        res.body.error.code.should.be.eql(7)
+         
       });
   });
 
   it('No email', () => {
     let new_user = {
       name: 'User user',
-      phone: '222222222',
+      phone: '2222222222',
       country: 'Mexico',
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(9)
-        document();
+        res.body.error.code.should.be.eql(8)
+         
       });
   });
 
@@ -268,20 +268,20 @@ describe('/POST user', () => {
     let new_user = {
       email: '@useremail.com',
       name: 'User user',
-      phone: '222222222',
+      phone: '2222222222',
       country: 'Mexico',
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(10)
-        document();
+        res.body.error.code.should.be.eql(9)
+         
       });
   });
 
@@ -289,20 +289,20 @@ describe('/POST user', () => {
     let new_user = {
       email: 'useremail.com@',
       name: 'User user',
-      phone: '222222222',
+      phone: '2222222222',
       country: 'Mexico',
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(10)
-        document();
+        res.body.error.code.should.be.eql(9)
+         
       });
   });
 
@@ -310,20 +310,20 @@ describe('/POST user', () => {
     let new_user = {
       email: 'useremail.com',
       name: 'User user',
-      phone: '222222222',
+      phone: '2222222222',
       country: 'Mexico',
       language: 'es'
     };
     chai.request(server)
-      .post('/user')
+      .post('/users')
       .send(new_user)
       .end((err, res) => {
-        res.should.have.status(500);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(10)
-        document();
+        res.body.error.code.should.be.eql(9)
+         
       });
   });
 
