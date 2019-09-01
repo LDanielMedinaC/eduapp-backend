@@ -1,7 +1,8 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 // Import defined mongoose models
-import User from './user';
+const User =  require('./user');
+const LandingPage = require('./landingPage');
 
 const connectDB = () => {
     if(process.env.DB_LOCATION == 'remote') {
@@ -12,13 +13,9 @@ const connectDB = () => {
     }
 };
 
-// Set app models to be made available
-const models = {
-    User
+module.exports = {
+    connectDB,
+    // Models
+    User,
+    LandingPage
 };
-
-export {
-    connectDB
-};
-
-export default models;

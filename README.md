@@ -18,12 +18,14 @@ You can use PostMan to send a request to the server. Assuming you're on localhos
 ## Configuration file
 You need to create a .env configuration file to set your database connection settings. Create the `.env` file at root level and add the following variables for local connection...
 ```bash
-    DB_HOST=YOUR_HOST
+    DB_LOCATION=local
+    DB_HOST=YOUR_MONGODB_HOST
     DB_PORT=YOUR_SERVER_PORT // usually 27017 for mongo
-    DB_NAME=YOUR_MONG_DB_NAME
+    DB_NAME=YOUR_MONGODB_NAME
 ```
 to connect to monogoDB...
 ```bash
+    DB_LOCATION=remote
     DB_HOST=YOUR_MONGODB_HOST
     DB_USER=USER_WITH_ACCESS
     DB_PASS=USER_PASSWORD

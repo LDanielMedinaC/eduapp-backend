@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const http = require('http');
-const app = require('../server/app'); // The express app we just created
+const app = require('../app'); // The express app we just created
 const db = require('../server/models');
 
 const port = parseInt(process.env.PORT, 10) || 8000;
