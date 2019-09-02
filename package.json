@@ -32,6 +32,8 @@
   },
   "scripts": {
     "start:dev": "nodemon --exec babel-node ./bin/www",
+    "seed1": "node seed/user-seeder.js", 
+    "seed2": "node seed/landingpage-seeder.js",
     "test": "mocha"
   }
 }
