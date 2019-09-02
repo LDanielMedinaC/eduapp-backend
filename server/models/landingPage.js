@@ -1,5 +1,5 @@
 // Mongoose schema definition for landing page 
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
 
 const landingPageSchema = new mongoose.Schema({

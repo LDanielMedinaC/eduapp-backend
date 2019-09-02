@@ -1,8 +1,8 @@
-var LandingPage = require('../server/models/langindPage.js');
+var LandingPage = require('../server/models/landingPage');
 
 var mongoose = require('mongoose');
 
-mongoose.connect('localhost/27017/example', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/example', { useNewUrlParser: true });
 
 var landingPages = new LandingPage({
         LogoImgURL: 'https://yt3.ggpht.com/a/AGF-l7-ED38XcwKwiqauuL6Ps7nkQyVlDesbohBfGA=s900-c-k-c0xffffffff-no-rj-mo',
@@ -17,8 +17,8 @@ var landingPages = new LandingPage({
                 BackgroundImgURL: 'https://st2.ning.com/topology/rest/1.0/file/get/3001370672?profile=RESIZE_1024x1024',
                 Description: 'Conozcamos más acerca de los dioses'
             }
-        ],
-        createdAt: new Date()/*'2019-02-23 20:02:21.55'*/
+        ]
+        //createdAt: new Date()/*'2019-02-23 20:02:21.55'*/
     });
 
 var done = 0;
