@@ -2,7 +2,7 @@ var User = require('../server/models/user');
 
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/example', { useNewUrlParser: true });
+mongoose.connect(`mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`, { useNewUrlParser: true });
 
 var users = [
     new User({
