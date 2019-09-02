@@ -1,5 +1,5 @@
 // Mongoose schema definition for user entity
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
     email: {

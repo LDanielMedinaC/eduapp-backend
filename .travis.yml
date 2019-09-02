@@ -1,6 +1,15 @@
 language: node_js
 node_js: 
   - "stable"
+
+services:
+  - mongodb
+
+script:
+  - npm run seed1 #Esto llama al script del packaje.json. "node seed/user-seeder.js"
+  - npm run seed2
+  - npm run test
+
 cache:
   directories:
     - "node_modules"
