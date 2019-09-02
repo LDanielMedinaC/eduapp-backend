@@ -6,8 +6,8 @@ services:
   - mongodb
 
 script:
-  - npm run seed1 #Esto llama al script del packaje.json. "node seed/user-seeder.js"
-  - npm run seed2
+  - npm run seed-user #This call the script inside the packaje.json. "node seed/user-seeder.js"
+  - npm run seed-landingpage
 
 cache:
   directories:
