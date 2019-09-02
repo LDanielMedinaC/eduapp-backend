@@ -10,7 +10,7 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 /*
-* Test POST to /user
+* Test PUT to /landingpage
 */
 describe('PUT /landingpage', () => {
     it('Should update', () => {
@@ -32,7 +32,7 @@ describe('PUT /landingpage', () => {
             LogoImgURL: 'http::algo'
         };
         chai.request(server)
-        .post('/landingpages')
+        .put('/landingpages')
         .send(update_lp)
         .end((err, res) => {
             res.should.have.status(200);
@@ -61,7 +61,7 @@ describe('PUT /landingpage', () => {
             LogoImgURL: 'http::algo'
         };
         chai.request(server)
-        .post('/landingpages')
+        .put('/landingpages')
         .send(update_lp)
         .end((err, res) => {
             res.should.have.status(400);
@@ -91,7 +91,7 @@ describe('PUT /landingpage', () => {
             LogoImgURL: 'http::algo'
         };
         chai.request(server)
-        .post('/landingpages')
+        .put('/landingpages')
         .send(update_lp)
         .end((err, res) => {
             res.should.have.status(400);
@@ -121,7 +121,7 @@ describe('PUT /landingpage', () => {
             LogoImgURL: 'http::algo'
         };
         chai.request(server)
-        .post('/landingpages')
+        .put('/landingpages')
         .send(update_lp)
         .end((err, res) => {
             res.should.have.status(400);
@@ -151,7 +151,7 @@ describe('PUT /landingpage', () => {
             LogoImgURL: 'http::algo'
         };
         chai.request(server)
-        .post('/landingpages')
+        .put('/landingpages')
         .send(update_lp)
         .end((err, res) => {
             res.should.have.status(400);
@@ -168,7 +168,7 @@ describe('PUT /landingpage', () => {
             LogoImgURL: 'http::algo'
         };
         chai.request(server)
-        .post('/landingpages')
+        .put('/landingpages')
         .send(update_lp)
         .end((err, res) => {
             res.should.have.status(400);
@@ -198,7 +198,7 @@ describe('PUT /landingpage', () => {
             LogoImgURL: 'http::algo'
         };
         chai.request(server)
-        .post('/landingpages')
+        .put('/landingpages')
         .send(update_lp)
         .end((err, res) => {
             res.should.have.status(400);
@@ -228,7 +228,7 @@ describe('PUT /landingpage', () => {
             LogoImgURL: 'http::algo'
         };
         chai.request(server)
-        .post('/landingpages')
+        .put('/landingpages')
         .send(update_lp)
         .end((err, res) => {
             res.should.have.status(400);
@@ -258,7 +258,7 @@ describe('PUT /landingpage', () => {
             LogoImgURL: 'http::algo'
         };
         chai.request(server)
-        .post('/landingpages')
+        .put('/landingpages')
         .send(update_lp)
         .end((err, res) => {
             res.should.have.status(400);
@@ -288,7 +288,7 @@ describe('PUT /landingpage', () => {
             LogoImgURL: 'lol'
         };
         chai.request(server)
-        .post('/landingpages')
+        .put('/landingpages')
         .send(update_lp)
         .end((err, res) => {
             res.should.have.status(400);
