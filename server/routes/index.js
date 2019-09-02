@@ -11,7 +11,7 @@ module.exports = (app) => {
     app.route('/landingpages')
     .get(landing_pageController.show);
 
-    app.route('/landingpages/:pageId')
+    app.route('/landingpages')
     .put(landing_pageController.update);
 
     // Catch all the routes. This one must always be at the end.

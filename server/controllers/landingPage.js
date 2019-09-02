@@ -41,7 +41,7 @@ module.exports = {
         let landingPage = req.body;
         // TO DO: Validate payload landing page
 
-        LandingPage.findById(req.params.pageId)
+        LandingPage.findOne()
         .then((page) => {
             if(!page) {
                 // Can't update non-existent page
@@ -69,7 +69,7 @@ module.exports = {
                             description: err,
                             code: 2
                         }
-                    })
+                    });
 
                 page.save()
                 .then((updatedPage) => res.status(200).send(updatedPage))
