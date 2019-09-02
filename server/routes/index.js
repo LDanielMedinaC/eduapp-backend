@@ -9,9 +9,7 @@ module.exports = (app) => {
 
     // Landing Page routes
     app.route('/landingpages')
-    .get(landing_pageController.show);
-
-    app.route('/landingpages')
+    .get(landing_pageController.show)
     .put(landing_pageController.update);
 
     // Catch all the routes. This one must always be at the end.
