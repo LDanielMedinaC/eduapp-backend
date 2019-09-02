@@ -6,8 +6,11 @@ services:
   - mongodb
 
 script:
+  - mkdir -p ./server/config
+  - openssl aes-256-cbc -K $encrypted_071b59b6f6a6_key -iv $encrypted_071b59b6f6a6_iv -in service-account.json.enc -out ./server/config/service-account.json -d
   - npm run seed-user #This call the script inside the packaje.json. "node seed/user-seeder.js"
   - npm run seed-landingpage
+  - npm run test
 
 cache:
   directories:
