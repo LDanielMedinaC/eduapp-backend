@@ -21,7 +21,6 @@ var landingPages = new LandingPage({
         //createdAt: new Date()/*'2019-02-23 20:02:21.55'*/
     });
 
-var done = 0;
 landingPages.save(function(err, result) {
     exit();        
 });
