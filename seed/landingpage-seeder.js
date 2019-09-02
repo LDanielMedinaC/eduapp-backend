@@ -2,7 +2,7 @@ var LandingPage = require('../server/models/landingPage');
 
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/example', { useNewUrlParser: true });
+mongoose.connect(`mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`, { useNewUrlParser: true });
 
 var landingPages = new LandingPage({
         LogoImgURL: 'https://yt3.ggpht.com/a/AGF-l7-ED38XcwKwiqauuL6Ps7nkQyVlDesbohBfGA=s900-c-k-c0xffffffff-no-rj-mo',
