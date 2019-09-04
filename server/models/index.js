@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 // Import defined mongoose models
 const User =  require('./user');
 const LandingPage = require('./landingPage');
+const Topic = require('./topic');
 
 const connectDB = () => {
     if(process.env.DB_LOCATION == 'remote') {
@@ -17,5 +18,6 @@ module.exports = {
     connectDB,
     // Models
     User,
+    Topic,
     LandingPage
 };
