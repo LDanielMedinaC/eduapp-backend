@@ -22,6 +22,56 @@ const userSchema = new mongoose.Schema({
     },
     language: {
         type: String
+    },
+    tutorDetails: {
+        type: {
+            taughtTopicsIDs:{
+                type: [String]
+            },
+            paymentAccount: {
+                type: {
+                    UUID: String,
+                    Method: String
+                }
+            },
+            skills: {
+                type: [
+                    {
+                        placeHolder: {
+                            type: String
+                        }
+                    }
+                ]
+            },
+            workExperience: {
+                type: [
+                    {
+                        placeHolder: {
+                            type: String
+                        }
+                    }
+                ]
+            },
+            educationBackgrounds: {
+                type: [
+                    {
+                        placeHolder: {
+                            type: String
+                        }
+                    }
+                ]
+            },
+            awards: {
+                type: [
+                    {
+                        placeHolder: {
+                            type: String
+                        }
+                    }
+                ]
+            }
+
+        }
     }
 });
 
