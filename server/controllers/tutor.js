@@ -1,16 +1,29 @@
 const User = require('../models').User;
+const Topic = require('../models').Topic;
 
 module.exports = {
-    get(req, res) {
-        if(req.query.topic) {
+    async get(req, res) {
+        let topic = req.query.topic;
+
+        if(topic) {
             // Look for topic id
-            // return tutors
+            let topicId = await Topic.findOne({'name': topic}).exec();
+            topicId = topicId._id;
+
+            if(!topicId)
+                return res.status(200).send({});
+
+            let tutors = await User.where('tutorDetails').ne(null)
+            .where('tutorDetails.taughtTopicsIDs').equals(topicId)
+            .exec();
+            
+            return res.status(200).send(tutors);
         }
 
         // Return all tutors
         User.where('tutorDetails').ne(null).exec()
         .then(tutors => {
-            res.status(200).send(tutors);
+            return res.status(200).send(tutors);
         });
     }
 };
