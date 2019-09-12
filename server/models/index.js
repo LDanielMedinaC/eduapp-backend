@@ -14,8 +14,13 @@ const connectDB = () => {
     }
 };
 
+const disconnectDB = () => {
+    mongoose.connection.close();
+};
+
 module.exports = {
     connectDB,
+    disconnectDB,
     // Models
     User,
     Topic,

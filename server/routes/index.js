@@ -1,5 +1,6 @@
-const userController = require("../controllers").user
-const landing_pageController = require("../controllers").landingPage
+const userController = require('../controllers').user;
+const landingPageController = require('../controllers').landingPage;
+const tutorController = require('../controllers').tutor;
 
 const authFirebase = require('../middleware/auth').authFirebase;
 
@@ -15,8 +16,12 @@ module.exports = (app) => {
 
     // Landing Page routes
     app.route('/landingpages')
-    .get(landing_pageController.show)
-    .put(landing_pageController.update);
+    .get(landingPageController.show)
+    .put(landingPageController.update);
+
+    // Tutor routes
+    app.route('/tutors')
+    .get(tutorController.get);
 
     // Catch all the routes. This one must always be at the end.
     app.all('*', (req, res) => res.status(400).send({
