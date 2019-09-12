@@ -41,6 +41,9 @@ You will also need to set up the service account details for Firebase authentica
 ## Testing
 Make sure you include all the necessary test for your feature. Once your implementation is ready, verify all tests pass with `npm run test`.
 
+## Testing
+Make sure to add all your seeders to seeder/index.json. To seed the database run `npm run seed`.
+
 ## Tools
 Some of the tools used for this project.
 - [Markdown editor](https://pandao.github.io/editor.md/en.html)

@@ -33,8 +33,7 @@
   },
   "scripts": {
     "start:dev": "nodemon --exec babel-node ./bin/www",
-    "seed-user": "node seed/user-seeder.js",
-    "seed-landingpage": "node seed/landingpage-seeder.js",
+    "seed": "node seeders",
     "test": "mocha"
   }
 }
