@@ -4,7 +4,8 @@ var mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     uid: {
         type: String,
-        unique: true
+        unique: true,
+        required: true
     },
     email: {
         type: String,
@@ -28,11 +29,11 @@ const userSchema = new mongoose.Schema({
             taughtTopicsIDs:{
                 type: [String]
             },
-            paymentAccount: {
-                type: {
+            paymentAccounts: {
+                type: [{
                     UUID: String,
                     Method: String
-                }
+                }]
             },
             skills: {
                 type: [
@@ -52,7 +53,7 @@ const userSchema = new mongoose.Schema({
                     }
                 ]
             },
-            educationBackgrounds: {
+            educationBackground: {
                 type: [
                     {
                         placeHolder: {
