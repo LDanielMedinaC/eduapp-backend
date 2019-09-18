@@ -5,7 +5,9 @@ const db = require('../server/models');
 
 const seeders = [
     require('./user-seeder'),
-    require('./landingpage-seeder')
+    require('./landingpage-seeder'),
+    require('./topic-seeder'),
+    require('./tutor-seeder')
 ];
 
 const seedAll = () => {

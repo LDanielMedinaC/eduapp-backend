@@ -4,19 +4,30 @@ function validateTopic(topic) {
     if(!topic.Name){
         return {
             status: 400,
-            description: 'No email was provided.',
-            code: 8
+            description: 'No name was provided.',
+            code: 1
         };
     }
-    else{
-        return null;
+    if(topic.Name.length > 50){
+        return {
+            status: 400,
+            description: 'Topic length must be less than 50 characters.',
+            code: 2
+        };
+    }
+    if(!topic.Field){
+        return {
+            status: 400,
+            description: 'A topic must have a field.',
+            code: 3
+        };
     }
     return null;
 }
 
 module.exports = {
 
-    // Method used to create a new user
+    // Method used to create a new topic
     create(req, res) {
         let topic = req.body;
 
@@ -45,5 +56,27 @@ module.exports = {
             })
         }
         
+    },
+
+    //Method to list all topics
+    list(req, res){
+
+        let topics = Topic.find();
+
+        topics.exec((err, topics) => {
+            
+            if (err)
+            { 
+                err.status = 404;
+                err.description = "No topics were found";
+                err.code = 1;
+                res.send(err);
+            }
+            else
+            {
+                res.status = 200;
+                res.json(topics);
+            }
+        });
     }
 }
