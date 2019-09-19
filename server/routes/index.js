@@ -1,7 +1,7 @@
 const userController = require('../controllers').user;
 const landingPageController = require('../controllers').landingPage;
 const tutorController = require('../controllers').tutor;
-
+const topicController = require('../controllers').topic;
 const authFirebase = require('../middleware/auth').authFirebase;
 
 module.exports = (app) => {
@@ -22,6 +22,11 @@ module.exports = (app) => {
     // Tutor routes
     app.route('/tutors')
     .get(tutorController.get);
+
+    //Topics routes
+    app.route('/topics')
+    .get(topicController.list)
+    .post(topicController.create);
 
     // Catch all the routes. This one must always be at the end.
     app.all('*', (req, res) => res.status(400).send({
