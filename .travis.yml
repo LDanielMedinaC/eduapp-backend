@@ -5,10 +5,17 @@ node_js:
 services:
   - mongodb
 
+env:
+  -DB_HOST=cluster0-hguuw.mongodb.net/test?retryWrites=true&w=majority
+  -DB_USER=eduapp
+  -DB_PASS=eduapp07
+  -DB_LOCATION=remote
+
 script:
   - mkdir -p ./server/config
   - openssl aes-256-cbc -K $encrypted_071b59b6f6a6_key -iv $encrypted_071b59b6f6a6_iv -in service-account.json.enc -out ./server/config/service-account.json -d
   - npm run seed
+  - npm run start:dev
   - npm run test
 
 cache:
