@@ -4,13 +4,16 @@ const Topic = require('../server/models').Topic;
 const db = require('../server/models');
 const topics = [
     new Topic({
-        name: 'Álgebra Lineal'
+        name: 'Álgebra Lineal',
+        field: 'Matemáticas'
     }),
     new Topic({
-        name: 'Cálculo Vectorial'
+        name: 'Cálculo Vectorial',
+        field: 'Matemáticas'
     }),
     new Topic({
-        name: 'Ecuaciones Diferenciales'
+        name: 'Ecuaciones Diferenciales',
+        field: 'Matemáticas'
     })
 ];
 
