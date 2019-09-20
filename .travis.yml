@@ -2,9 +2,6 @@ language: node_js
 node_js: 
   - "stable"
 
-services:
-  - mongodb
-
 env:
   -DB_HOST=cluster0-hguuw.mongodb.net/test?retryWrites=true&w=majority
   -DB_USER=eduapp
