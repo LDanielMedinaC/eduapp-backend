@@ -4,7 +4,7 @@ const userModel = require('../server/models').landingPage;
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = require('../app')
+const server = 'localhost:8000';
 const should = chai.should();
 
 chai.use(chaiHttp);
