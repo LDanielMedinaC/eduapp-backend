@@ -13,7 +13,7 @@ chai.use(chaiHttp);
 * Test PUT to /landingpage
 */
 describe('PUT /landingpage', () => {
-    it('Should update', () => {
+    it('Should update', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -39,6 +39,7 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('Sections');
             res.body.should.have.property('LogoImgURL');
+            done();
         });
     });
 

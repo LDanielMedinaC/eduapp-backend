@@ -45,7 +45,7 @@ module.exports = {
         .then((page) => {
             if(!page) {
                 // Can't update non-existent page
-                return res.status(400).send({
+                return res.status(404).send({
                     error: {
                         status: 404,
                         description: 'Requested landing page does not exist.',
@@ -57,8 +57,6 @@ module.exports = {
                 page.LogoImgURL = landingPage.LogoImgURL || page.LogoImgURL;
                 page.ShowcasedTopicsIDs = landingPage.ShowcasedTopicsIDs || page.ShowcasedTopicsIDs;
                 page.Sections = landingPage.Sections || page.Sections || [];
-
-                console.log(page);
 
                 //run validators on fields, return if error occurs
                 var err = page.validateSync();
