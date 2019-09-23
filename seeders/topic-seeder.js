@@ -1,36 +1,34 @@
 require('dotenv').config();
 
 const Topic = require('../server/models').Topic;
-const db = require('../server/models');
+
 const topics = [
     new Topic({
-        name: 'Álgebra Lineal',
-        field: 'Matemáticas'
+        Name: 'Álgebra Lineal',
+        Field: 'Matemáticas'
     }),
     new Topic({
-        name: 'Cálculo Vectorial',
-        field: 'Matemáticas'
+        Name: 'Cálculo Vectorial',
+        Field: 'Matemáticas'
     }),
     new Topic({
-        name: 'Ecuaciones Diferenciales',
-        field: 'Matemáticas'
+        Name: 'Ecuaciones Diferenciales',
+        Field: 'Matemáticas'
     })
 ];
 
 let seed = () => {
-
     console.log('>>> Seeding topics');
-    return new Promise(async (resolve) => {
-        let seededTopics = topics.map(topic => {
+
+    return new Promise(async (resolve, reject) => {
+        let seedingTopics = topics.map(topic => {
             return new Promise((resolve, reject) => {
                 topic.save()
-                .then(seededTopic => {
-                    resolve(seededTopic);
-                })
+                .then(resolve)
                 .catch(err => {
                     // Ignore topics already in DB
                     if(err.code === 11000 && err.errmsg.includes('name_1')) {
-                        resolve(topic);
+                        resolve();
                     } else {
                         console.log(`Could not add topic: ${err.errmsg || err}`);
                         reject(err);
@@ -39,7 +37,7 @@ let seed = () => {
             });
         });
 
-        Promise.all(seededTopics)
+        Promise.all(seedingTopics)
         .then(() => {
             console.log('All topics seeded!');
             resolve();
@@ -48,7 +46,7 @@ let seed = () => {
             console.log(`Failed while seeding topics: ${err}`);
             reject();
         });
-    })
+    });
 }
 
 module.exports = {
