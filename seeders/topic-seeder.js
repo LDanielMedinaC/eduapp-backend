@@ -17,37 +17,40 @@ const topics = [
     })
 ];
 
-console.log('>>> Seeding topics');
-db.connectDB()
-.then(() => {
-    seededTopics = topics.map(topic => {
-        return new Promise((resolve, reject) => {
-            topic.save()
-            .then(seededTopic => {
-                resolve(seededTopic);
-            })
-            .catch(err => {
-                // Ignore topics already in DB
-                if(err.code === 11000 && err.errmsg.includes('name_1')) {
-                    resolve(topic);
-                } else {
-                    console.log(`Could not add topic: ${err.errmsg || err}`);
-                    reject(err);
-                }
+let seed = () => {
+
+    console.log('>>> Seeding topics');
+    return new Promise(async (resolve) => {
+        let seededTopics = topics.map(topic => {
+            return new Promise((resolve, reject) => {
+                topic.save()
+                .then(seededTopic => {
+                    resolve(seededTopic);
+                })
+                .catch(err => {
+                    // Ignore topics already in DB
+                    if(err.code === 11000 && err.errmsg.includes('name_1')) {
+                        resolve(topic);
+                    } else {
+                        console.log(`Could not add topic: ${err.errmsg || err}`);
+                        reject(err);
+                    }
+                });
             });
         });
-    });
 
-    Promise.all(seededTopics)
-    .then(() => {
-        console.log('DONE 🐱');
-        db.disconnectDB();
+        Promise.all(seededTopics)
+        .then(() => {
+            console.log('All topics seeded!');
+            resolve();
+        })
+        .catch((err) => {
+            console.log(`Failed while seeding topics: ${err}`);
+            reject();
+        });
     })
-    .catch(() => {
-        console.log(`Something went wrong :(`);
-        db.disconnectDB();
-    });
-})
-.catch((err) => {
-    console.log(`DB connection failed: ${err}`);
-});
+}
+
+module.exports = {
+    seed
+};
