@@ -64,7 +64,7 @@ module.exports = {
                     return res.status(400).send({
                         error: {
                             status: 400,
-                            description: err,
+                            description: err.message || err,
                             code: 2
                         }
                     });

@@ -245,13 +245,13 @@ describe('PUT /landingpage', () => {
             Sections: [
                 {
                     Title: 'Title',
-                    Description: 'Description',
+                    Description: 'This description is too long for the mongoose validation to pass, so it should be rejected and produce a bad response when sent as a payload in the post request for landingpages. If this landing page section description is validated and saved then something is wrong.',
                     BackgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
-                            Description: '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890'
+                            Description: 'Whatever'
                         }
                     ]
                 }
