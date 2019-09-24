@@ -21,7 +21,7 @@ const landingPages = [new LandingPage({
 let seed = () => {
     console.log('>>> Seeding Landing Pages');
 
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
         let seedingLPs = landingPages.map((lp) => {
             return new Promise((resolve, reject) => {
                 lp.save()
