@@ -16,7 +16,6 @@ const landingPages = [new LandingPage({
             Description: 'Conozcamos más acerca de los dioses'
         }
     ]
-    //createdAt: new Date()/*'2019-02-23 20:02:21.55'*/
 })];
 
 let seed = () => {

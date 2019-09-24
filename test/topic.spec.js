@@ -77,7 +77,7 @@ describe('POST /topics', () => {
     });
 
 
-    it('Name to long', () => {
+    it('Should get topics', () => {
         chai.request(server)
         .get('/topics')
         .end((err, res) => {
