@@ -26,9 +26,10 @@ const userSchema = new mongoose.Schema({
     },
     tutorDetails: {
         type: {
-            taughtTopicsIDs:{
-                type: [String]
-            },
+            taughtTopicsIDs: [{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Topic'
+            }],
             paymentAccounts: {
                 type: [{
                     UUID: String,
