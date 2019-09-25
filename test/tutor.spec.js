@@ -71,6 +71,19 @@ describe('GET /tutors?topic=<topic>', () => {
         });
     });
 
+    it('Topic too short', (done) => {
+        chai.request(server)
+        .get('/tutors?topic=')
+        .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(2);
+            done();
+        });
+    });
+
     it('Max length topic', (done) => {
         let topic = encodeURIComponent('extremely long topic string that should be rejected because it is just really dumb to have something this long to query for when using a simple thing such as a topic search string so it makes no sense at all to have this extremely long topic query string');
 

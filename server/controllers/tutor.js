@@ -45,7 +45,28 @@ module.exports = {
     async get(req, res) {
         let topic = req.query.topic;
 
-        if(topic) {
+        if(typeof(topic) != "undefined") {
+            // Validate topic length
+            if(topic.length == 0) {
+                return res.status(400).send({
+                    error: {
+                        status: 400,
+                        description: "Topic should contain at least 1 character",
+                        code: 2
+                    }
+                });
+            }
+
+            if(topic.length > 254) {
+                return res.status(400).send({
+                    error: {
+                        status: 400,
+                        description: "Topic is too long",
+                        code: 1
+                    }
+                });
+            }
+
             // Look for topic id
             let topicId = await Topic.findOne({'Name': topic}).exec();
             topicId = topicId ? topicId._id : null;
