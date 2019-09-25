@@ -9,7 +9,7 @@ chai.use(chaiHttp);
 * Test POST to /topics
 */
 describe('POST /topics', () => {
-    it('Should create topic', () => {
+    it('Should create topic', (done) => {
         let topic = {
             Name: 'Topic name',
             Field: 'Topic field'
@@ -24,10 +24,11 @@ describe('POST /topics', () => {
             res.body.should.have.property('Field');
             res.body.Name.should.be.eql('Topic name');
             res.body.Field.should.be.eql('Topic field');
+            done();
         });
     });
 
-    it('No name', () => {
+    it('No name', (done) => {
         let topic = {
             Field: 'Topic field'
         }
@@ -39,11 +40,12 @@ describe('POST /topics', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(1)
+            res.body.error.code.should.be.eql(1);
+            done();
         });
     });
 
-    it('Name too long', () => {
+    it('Name too long', (done) => {
         let topic = {
             Name: 'abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk',
             Field: 'Topic field'
@@ -56,11 +58,12 @@ describe('POST /topics', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done();
         });
     });
 
-    it('No field', () => {
+    it('No field', (done) => {
         let topic = {
             Name: 'Topic name'
         }
@@ -72,17 +75,19 @@ describe('POST /topics', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(3)
+            res.body.error.code.should.be.eql(3);
+            done();
         });
     });
 
 
-    it('Should get topics', () => {
+    it('Should get topics', (done) => {
         chai.request(server)
         .get('/topics')
         .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.an('array').that.is.not.empty;
+            done();
         });
     });
 

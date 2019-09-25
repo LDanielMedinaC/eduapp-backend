@@ -13,7 +13,7 @@ chai.use(chaiHttp);
 * Test POST to /user
 */
 describe('POST /user', () => {
-  it('Should create a new user', () => {
+  it('Should create a new user', (done) => {
     let new_user = {
       uid: 'aaabbbccc',
       email: 'johnny@banana.com',
@@ -34,10 +34,11 @@ describe('POST /user', () => {
         res.body.should.have.property('country');
         res.body.should.have.property('language');
          
+        done();
       });
   });
 
-  it('User name too short', () => {
+  it('User name too short', (done) => {
     let new_user = {
       uid: 'aaabbbccc',
       email: 'user@mail.com',
@@ -56,10 +57,11 @@ describe('POST /user', () => {
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(1)
          
+        done();
       });
   });
 
-  it('User name too long', () => {
+  it('User name too long', (done) => {
     let new_user = {
       uid: 'aaabbbccc',
       email: 'user@mail.com',
@@ -78,10 +80,11 @@ describe('POST /user', () => {
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(1)
          
+        done();
       });
   });
 
-  it('No user name', () => {
+  it('No user name', (done) => {
     let new_user = {
       uid: 'aaabbbccc',
       email: 'user@mail.com',
@@ -99,10 +102,11 @@ describe('POST /user', () => {
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(2)
          
+        done();
       });
   });
 
-  it('Non alphabetic chars in name', () => {
+  it('Non alphabetic chars in name', (done) => {
     let new_user = {
       uid: 'aaabbbccc',
       email: 'user@mail.com',
@@ -119,12 +123,13 @@ describe('POST /user', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(3)
+        res.body.error.code.should.be.eql(3);
          
+        done();
       });
   });
 
-  it('Phone too short', () => {
+  it('Phone too short', (done) => {
     let new_user = {
       uid: 'aaabbbccc',
       email: 'user@mail.com',
@@ -141,12 +146,14 @@ describe('POST /user', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(4)
+        res.body.error.code.should.be.eql(4);
+
+        done();
          
       });
   });
 
-  it('Phone too long', () => {
+  it('Phone too long', (done) => {
     let new_user = {
       uid: 'aaabbbccc',
       email: 'user@mail.com',
@@ -163,12 +170,14 @@ describe('POST /user', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(4)
+        res.body.error.code.should.be.eql(4);
+
+        done();
          
       });
   });
 
-  it('No phone', () => {
+  it('No phone', (done) => {
     let new_user = {
       uid: 'aaabbbccc',
       email: 'user@mail.com',
@@ -184,12 +193,13 @@ describe('POST /user', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(5)
+        res.body.error.code.should.be.eql(5);
          
+        done();
       });
   });
 
-  it('Invalid phone', () => {
+  it('Invalid phone', (done) => {
     let new_user = {
       uid: 'aaabbbccc',
       email: 'user@mail.com',
@@ -208,10 +218,11 @@ describe('POST /user', () => {
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(4)
          
+        done();
       });
   });
 
-  it('Too short email', () => {
+  it('Too short email', (done) => {
     let new_user = {
       uid: 'aaabbbccc',
       email: 'a@',
@@ -229,11 +240,12 @@ describe('POST /user', () => {
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(7)
-         
+        
+        done();
       });
   });
 
-  it('Too long email', () => {
+  it('Too long email', (done) => {
     let new_user = {
       uid: 'aaabbbccc',
       email: 'abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij@mail.com',
@@ -252,10 +264,11 @@ describe('POST /user', () => {
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(7)
          
+        done();
       });
   });
 
-  it('No email', () => {
+  it('No email', (done) => {
     let new_user = {
       uid: 'aaabbbccc',
       name: 'User user',
@@ -271,12 +284,13 @@ describe('POST /user', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('error');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(8)
+        res.body.error.code.should.be.eql(8);
          
+        done();
       });
   });
 
-  it('@ at 0', () => {
+  it('@ at 0', (done) => {
     let new_user = {
       uid: 'aaabbbccc',
       email: '@useremail.com',
@@ -295,10 +309,11 @@ describe('POST /user', () => {
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(9)
          
+        done();
       });
   });
 
-  it('@ at end', () => {
+  it('@ at end', (done) => {
     let new_user = {
       uid: 'aaabbbccc',
       email: 'useremail.com@',
@@ -317,10 +332,11 @@ describe('POST /user', () => {
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(9)
          
+        done();
       });
   });
 
-  it('No @', () => {
+  it('No @', (done) => {
     let new_user = {
       uid: 'aaabbbccc',
       email: 'useremail.com',
@@ -339,10 +355,11 @@ describe('POST /user', () => {
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(9)
          
+        done();
       });
   });
 
-  it('No Firebase UID', () => {
+  it('No Firebase UID', (done) => {
     let new_user = {
       email: 'johnny@banana.com',
       name: 'User user',
@@ -361,6 +378,7 @@ describe('POST /user', () => {
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(11)
          
+        done();
       });
   });
 

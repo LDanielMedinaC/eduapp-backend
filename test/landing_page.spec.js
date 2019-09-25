@@ -43,7 +43,7 @@ describe('PUT /landingpage', () => {
         });
     });
 
-    it('Title too short', () => {
+    it('Title too short', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -70,10 +70,11 @@ describe('PUT /landingpage', () => {
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
             res.body.error.code.should.be.eql(2)
+            done();
         });
     });
 
-    it('Title too LONG', () => {
+    it('Title too LONG', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -99,11 +100,12 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done();
         });
     });
 
-    it('Description too long', () => {
+    it('Description too long', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -129,11 +131,12 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done();
         });
     });
 
-    it('Invalid image url', () => {
+    it('Invalid image url', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -159,11 +162,12 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done();
         });
     });
 
-    it('No sections', () => {
+    it('No sections', (done) => {
         let update_lp = {
             Sections: [],
             LogoImgURL: 'http::algo'
@@ -176,11 +180,12 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done();
         });
     });
 
-    it('Invalid URL', () => {
+    it('Invalid URL', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -206,11 +211,12 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done();
         });
     });
 
-    it('Title too long', () => {
+    it('Title too long', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -236,11 +242,12 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done();
         });
     });
 
-    it('Description too long', () => {
+    it('Description too long', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -266,11 +273,12 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done(); 
         });
     });
 
-    it('Invalid URL', () => {
+    it('Invalid URL', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -296,7 +304,8 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done();
         });
     });
 

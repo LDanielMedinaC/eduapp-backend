@@ -1,4 +1,4 @@
-# !/bin/bash
+#!/bin/bash
 # Please note this script will run in the default working directory for npm.
 
 # Load .env
