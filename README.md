@@ -37,7 +37,7 @@ to connect to remote MonogoDB...
 You will also need to set up the service account details for Firebase authentication. Make sure you include the `service-account.json` file under the `server/config/` directory. You can get this file from the Firebase project.
 
 ## Testing
-Make sure you include all the necessary tests for your feature. Once your implementation is ready, verify all tests pass with `npm run test`.
+Make sure you include all the necessary tests for your feature. Once your implementation is ready, verify all tests pass with `npm test`.
 
 This will automatically drop the DB, seed anew and start the server but you will need to have mongo running either locally or remotely.
 

@@ -8,6 +8,18 @@ const server = 'localhost:8000';
 chai.use(chaiHttp);
 
 describe('GET /tutors', () => {
+    it('All tutors', (done) => {
+        chai.request(server)
+        .get('/tutors')
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.an('array').that.is.not.empty;
+            done();
+        });
+    });
+});
+
+describe('GET /tutors?topic=<topic>', () => {
     it('Topic with existing tutors', (done) => {
         let topic = encodeURIComponent('Ecuaciones Diferenciales');
 
