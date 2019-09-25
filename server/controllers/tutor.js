@@ -15,11 +15,7 @@ module.exports = {
             });
         }
 
-        console.log("saludos"); 
-
         let user = await User.findById(req.params.id).exec();
-
-        console.log("salu2"); 
 
         if (!user)
         {
