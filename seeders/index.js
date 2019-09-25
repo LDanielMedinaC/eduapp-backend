@@ -4,9 +4,9 @@ require('dotenv').config();
 const db = require('../server/models');
 
 const seeders = [
+    require('./topic-seeder'),
     require('./user-seeder'),
     require('./landingpage-seeder'),
-    require('./topic-seeder'),
     require('./tutor-seeder')
 ];
 

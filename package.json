@@ -34,6 +34,6 @@
   "scripts": {
     "start:dev": "nodemon --exec babel-node ./bin/www",
     "seed": "node seeders",
-    "test": "mocha"
+    "test": "./scripts/test.sh"
   }
 }

@@ -41,7 +41,7 @@ let seed = () => {
                 user.save()
                 .then(resolve)
                 .catch(err => {
-                    if(err.code === 11000 && err.errmsg.includes('email_1')) {
+                    if(err.code === 11000 && (err.errmsg.includes('email_1') || err.errmsg.includes('uid_1'))) {
                         resolve();
                     } else {
                         console.log(`Could not add user: ${err.errmsg || err}`);

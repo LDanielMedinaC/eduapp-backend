@@ -45,7 +45,7 @@ module.exports = {
         .then((page) => {
             if(!page) {
                 // Can't update non-existent page
-                return res.status(400).send({
+                return res.status(404).send({
                     error: {
                         status: 404,
                         description: 'Requested landing page does not exist.',
@@ -58,15 +58,13 @@ module.exports = {
                 page.ShowcasedTopicsIDs = landingPage.ShowcasedTopicsIDs || page.ShowcasedTopicsIDs;
                 page.Sections = landingPage.Sections || page.Sections || [];
 
-                console.log(page);
-
                 //run validators on fields, return if error occurs
                 var err = page.validateSync();
                 if (err)
                     return res.status(400).send({
                         error: {
                             status: 400,
-                            description: err,
+                            description: err.message || err,
                             code: 2
                         }
                     });
