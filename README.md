@@ -44,7 +44,13 @@ Make sure you include all the necessary test for your feature. Once your impleme
 ## Testing
 Make sure to add all your seeders to seeder/index.json. To seed the database run `npm run seed`.
 
+## Documentation
+- [Data model](https://www.lucidchart.com/invitations/accept/69157a37-825d-47ef-a53c-16308f65e7b3)
+- [Board](https://trello.com/eduappback)
+- [Drive](https://drive.google.com/drive/folders/1EHFzI4RqtgiEwQo7oad5qEZG2GjK6T-H?usp=sharing)
+
 ## Tools
 Some of the tools used for this project.
 - [Markdown editor](https://pandao.github.io/editor.md/en.html)
 - [HTTP Status Codes](https://www.restapitutorial.com/httpstatuscodes.html)
+- [URL encoder](https://www.urlencoder.io)
