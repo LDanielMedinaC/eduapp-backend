@@ -47,11 +47,11 @@ module.exports = {
 
         if(topic) {
             // Look for topic id
-            let topicId = await Topic.findOne({'name': topic}).exec();
-            topicId = topicId._id;
+            let topicId = await Topic.findOne({'Name': topic}).exec();
+            topicId = topicId ? topicId._id : null;
 
             if(!topicId)
-                return res.status(200).send({});
+                return res.status(200).json([]);
 
             let tutors = await User.where('tutorDetails').ne(null)
             .where('tutorDetails.taughtTopicsIDs').equals(topicId)
