@@ -21,7 +21,7 @@ npm run seed
 echo ''
 echo '-------STARTING SERVER'
 echo $(date)
-[[ $(lsof -t -i:8000) ]] && kill -9 $(lsof -t -i:8000)
+killall -9 node
 [[ -f nohup.out ]] && rm nohup.out
 nohup npm run start:dev &
 sleep 5
@@ -35,4 +35,4 @@ echo '-------SERVER LOG'
 cat nohup.out
 echo ''
 echo 'SERVER LOG-------'
-[[ $(lsof -t -i:8000) ]] && kill -9 $(lsof -t -i:8000)
+killall -9 node
