@@ -12,6 +12,7 @@ DB_URI=mongodb+srv://$DB_USER:$DB_PASS@$DB_HOST
 fi
 
 # Drop collections in DB
+echo "Drop collections with URI ${DB_URI}"
 mongo "$DB_URI" --eval 'db.topics.drop();db.users.drop();db.landingpages.drop();'
 
 # Seed mock data
@@ -23,7 +24,7 @@ echo '-------STARTING SERVER'
 echo $(date)
 killall -9 node
 [[ -f nohup.out ]] && rm nohup.out
-nohup npm run start:dev &
+nohup npm run start:dev > nohup.out &
 sleep 5
 
 # Run tests
