@@ -5,6 +5,8 @@ module.exports = {
 
     async getDetails(req, res){
 
+        console.log(req.params +":D");
+
         if (!req.params.id) {
             return res.status(400).send({
                 error: {
