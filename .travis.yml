@@ -1,24 +1,24 @@
 language: node_js
-node_js: 
-  - "stable"
-
+node_js:
+- stable
 services:
-  - mongodb
-
+- mongodb
 env:
-  - DB_LOCATION=local
-  - DB_HOST=localhost
-  - DB_PORT=27017
-  - DB_NAME=eduapp
-
+- DB_LOCATION=local
+- DB_HOST=localhost
+- DB_PORT=27017
+- DB_NAME=eduapp
 before_script:
-  - sleep 15
-
+- sleep 15
 script:
-  - mkdir -p ./server/config
-  - openssl aes-256-cbc -K $encrypted_071b59b6f6a6_key -iv $encrypted_071b59b6f6a6_iv -in service-account.json.enc -out ./server/config/service-account.json -d
-  - npm run test
-
+- mkdir -p ./server/config
+- openssl aes-256-cbc -K $encrypted_071b59b6f6a6_key -iv $encrypted_071b59b6f6a6_iv
+  -in service-account.json.enc -out ./server/config/service-account.json -d
+- npm run test
 cache:
   directories:
-    - "node_modules"
+  - node_modules
+before_install:
+- openssl aes-256-cbc -K $encrypted_d9505987b937_key -iv $encrypted_d9505987b937_iv
+  -in secrets.tar.enc -out secrets.tar -d
+- tar xvf secrets.tar
