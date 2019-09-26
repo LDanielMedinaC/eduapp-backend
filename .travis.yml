@@ -8,9 +8,8 @@ before_script:
 before_install:
 - openssl aes-256-cbc -K $encrypted_d9505987b937_key -iv $encrypted_d9505987b937_iv
   -in secrets.tar.enc -out secrets.tar -d
-- tar xvf secrets.tar
 - mkdir -p ./server/config
-- mv ./service-account.json /server/config/service-account.json
+- tar xvf secrets.tar
 script:
 - npm run test
 cache:
