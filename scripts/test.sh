@@ -28,7 +28,12 @@ nohup npm run start:dev > nohup.out &
 sleep 5
 
 # Run tests
-mocha
+if (mocha)
+then
+RESULT=0
+else
+RESULT=1
+fi
 
 # Log server output
 echo ''
@@ -37,3 +42,5 @@ cat nohup.out
 echo ''
 echo 'SERVER LOG-------'
 killall -9 node
+
+exit $RESULT
