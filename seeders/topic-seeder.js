@@ -14,6 +14,10 @@ const topics = [
     new Topic({
         Name: 'Ecuaciones Diferenciales',
         Field: 'Matemáticas'
+    }),
+    new Topic({
+        Name: 'Smash Avanzado',
+        Field: 'Ciencias Sociales'
     })
 ];
 
