@@ -198,7 +198,7 @@ module.exports = {
 
     //Methdo that list al the tutorings that a tutor has
     async list(req, res){
-        let tutorID = req.params.tutorID;
+        let tutorID = req.query.tutorID;
 
         if(!moongoose.Types.ObjectId.isValid(tutorID)){
             return res.status(400).send({

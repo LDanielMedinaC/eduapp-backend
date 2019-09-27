@@ -33,10 +33,8 @@ module.exports = (app) => {
     .post(topicController.create);
 
     app.route('/tutorings')
+    .get(tutoringController.list)    
     .post(tutoringController.create)
-
-    app.route('/tutorings/:tutorID')
-    .get(tutoringController.list)
 
     // Catch all the routes. This one must always be at the end.
     app.all('*', (req, res) => res.status(400).send({
