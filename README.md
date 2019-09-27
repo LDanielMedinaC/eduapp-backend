@@ -49,7 +49,7 @@ To seed the database, run `npm run seed`.
 ## Documentation
 - [Data model](https://www.lucidchart.com/invitations/accept/69157a37-825d-47ef-a53c-16308f65e7b3)
 - [Board](https://trello.com/eduappback)
-- [Drive](https://drive.google.com/drive/folders/1EHFzI4RqtgiEwQo7oad5qEZG2GjK6T-H?usp=sharing)
+- Please refer to the team's Drive for further documentation.
 
 ## Tools
 Some of the tools used for this project.
