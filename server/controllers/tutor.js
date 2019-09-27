@@ -1,47 +1,46 @@
 const User = require('../models').User;
 const Topic = require('../models').Topic;
+const ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports = {
 
     async getDetails(req, res){
 
-        console.log(req.params +":D");
-
-        if (!req.params.id) {
+        if (!req.params.id || !ObjectId.isValid(req.params.id)) {
             return res.status(400).send({
                 error: {
                     status: 400,
-                    description: 'No tutor id was provided.',
-                    code: 1
-                }
-            });
-        }
-
-        let user = await User.findById(req.params.id).exec();
-
-        if (!user)
-        {
-            return res.status(404).send({
-                error: {
-                    status: 404,
-                    description: 'Tutor does not exist',
+                    description: 'No valid ObjectId was provided.',
                     code: 2
                 }
             });
         }
 
-        if (!user.tutorDetails)
+        User.findById(req.params.id)
+        .then((user) => {
+            if (!user)
+            {
+                return res.status(404).send({
+                    error: {
+                        status: 404,
+                        description: 'Tutor does not exist',
+                        code: 3
+                    }
+                });
+            }
+
+            return res.status(200).send(user);
+        })
+        .catch( (err) => 
         {
-            return res.status(400).send({
+            res.status(500).send({
                 error: {
-                    status: 400,
-                    description: 'Tutor provided is not a tutor',
-                    code: 3
+                    status: 500,
+                    description: `Database error: ${err}`,
+                    code: 4
                 }
             });
-        }
-
-        return res.status(200).send(user);
+        });
     },
 
     async get(req, res) {
