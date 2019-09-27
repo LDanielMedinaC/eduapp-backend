@@ -40,9 +40,54 @@ describe('GET /tutors/:id/studies', () => {
 
     });
 
-    // Invalid ID
+    it('Invalid id', (done) => {
+        let tutorId = 'abc';
 
-    // Tutor not found
+        chai.request(server)
+        .get(`/tutors/${tutorId}/studies`)
+        .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.an('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(20);
+
+            done();
+        });
+    });
+
+    it('No id', (done) => {
+        let tutorId = '';
+
+        chai.request(server)
+        .get(`/tutors/${tutorId}/studies`)
+        .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.an('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(0);
+
+            done();
+        });
+    });
+
+    it('Tutor not found', (done) => {
+        // Id is a GUID, virtually impossible to generate twice
+        let tutorId = '5d8d95289f4e1b152e7f84ed';
+
+        chai.request(server)
+        .get(`/tutors/${tutorId}/studies`)
+        .end((err, res) => {
+            res.should.have.status(404);
+            res.body.should.be.an('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(21);
+
+            done();
+        });
+    })
 });
 
 /*
