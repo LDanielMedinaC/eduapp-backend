@@ -54,7 +54,7 @@ const userSchema = new mongoose.Schema({
                     }
                 ]
             },
-            educationBackground: {
+            studies: {
                 type: [
                     {
                         placeHolder: {

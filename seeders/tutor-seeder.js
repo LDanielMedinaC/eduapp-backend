@@ -34,7 +34,7 @@ let seed = () => {
                     paymentAccounts: [],
                     skills: [],
                     workExperience: [],
-                    educationBackground: [],
+                    studies: [],
                     awards: []
                 }
             }),
@@ -52,7 +52,7 @@ let seed = () => {
                     paymentAccounts: [],
                     skills: [],
                     workExperience: [],
-                    educationBackground: [],
+                    studies: [],
                     awards: []
                 }
             }),
