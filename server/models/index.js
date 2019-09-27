@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const User =  require('./user');
 const LandingPage = require('./landingPage');
 const Topic = require('./topic');
+const Tutoring = require('./tutoring');
 
 const connectDB = () => {
     mongoose.set('useCreateIndex', true);
@@ -27,5 +28,6 @@ module.exports = {
     // Models
     User,
     Topic,
-    LandingPage
+    LandingPage,
+    Tutoring
 };
