@@ -1,8 +1,8 @@
 require('dotenv').config();
 
-const User = require('../server/models').User;
 const Topic = require('../server/models').Topic;
 const db = require('../server/models');
+const tutors = require('../mock/tutors');
 
 let seed = () => {
 
@@ -17,46 +17,16 @@ let seed = () => {
         topic = await Topic.findOne({'Name': 'Ecuaciones Diferenciales'}).exec();
         let idTopic3 = topic._id;
 
-        const tutors = [
-            new User({
-                uid: 'abcd123',
-                email: 'danperro@tec.mx',
-                name: 'Dan Pérez',
-                phone: '2223335566',
-                country: 'Mexico',
-                language: 'es',
-                tutorDetails: {
-                    taughtTopicsIDs: [
-                        idTopic1,
-                        idTopic2,
-                        idTopic3
-                    ],
-                    paymentAccounts: [],
-                    skills: [],
-                    workExperience: [],
-                    studies: [],
-                    awards: []
-                }
-            }),
-            new User({
-                uid: 'abff123',
-                email: 'angel@tutor.mx',
-                name: 'Angel Gecko',
-                phone: '2223335577',
-                country: 'Mexico',
-                language: 'es',
-                tutorDetails: {
-                    taughtTopicsIDs: [
-                        idTopic1
-                    ],
-                    paymentAccounts: [],
-                    skills: [],
-                    workExperience: [],
-                    studies: [],
-                    awards: []
-                }
-            }),
-        ];
+        if(tutors[0]) {
+            let topicIds = tutors[0].tutorDetails.taughtTopicsIDs;
+            topicIds.push(idTopic1);
+            topicIds.push(idTopic3);
+        }
+
+        if(tutors[1]) {
+            let topicIds = tutors[1].tutorDetails.taughtTopicsIDs;
+            topicIds.push(idTopic1);
+        }
 
         let seededTutors = tutors.map(tutor => {
             return new Promise((resolve, reject) => {

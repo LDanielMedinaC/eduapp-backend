@@ -2,6 +2,9 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = 'localhost:8000';
 const should = chai.should();
+const User = require('../server/models').User;
+const tutors = require('../mock/tutors');
+const db = require('../server/models');
 
 chai.use(chaiHttp);
 
@@ -11,16 +14,30 @@ chai.use(chaiHttp);
 * Should not be needed since GET /tutors/:id already includes studies
 */
 describe('GET /tutors/:id/studies', () => {
-    it('Should return studies', () => {
-        let tutorId = 0;
+    it('Should return studies', (done) => {
+        db.connectDB()
+        .then(async () => {
+            console.log('DB connected');
+            let tutor = await User.findOne({ 'email': tutors[0].email }).exec();
 
-        chai.request(server)
-        .get(`/tutors/${tutorId}/studies`)
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.should.be.an('array').that.is.not.empty;
-            done();
+            db.disconnectDB()
+            console.log('DB disconnected');
+
+            let tutorId = tutor._id;
+            console.log(`GET /tutors/${tutorId}/studies`);
+
+            chai.request(server)
+            .get(`/tutors/${tutorId}/studies`)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should.be.an('array').that.is.not.empty;
+                done();
+            });
+        })
+        .catch(err => {
+            done(new Error(err));
         });
+
     });
 });
 
