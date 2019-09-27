@@ -24,13 +24,13 @@ describe('GET /tutors/:id/studies', () => {
             console.log('DB disconnected');
 
             let tutorId = tutor._id;
-            console.log(`GET /tutors/${tutorId}/studies`);
 
+            console.log(`GET /tutors/${tutorId}/studies`);
             chai.request(server)
             .get(`/tutors/${tutorId}/studies`)
             .end((err, res) => {
                 res.should.have.status(200);
-                res.should.be.an('array').that.is.not.empty;
+                res.body.should.be.an('array');
                 done();
             });
         })
@@ -39,6 +39,10 @@ describe('GET /tutors/:id/studies', () => {
         });
 
     });
+
+    // Invalid ID
+
+    // Tutor not found
 });
 
 /*

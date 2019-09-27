@@ -1,3 +1,4 @@
+const ObjectId = require('mongoose').Types.ObjectId;
 const User = require('../models').User;
 const Topic = require('../models').Topic;
 
@@ -41,7 +42,34 @@ module.exports = {
 
         return res.status(200).send(user);
     },
+    async getStudies(req, res) {
+        let tutorId = req.params.id;
 
+        // Validate id
+        if(!tutorId || !ObjectId.isValid(tutorId)) {
+            return res.status(400).send({
+                error: {
+                    status: 400,
+                    description: "given id is not a valid ID",
+                    code: 20
+                }
+            });
+        }
+
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            return res.status(404).send({
+                error: {
+                    status: 404,
+                    description: "No tutor with given ID was found",
+                    code: 1
+                }
+            });
+        }
+
+        res.status(200).send(tutor.tutorDetails.studies);
+    },
     async get(req, res) {
         let topic = req.query.topic;
 

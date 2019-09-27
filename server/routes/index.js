@@ -26,6 +26,9 @@ module.exports = (app) => {
     app.route('/tutors/:id')
     .get(tutorController.getDetails);
 
+    app.route('/tutors/:id/studies')
+    .get(tutorController.getStudies);
+
     //Topics routes
     app.route('/topics')
     .get(topicController.list)
