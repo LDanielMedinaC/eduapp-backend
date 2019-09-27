@@ -2,8 +2,21 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const User = require('../models').User;
 const Topic = require('../models').Topic;
 
-module.exports = {
+function validateId(id) {
+    if(!id || !ObjectId.isValid(id)) {
+        return {
+            status: 400,
+            description: "given id is not a valid ID",
+            code: 20
+        };
+    }
+}
 
+function validateStudy(study) {
+    return 0;
+}
+
+module.exports = {
     async getDetails(req, res){
 
         if (!req.params.id) {
@@ -44,17 +57,10 @@ module.exports = {
     },
     async getStudies(req, res) {
         let tutorId = req.params.id;
+        let idError = validateId(tutorId);
 
-        // Validate id
-        if(!tutorId || !ObjectId.isValid(tutorId)) {
-            return res.status(400).send({
-                error: {
-                    status: 400,
-                    description: "given id is not a valid ID",
-                    code: 20
-                }
-            });
-        }
+        if(idError)
+            return res.status(idError.status).send({ error: idError });
 
         // Validate tutor exists
         let tutor = await User.findById(tutorId).exec();
@@ -69,6 +75,47 @@ module.exports = {
         }
 
         res.status(200).send(tutor.tutorDetails.studies);
+    },
+    async addStudy(req, res) {
+        let tutorId = req.params.id;
+        let idError = validateId(tutorId);
+
+        if(idError)
+            return res.status(idError.status).send(idError);
+
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            return res.status(404).send({
+                error: {
+                    status: 404,
+                    description: "No tutor with given ID was found",
+                    code: 21
+                }
+            });
+        }
+
+        // Validate payload
+        let study = req.body;
+        let firstStudyError = validateStudy(study);
+        if(firstStudyError)
+            return res.status(firstStudyError).send(firstStudyError);
+
+        // Insert into array
+        tutor.tutorDetails.studies.push(study);
+        tutor.markModified('tutorDetails.studies');
+        try {
+            await tutor.save();
+            res.status(201).send(tutor);
+        } catch(err) {
+            res.status(500).send({
+                error: {
+                    status: 500,
+                    description: `Database error: ${err.errmsg || err}`,
+                    code: 0
+                }
+            });
+        }
     },
     async get(req, res) {
         let topic = req.query.topic;
