@@ -63,7 +63,7 @@ module.exports = {
                 error: {
                     status: 404,
                     description: "No tutor with given ID was found",
-                    code: 1
+                    code: 21
                 }
             });
         }
