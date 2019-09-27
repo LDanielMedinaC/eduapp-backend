@@ -3,6 +3,7 @@ const landingPageController = require('../controllers').landingPage;
 const tutorController = require('../controllers').tutor;
 const topicController = require('../controllers').topic;
 const authFirebase = require('../middleware/auth').authFirebase;
+const tutoringController = require('../controllers').tutoring;
 
 module.exports = (app) => {
     // Test route
@@ -27,6 +28,9 @@ module.exports = (app) => {
     app.route('/topics')
     .get(topicController.list)
     .post(topicController.create);
+
+    app.route('/tutorings')
+    .post(tutoringController.create)
 
     // Catch all the routes. This one must always be at the end.
     app.all('*', (req, res) => res.status(400).send({
