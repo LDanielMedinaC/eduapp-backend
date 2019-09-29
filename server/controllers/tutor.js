@@ -13,7 +13,27 @@ function validateId(id) {
 }
 
 function validateStudy(study) {
-    return 0;
+    // Institution is required
+    if(!study.institution) {
+        return {
+            error: {
+                status: 400,
+                description: 'Institution is required',
+                code: 1
+            }
+        };
+    }
+
+    // Min length 2 characters
+    if(study.institution.length < 2) {
+        return {
+            error: {
+                status: 400,
+                description: 'Institution should be at least 2 characters long',
+                code: 2
+            }
+        };
+    }
 }
 
 module.exports = {
@@ -99,7 +119,7 @@ module.exports = {
         let study = req.body;
         let firstStudyError = validateStudy(study);
         if(firstStudyError)
-            return res.status(firstStudyError).send(firstStudyError);
+            return res.status(firstStudyError.error.status).send(firstStudyError);
 
         // Insert into array
         tutor.tutorDetails.studies.push(study);
