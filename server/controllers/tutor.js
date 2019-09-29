@@ -57,6 +57,28 @@ function validateStudy(study) {
             }
         };
     }
+
+    // Field is required
+    if(!study.field) {
+        return {
+            error: {
+                status: 400,
+                description: 'Field is required',
+                code: 5
+            }
+        };
+    }
+
+    // Field min length 2
+    if(study.field.length < 2) {
+        return {
+            error: {
+                status: 400,
+                description: 'Field min length is 2',
+                code: 6
+            }
+        };
+    }
 }
 
 module.exports = {
