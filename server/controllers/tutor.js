@@ -25,13 +25,35 @@ function validateStudy(study) {
         };
     }
 
-    // Min length 2 characters
+    // Institution min length 2 characters
     if(study.institution.length < 2) {
         return {
             error: {
                 status: 400,
                 description: 'Institution should be at least 2 characters long',
                 code: 2
+            }
+        };
+    }
+
+    // Degree is required
+    if(!study.degree) {
+        return {
+            error: {
+                status: 400,
+                description: 'Degree is required',
+                code: 3
+            }
+        };
+    }
+
+    // Degree min length 2 characters
+    if(study.degree.length < 2) {
+        return {
+            error: {
+                status: 400,
+                description: 'Degree min length is 2 characters',
+                code: 4
             }
         };
     }

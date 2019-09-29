@@ -202,6 +202,61 @@ describe('STUDIES', () => {
                 done();
             });
         });
+
+        it('No degree', (done) => {
+            let tutorId = noStudiesId;
+            let study = {
+                institution: 'Universidad Mundial',
+                // No degree
+                field: 'Aerospace',
+                grade: 90,
+                startDate: new Date('2011-07-14').toISOString(),
+                endDate: new Date('2013-12-06').toISOString(),
+                proofDocURL: 'https://storage.provider.com/items/asd78we231',
+                validationDate: new Date('2019-06-12').toISOString()
+            };
+
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.an('object');
+                res.body.should.have.property('error');
+                res.body.error.should.have.property('code');
+                res.body.error.code.should.be.eql(3);
+
+                done();
+            });
+        });
+
+        it('Degree too short', (done) => {
+            let tutorId = id;
+            let study = {
+                institution: 'MIT',
+                degree: 'A',
+                field: 'Aerospace',
+                grade: 90,
+                startDate: new Date('2011-07-14').toISOString(),
+                endDate: new Date('2013-12-06').toISOString(),
+                proofDocURL: 'https://storage.provider.com/items/asd78we231',
+                validationDate: new Date('2019-06-12').toISOString()
+            };
+
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.an('object');
+                res.body.should.have.property('error');
+                res.body.error.should.have.property('code');
+                res.body.error.code.should.be.eql(4);
+                
+                done();
+            });
+        });
+
     });
     
     /*
