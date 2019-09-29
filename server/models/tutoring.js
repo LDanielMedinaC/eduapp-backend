@@ -1,4 +1,17 @@
 // Mongoose schema definition for user entity
+
+/*
+    Tutoring is a collection, when an user and a tutor agree a class (or tutoring)
+    It contains:
+    Date = date of the tutoring. Type = Date
+    lat = Latitud of the tutoring. Type = Number
+    long = Longitud of the tutoring. Type = Number
+    Loc = Location of the Tutoring. Type = ['Espacio publico', 'Casa del tutor', 'Casa del alumno', 'Online']
+    LocationName = Location's name of the tutoring. Type = string
+    Note: lat, long and loc refer to the location of the tutoring 
+    Tutor = 
+*/
+
 var mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
