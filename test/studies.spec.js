@@ -310,6 +310,87 @@ describe('STUDIES', () => {
                 done();
             });
         });
+
+        it('No grade', (done) => {
+            let tutorId = id;
+            let study = {
+                institution: 'MIT',
+                degree: 'Master',
+                field: 'Aerospace Engineering',
+                // No grade
+                startDate: new Date('2011-07-14').toISOString(),
+                endDate: new Date('2013-12-06').toISOString(),
+                proofDocURL: 'https://storage.provider.com/items/asd78we231',
+                validationDate: new Date('2019-06-12').toISOString()
+            };
+
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.an('object');
+                res.body.should.have.property('error');
+                res.body.error.should.have.property('code');
+                res.body.error.code.should.be.eql(7);
+                
+                done();
+            });
+        });
+
+        it('Grade is not an integer', (done) => {
+            let tutorId = id;
+            let study = {
+                institution: 'MIT',
+                degree: 'Master',
+                field: 'Aerospace Engineering',
+                grade: '.5',
+                startDate: new Date('2011-07-14').toISOString(),
+                endDate: new Date('2013-12-06').toISOString(),
+                proofDocURL: 'https://storage.provider.com/items/asd78we231',
+                validationDate: new Date('2019-06-12').toISOString()
+            };
+
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.an('object');
+                res.body.should.have.property('error');
+                res.body.error.should.have.property('code');
+                res.body.error.code.should.be.eql(8);
+                
+                done();
+            });
+        });
+
+        it('Grade is longer than 2 digits', (done) => {
+            let tutorId = id;
+            let study = {
+                institution: 'MIT',
+                degree: 'Master',
+                field: 'Aerospace Engineering',
+                grade: 100,
+                startDate: new Date('2011-07-14').toISOString(),
+                endDate: new Date('2013-12-06').toISOString(),
+                proofDocURL: 'https://storage.provider.com/items/asd78we231',
+                validationDate: new Date('2019-06-12').toISOString()
+            };
+
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.an('object');
+                res.body.should.have.property('error');
+                res.body.error.should.have.property('code');
+                res.body.error.code.should.be.eql(9);
+                
+                done();
+            });
+        });
     });
     
     /*

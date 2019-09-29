@@ -79,6 +79,39 @@ function validateStudy(study) {
             }
         };
     }
+
+    // Grade is required
+    if(!study.grade) {
+        return {
+            error: {
+                status: 400,
+                description: 'Grade is required',
+                code: 7
+            }
+        };
+    }
+
+    // Grade is an integer
+    if(!Number.isInteger(study.grade)) {
+        return {
+            error: {
+                status: 400,
+                description: 'Grade must be an integer',
+                code: 8
+            }
+        };
+    }
+
+    // Grade length is 1 or 2
+    if((study.grade + '').length < 1 || (study.grade + '').length > 2) {
+        return {
+            error: {
+                status: 400,
+                description: 'Grade should be 1 or 2 digits long',
+                code: 9
+            }
+        };
+    }
 }
 
 module.exports = {
