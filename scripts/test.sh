@@ -12,8 +12,8 @@ DB_URI=mongodb+srv://$DB_USER:$DB_PASS@$DB_HOST
 fi
 
 # Drop collections in DB
-echo "Drop collections with URI ${DB_URI}"
-mongo "$DB_URI" --eval 'db.topics.drop();db.users.drop();db.landingpages.drop();'
+#echo "Drop collections with URI ${DB_URI}"
+#mongo "$DB_URI" --eval 'db.topics.drop();db.users.drop();db.landingpages.drop();'
 
 # Seed mock data
 npm run seed

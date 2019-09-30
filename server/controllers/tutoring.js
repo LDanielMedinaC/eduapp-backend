@@ -18,10 +18,10 @@ function validateTutoring(tutoring) {
         };
     }
     let year = tutoring.date.substring(6, 11);
-    let month = parseInt(tutoring.date.substring(3, 5)) -1;
+    let month = tutoring.date.substring(3, 5);
     let day = tutoring.date.substring(0,2)
     let today = new Date();
-    let timestamp = Date.parse(year, month, day);
+    let timestamp = Date.parse(year + "-" + month + "-" + day + " 00:00:00 (CT)");
     if(isNaN(timestamp)){
         return {
             status: 400,
@@ -29,7 +29,8 @@ function validateTutoring(tutoring) {
             code: 2
         };
     }
-    td = new Date(year, month, day);
+    td = new Date(year + "-" + month + "-" + day + " 00:00:00 (CT)");
+    //console.log(td);
     if(today.getTime() > td.getTime()){
         return {
             status: 400,
@@ -59,12 +60,13 @@ function validateTutoring(tutoring) {
             code: 5
         };
     }
-    let ethh = parseInt(tutoring.endTime.substring(0,2));
-    let etmm = parseInt(tutoring.endTime.substring(3,5));
-    let sthh = parseInt(tutoring.startTime.substring(0,2));
-    let stmm = parseInt(tutoring.startTime.substring(3,5));
-    et = new Date(td.getFullYear(), td.getMonth(), td.getDate(), ethh, etmm);
-    st = new Date(td.getFullYear(), td.getMonth(), td.getDate(), sthh, stmm);
+    let ethh = tutoring.endTime.substring(0,2);
+    let etmm = tutoring.endTime.substring(3,5);
+    let sthh = tutoring.startTime.substring(0,2);
+    let stmm = tutoring.startTime.substring(3,5);
+    et = new Date(year + "-" + month + "-" + day + " " + ethh + ":" + etmm + ":00 (CT)");
+    st = new Date(year + "-" + month + "-" + day + " " + sthh + ":" + stmm + ":00 (CT)");
+    //console.log(et);
     if(st.getTime() >= et.getTime()){
         return {
             status: 400,
@@ -80,7 +82,7 @@ function validateTutoring(tutoring) {
         };
     }
     if(tutoring.long && tutoring.lat){
-        if(tutoring.long < 0 || tutoring.long > 180 || tutoring.lat < 0 || tutoring.lat > 90){
+        if(tutoring.long < -180 || tutoring.long > 180 || tutoring.lat < -90 || tutoring.lat > 90){
             return {
                 status: 400,
                 description: 'Invalid coordinates.',

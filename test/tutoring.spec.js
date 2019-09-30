@@ -28,17 +28,31 @@ describe('POST /tutorings', () => {
     };
     let attributeNames = ['date', 'lat','long','locationType', 'locationName', 'topicID', 'tutorID', 'userID','startTime', 'endTime', 'notes', 'paymentMethod']; 
     let attributesValue = [];
-    it('shouldCreate a tutoring', () => {
+    it('shouldCreate a tutoring', (done) => {
+        let tutoringAux = {
+          date: "10/11/2019",
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "12:00",
+          endTime: "23:00",
+          notes: 'It\'s not the best student',
+          paymentMethod: 'cash'
+        };
         chai.request(server)
         .post('/tutorings')
-        .send(tutoring)
+        .send(tutoringAux)
         .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
             attributeNames.forEach(function(attributeName){
                 res.body.should.have.property(attributeName);
             });
-            res.body.date.should.be.eql('10/11/2019');
+            res.body.date.should.be.eql('2019-11-10T06:00:00.000Z');
             res.body.lat.should.be.eql(19.019635);
             res.body.long.should.be.eql(-98.246918);
             res.body.locationType.should.be.eql('Casa del tutor');
@@ -46,8 +60,8 @@ describe('POST /tutorings', () => {
             res.body.topicID.should.be.eql('5d8d49a56ee837016abcd2a7'); 
             res.body.tutorID.should.be.eql('5d8d49a96ee837016abcd2b1'); 
             res.body.userID.should.be.eql('5d8d49a56ee837016abcd2aa'); 
-            res.body.startTime.should.be.eql('12:00'); 
-            res.body.endTime.should.be.eql('23:00'); 
+            res.body.startTime.should.be.eql('2019-11-10T18:00:00.000Z'); 
+            res.body.endTime.should.be.eql('2019-11-11T05:00:00.000Z'); 
             res.body.notes.should.be.eql('It\'s not the best student'); 
             res.body.paymentMethod.should.be.eql('cash'); 
             done();
@@ -55,12 +69,24 @@ describe('POST /tutorings', () => {
     });
 
     it('No date was provided.', (done) => {
-        let tutoringAux = tutoring;
-        delete tutoringAux.date; 
+        let tutoringAux = {
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "12:00",
+          endTime: "23:00",
+          notes: 'It\'s not the best student',
+          paymentMethod: 'cash'
+      };
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
+            console.log(res);
             res.should.have.status(400);
             res.body.should.be.a('object');
             res.body.should.have.property('error');
@@ -70,9 +96,21 @@ describe('POST /tutorings', () => {
           });
       });
 
-    /*it('Wrong date format.', (done) => {
-        let tutoringAux = tutoring;
-        tutoringAux.date = "19/20/4"; 
+    it('Wrong date format.', (done) => {
+        let tutoringAux = {
+          date: "1/1/19",
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "12:00",
+          endTime: "23:00",
+          notes: 'It\'s not the best student',
+          paymentMethod: 'cash'
+      };
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -87,8 +125,20 @@ describe('POST /tutorings', () => {
     });
 
     it('date provided is in the past.', (done) => {
-        let tutoringAux = tutoring;
-        tutoringAux.date = '10/03/1999'; 
+        let tutoringAux = {
+          date: "10/11/1999",
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "12:00",
+          endTime: "23:00",
+          notes: 'It\'s not the best student',
+          paymentMethod: 'cash'
+      };
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -102,8 +152,19 @@ describe('POST /tutorings', () => {
         });
     });
     it('No time was provided', (done) => {
-        let tutoringAux = tutoring;
-        delete tutoringAux.startTime; 
+        let tutoringAux = {
+          date: "10/11/2019",
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          endTime: "23:00",
+          notes: 'It\'s not the best student',
+          paymentMethod: 'cash'
+      }; 
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -117,8 +178,20 @@ describe('POST /tutorings', () => {
         });
     });
     it('wrong time format.', (done) => {
-        let tutoringAux = tutoring;
-        tutoringAux.startTime = '123:434'; 
+        let tutoringAux = {
+          date: "10/11/2019",
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "122:020",
+          endTime: "23:00",
+          notes: 'It\'s not the best student',
+          paymentMethod: 'cash'
+      };
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -132,9 +205,20 @@ describe('POST /tutorings', () => {
         });
     });
     it('Start time should be before end time.', (done) => {
-        let tutoringAux = tutoring;
-        tutoringAux.startTime = '19:00'; 
-        tutoringAux.endTime = '10:00'; 
+        let tutoringAux = {
+          date: "10/11/2019",
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "12:00",
+          endTime: "11:00",
+          notes: 'It\'s not the best student',
+          paymentMethod: 'cash'
+      }; 
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -148,8 +232,19 @@ describe('POST /tutorings', () => {
         });
     });
     it('No location provided.', (done) => {
-        let tutoringAux = tutoring;
-        delete tutoringAux.locationName; 
+        let tutoringAux = {
+          date: "10/11/2019",
+          lat: 19.019635,
+          long: -98.246918,
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "12:00",
+          endTime: "23:00",
+          notes: 'It\'s not the best student',
+          paymentMethod: 'cash'
+      };
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -163,8 +258,20 @@ describe('POST /tutorings', () => {
         });
     });
     it('Invalid coordinates.', (done) => {
-        let tutoringAux = tutoring;
-        tutoringAux.lat = 300.0; 
+        let tutoringAux = {
+          date: "10/11/2019",
+          lat: 19.019635,
+          long: -981.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "12:00",
+          endTime: "23:00",
+          notes: 'It\'s not the best student',
+          paymentMethod: 'cash'
+      };
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -178,8 +285,20 @@ describe('POST /tutorings', () => {
         });
     });
     it('Invalid location type.', (done) => {
-        let tutoringAux = tutoring;
-        tutoringAux.locationType = "Somewhere else"; 
+        let tutoringAux = {
+          date: "10/11/2019",
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'No idea',
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "12:00",
+          endTime: "23:00",
+          notes: 'It\'s not the best student',
+          paymentMethod: 'cash'
+      }; 
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -193,8 +312,20 @@ describe('POST /tutorings', () => {
         });
     });
     it('Location name should have more than 3 and less than 51 chars.', (done) => {
-        let tutoringAux = tutoring;
-        tutoringAux.locationName = "wy"; 
+        let tutoringAux = {
+          date: "10/11/2019",
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tu',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "12:00",
+          endTime: "23:00",
+          notes: 'It\'s not the best student',
+          paymentMethod: 'cash'
+      };
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -208,8 +339,19 @@ describe('POST /tutorings', () => {
         });
     });
     it('No notes were provided', (done) => {
-        let tutoringAux = tutoring;
-        delete tutoringAux.notes; 
+        let tutoringAux = {
+          date: "10/11/2019",
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "12:00",
+          endTime: "23:00",
+          paymentMethod: 'cash'
+      }; 
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -222,9 +364,21 @@ describe('POST /tutorings', () => {
             done();
         });
     });
-    it('Location name should have more than 3 and less than 51 chars.', (done) => {
-        let tutoringAux = tutoring;
-        tutoringAux.notes = ""; 
+    it('Notes should have more than 0 and less than 500 chars.', (done) => {
+        let tutoringAux = {
+          date: "10/11/2019",
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "12:00",
+          endTime: "23:00",
+          notes: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
+          paymentMethod: 'cash'
+        };
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -238,8 +392,19 @@ describe('POST /tutorings', () => {
         });
     });
     it('No payment method was provided.', (done) => {
-        let tutoringAux = tutoring;
-        delete tutoringAux.paymentMethod; 
+        let tutoringAux = {
+          date: "10/11/2019",
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "12:00",
+          endTime: "23:00",
+          notes: 'It\'s not the best student'
+      };
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -253,8 +418,20 @@ describe('POST /tutorings', () => {
         });
     });
     it('Invalid payment method.', (done) => {
-        let tutoringAux = tutoring;
-        tutoringAux.paymentMethod = "Cupones de descuento"; 
+        let tutoringAux = {
+          date: "10/11/2019",
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "12:00",
+          endTime: "23:00",
+          notes: 'It\'s not the best student',
+          paymentMethod: 'cahs'
+      }; 
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -268,8 +445,19 @@ describe('POST /tutorings', () => {
         });
     });
     it('No topic provided', (done) => {
-        let tutoringAux = tutoring;
-        delete tutoringAux.topicID; 
+        let tutoringAux = {
+          date: "10/11/2019",
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tutor\'s place',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "12:00",
+          endTime: "23:00",
+          notes: 'It\'s not the best student',
+          paymentMethod: 'cash'
+      };
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -283,8 +471,19 @@ describe('POST /tutorings', () => {
         });
     });
     it('No tutor provided', (done) => {
-        let tutoringAux = tutoring;
-        delete tutoringAux.tutorID; 
+        let tutoringAux = {
+          date: "10/11/2019",
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          userID: '5d8d49a56ee837016abcd2aa',
+          startTime: "12:00",
+          endTime: "23:00",
+          notes: 'It\'s not the best student',
+          paymentMethod: 'cash'
+      };
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -298,8 +497,19 @@ describe('POST /tutorings', () => {
         });
     });
     it('No user provided', (done) => {
-        let tutoringAux = tutoring;
-        delete tutoringAux.userID; 
+        let tutoringAux = {
+          date: "10/11/2019",
+          lat: 19.019635,
+          long: -98.246918,
+          locationType: 'Casa del tutor',
+          locationName: 'Tutor\'s place',
+          topicID: '5d8d49a56ee837016abcd2a7',
+          tutorID: '5d8d49a96ee837016abcd2b1',
+          startTime: "12:00",
+          endTime: "23:00",
+          notes: 'It\'s not the best student',
+          paymentMethod: 'cash'
+      };
         chai.request(server)
           .post('/tutorings')
           .send(tutoringAux)
@@ -311,5 +521,5 @@ describe('POST /tutorings', () => {
             res.body.error.code.should.be.eql(17); 
             done();
         });
-    });*/
+    });
 });
