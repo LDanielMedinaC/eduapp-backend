@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const ObjectId = require('mongoose').Types.ObjectId;
 const User = require('../models').User;
 const Topic = require('../models').Topic;
@@ -290,6 +291,7 @@ module.exports = {
             return res.status(firstStudyError.error.status).send(firstStudyError);
 
         // Insert into array
+        study._id = new mongoose.mongo.ObjectId();
         tutor.tutorDetails.studies.push(study);
         tutor.markModified('tutorDetails.studies');
         try {
