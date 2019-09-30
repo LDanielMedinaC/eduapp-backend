@@ -14,6 +14,8 @@ describe('STUDIES', () => {
     let noStudiesTutor;
     let id;
     let noStudiesId;
+    let mockStudy;
+    let mockStudyId;
 
     const validStudy = {
         institution: 'MIT',
@@ -47,6 +49,9 @@ describe('STUDIES', () => {
 
             id = tutor._id;
             noStudiesId = noStudiesTutor._id;
+            mockStudy = tutor.tutorDetails.studies[0];
+            delete mockStudy._id;
+            mockStudyId = mockStudy._id;
 
             done();
         })
@@ -130,6 +135,25 @@ describe('STUDIES', () => {
     * GET /tutors/:tutorId/studies/:id
     * Should not be needed since GET /tutors/:tutorId already includes studies
     */
+   describe('GET /tutors/:tutorId/studies/:studyId', () => {
+       it('Should get study', (done) => {
+           let tutorId = id;
+           let studyId = mockStudyId;
+
+           chai.request(server)
+           .get(`/tutors/${tutorId}/studies/${studyId}`)
+           .end((err, res) => {
+               res.should.have.status(200);
+               res.body.should.be.an('object');
+               res.body.should.contain(mockStudy);
+
+               done();
+           });
+       });
+
+       // Invalid study Id
+       // Study not found
+   });
     
     /*
     * Test create study

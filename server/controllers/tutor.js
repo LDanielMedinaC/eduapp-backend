@@ -244,6 +244,56 @@ module.exports = {
             });
         });
     },
+    async getStudy(req, res) {
+        let tutorId = req.params.tutorId;
+        let studyId = req.params.studyId;
+        let tutorIdError = validateId(tutorId);
+        let studyIdError = validateId(tutorId);
+
+        let idError = tutorIdError ? tutorIdError : studyIdError ? studyIdError : null;
+        if(idError)
+            return res.status(idError.status).send({ error: idError });
+
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            return res.status(404).send({
+                error: {
+                    status: 404,
+                    description: "No tutor with given ID was found",
+                    code: 21
+                }
+            });
+        }
+
+        // Validate study exists
+        let matchingStudy;
+        let studies = tutor.tutorDetails.studies;
+        if(!studies)
+            return {
+                error: {
+                    status: 404,
+                    description: 'Requested study was not found for given tutor',
+                    code: 30
+                }
+            };
+
+        for(let study of studies) {
+            if(study._id = studyId)
+                matchingStudy = study;
+        }
+
+        if(!matchingStudy)
+            return {
+                error: {
+                    status: 404,
+                    description: 'Requested study was not found for given tutor',
+                    code: 30
+                }
+            };
+        
+        res.status(200).send(matchingStudy);
+    },
     async getStudies(req, res) {
         let tutorId = req.params.id;
         let idError = validateId(tutorId);

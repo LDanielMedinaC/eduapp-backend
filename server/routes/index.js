@@ -31,6 +31,9 @@ module.exports = (app) => {
     .get(tutorController.getStudies)
     .post(tutorController.addStudy);
 
+    app.route('/tutors/:tutorId/studies/:studyId')
+    .get(tutorController.getStudy);
+
     // Topics routes
     app.route('/topics')
     .get(topicController.list)
@@ -45,7 +48,7 @@ module.exports = (app) => {
     app.all('*', (req, res) => res.status(400).send({
         error: {
             status: 400,
-            description: 'Bad request',
+            description: 'Bad request. Not matching route.',
             code: 0
         }
     }));
