@@ -58,7 +58,7 @@ describe('POST /user', () => {
         let tutoringAux = tutoring;
         delete tutoringAux.date; 
         chai.request(server)
-          .post('/users')
+          .post('/topics')
           .send(new_user)
           .end((err, res) => {
             res.should.have.status(400);
@@ -74,7 +74,7 @@ describe('POST /user', () => {
         let tutoringAux = tutoring;
         tutoringAux.date = "19/20/4"; 
         chai.request(server)
-          .post('/users')
+          .post('/topics')
           .send(new_user)
           .end((err, res) => {
             res.should.have.status(400);
@@ -90,7 +90,7 @@ describe('POST /user', () => {
         let tutoringAux = tutoring;
         tutoringAux.date = '10/3/1999'; 
         chai.request(server)
-          .post('/users')
+          .post('/topics')
           .send(new_user)
           .end((err, res) => {
             res.should.have.status(400);
@@ -101,5 +101,215 @@ describe('POST /user', () => {
             done();
         });
     });
-
+    it('No time was provided', (done) => {
+        let tutoringAux = tutoring;
+        delete tutoringAux.startTime; 
+        chai.request(server)
+          .post('/topics')
+          .send(new_user)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(4); 
+            done();
+        });
+    });
+    it('wrong time format.', (done) => {
+        let tutoringAux = tutoring;
+        tutoringAux.startTime = '123:434'; 
+        chai.request(server)
+          .post('/topics')
+          .send(new_user)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(5); 
+            done();
+        });
+    });
+    it('Start time should be before end time.', (done) => {
+        let tutoringAux = tutoring;
+        tutoringAux.startTime = '19:00'; 
+        tutoringAux.endTime = '10:00'; 
+        chai.request(server)
+          .post('/topics')
+          .send(new_user)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(6); 
+            done();
+        });
+    });
+    it('No location provided.', (done) => {
+        let tutoringAux = tutoring;
+        delete tutoringAux.locationName; 
+        chai.request(server)
+          .post('/topics')
+          .send(new_user)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(7); 
+            done();
+        });
+    });
+    it('Invalid coordinates..', (done) => {
+        let tutoringAux = tutoring;
+        tutoringAux.lat = 300.0; 
+        chai.request(server)
+          .post('/topics')
+          .send(new_user)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(8); 
+            done();
+        });
+    });
+    it('Invalid location type.', (done) => {
+        let tutoringAux = tutoring;
+        tutoringAux.locationType = "Somewhere else"; 
+        chai.request(server)
+          .post('/topics')
+          .send(new_user)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(9); 
+            done();
+        });
+    });
+    it('Location name should have more than 3 and les than 51 chars.', (done) => {
+        let tutoringAux = tutoring;
+        tutoringAux.locationName = "wy"; 
+        chai.request(server)
+          .post('/topics')
+          .send(new_user)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(10); 
+            done();
+        });
+    });
+    it('No notes were provided', (done) => {
+        let tutoringAux = tutoring;
+        delete tutoringAux.notes; 
+        chai.request(server)
+          .post('/topics')
+          .send(new_user)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(11); 
+            done();
+        });
+    });
+    it('Location name should have more than 3 and les than 51 chars.', (done) => {
+        let tutoringAux = tutoring;
+        tutoringAux.notes = ""; 
+        chai.request(server)
+          .post('/topics')
+          .send(new_user)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(12); 
+            done();
+        });
+    });
+    it('No payment method was provided.', (done) => {
+        let tutoringAux = tutoring;
+        delete tutoringAux.paymentMethod; 
+        chai.request(server)
+          .post('/topics')
+          .send(new_user)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(13); 
+            done();
+        });
+    });
+    it('Invalid payment method.', (done) => {
+        let tutoringAux = tutoring;
+        tutoringAux.paymentMethod = "Cupones de descuento"; 
+        chai.request(server)
+          .post('/topics')
+          .send(new_user)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(14); 
+            done();
+        });
+    });
+    it('No topic provided', (done) => {
+        let tutoringAux = tutoring;
+        delete tutoringAux.topicID; 
+        chai.request(server)
+          .post('/topics')
+          .send(new_user)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(15); 
+            done();
+        });
+    });
+    it('No tutor provided', (done) => {
+        let tutoringAux = tutoring;
+        delete tutoringAux.tutorID; 
+        chai.request(server)
+          .post('/topics')
+          .send(new_user)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(16); 
+            done();
+        });
+    });
+    it('No user provided', (done) => {
+        let tutoringAux = tutoring;
+        delete tutoringAux.userID; 
+        chai.request(server)
+          .post('/topics')
+          .send(new_user)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(17); 
+            done();
+        });
+    });
 });
