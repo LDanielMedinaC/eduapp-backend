@@ -248,7 +248,7 @@ module.exports = {
         let tutorId = req.params.tutorId;
         let studyId = req.params.studyId;
         let tutorIdError = validateId(tutorId);
-        let studyIdError = validateId(tutorId);
+        let studyIdError = validateId(studyId);
 
         let idError = tutorIdError ? tutorIdError : studyIdError ? studyIdError : null;
         if(idError)
