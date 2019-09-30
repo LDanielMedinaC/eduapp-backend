@@ -66,6 +66,11 @@ const tutoringSchema = new mongoose.Schema({
         type: String,
         enum: ['cash', 'debit card', 'credit card', 'paypal'],
         required: true
+    },
+    status: {
+        type: String,
+        enum: ['done', 'requested', 'accepted'],
+        required: true
     }
 });
 

@@ -32,7 +32,9 @@ module.exports = (app) => {
     .get(topicController.list)
     .post(topicController.create);
 
+    //Tutoring routes
     app.route('/tutorings')
+    .get(tutoringController.list)    
     .post(tutoringController.create)
 
     // Catch all the routes. This one must always be at the end.

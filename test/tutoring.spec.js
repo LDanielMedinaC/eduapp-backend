@@ -41,7 +41,8 @@ describe('POST /tutorings', () => {
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
         };
         chai.request(server)
         .post('/tutorings')
@@ -52,16 +53,10 @@ describe('POST /tutorings', () => {
             attributeNames.forEach(function(attributeName){
                 res.body.should.have.property(attributeName);
             });
-            res.body.date.should.be.eql('2019-11-10T00:00:00.000Z');
             res.body.lat.should.be.eql(19.019635);
             res.body.long.should.be.eql(-98.246918);
             res.body.locationType.should.be.eql('Casa del tutor');
             res.body.locationName.should.be.eql('Tutor\'s place');
-            res.body.topicID.should.be.eql('5d8d49a56ee837016abcd2a7'); 
-            res.body.tutorID.should.be.eql('5d8d49a96ee837016abcd2b1'); 
-            res.body.userID.should.be.eql('5d8d49a56ee837016abcd2aa'); 
-            res.body.startTime.should.be.eql('2019-11-10T12:00:00.000Z'); 
-            res.body.endTime.should.be.eql('2019-11-10T23:00:00.000Z'); 
             res.body.notes.should.be.eql('It\'s not the best student'); 
             res.body.paymentMethod.should.be.eql('cash'); 
             done();
@@ -80,7 +75,8 @@ describe('POST /tutorings', () => {
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
       };
         chai.request(server)
           .post('/tutorings')
@@ -108,7 +104,8 @@ describe('POST /tutorings', () => {
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
       };
         chai.request(server)
           .post('/tutorings')
@@ -136,7 +133,8 @@ describe('POST /tutorings', () => {
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
       };
         chai.request(server)
           .post('/tutorings')
@@ -162,7 +160,8 @@ describe('POST /tutorings', () => {
           userID: '5d8d49a56ee837016abcd2aa',
           endTime: "23:00",
           notes: 'It\'s not the best student',
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
       }; 
         chai.request(server)
           .post('/tutorings')
@@ -189,7 +188,8 @@ describe('POST /tutorings', () => {
           startTime: "122:020",
           endTime: "23:00",
           notes: 'It\'s not the best student',
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
       };
         chai.request(server)
           .post('/tutorings')
@@ -216,7 +216,8 @@ describe('POST /tutorings', () => {
           startTime: "12:00",
           endTime: "11:00",
           notes: 'It\'s not the best student',
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
       }; 
         chai.request(server)
           .post('/tutorings')
@@ -242,7 +243,8 @@ describe('POST /tutorings', () => {
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
       };
         chai.request(server)
           .post('/tutorings')
@@ -269,7 +271,8 @@ describe('POST /tutorings', () => {
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
       };
         chai.request(server)
           .post('/tutorings')
@@ -296,7 +299,8 @@ describe('POST /tutorings', () => {
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
       }; 
         chai.request(server)
           .post('/tutorings')
@@ -323,7 +327,8 @@ describe('POST /tutorings', () => {
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
       };
         chai.request(server)
           .post('/tutorings')
@@ -349,7 +354,8 @@ describe('POST /tutorings', () => {
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "12:00",
           endTime: "23:00",
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
       }; 
         chai.request(server)
           .post('/tutorings')
@@ -376,7 +382,8 @@ describe('POST /tutorings', () => {
           startTime: "12:00",
           endTime: "23:00",
           notes: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
         };
         chai.request(server)
           .post('/tutorings')
@@ -429,7 +436,8 @@ describe('POST /tutorings', () => {
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
-          paymentMethod: 'cahs'
+          paymentMethod: 'cahs',
+          status: 'requested'
       }; 
         chai.request(server)
           .post('/tutorings')
@@ -455,7 +463,8 @@ describe('POST /tutorings', () => {
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
       };
         chai.request(server)
           .post('/tutorings')
@@ -481,7 +490,8 @@ describe('POST /tutorings', () => {
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
       };
         chai.request(server)
           .post('/tutorings')
@@ -507,7 +517,8 @@ describe('POST /tutorings', () => {
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
-          paymentMethod: 'cash'
+          paymentMethod: 'cash',
+          status: 'requested'
       };
         chai.request(server)
           .post('/tutorings')
@@ -521,4 +532,75 @@ describe('POST /tutorings', () => {
             done();
         });
     });
+});
+
+describe('GET /tutorings', () => {
+  let attributeNames = ['date', 'lat','long','locationType', 'locationName', 'topicID', 'tutorID', 'userID','startTime', 'endTime', 'notes', 'paymentMethod'];
+  it('should retrieve a tutoring', (done) => {
+      chai.request(server)
+      .get('/tutors/')
+      .end((err, res) => {
+        let id = res.body[0]._id;
+        chai.request(server)
+        .get(`/tutorings?tutorID=${id}`)
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.an('array');
+            attributeNames.forEach(function(attributeName){
+                res.body[0].should.have.property(attributeName);
+            });
+            res.body[0].lat.should.be.eql(19.019635);
+            res.body[0].long.should.be.eql(-98.246918);
+            res.body[0].locationType.should.be.eql('Casa del tutor');
+            res.body[0].locationName.should.be.eql('Tutor\'s place');
+            res.body[0].tutorID.should.be.eql(id);  
+            res.body[0].notes.should.be.eql('It\'s not the best student'); 
+            res.body[0].paymentMethod.should.be.eql('cash'); 
+            done();
+        });
+      });
+  });
+
+  it('Invalid tutor ID', (done) => {
+    let id = 'notvalid';
+    chai.request(server)
+    .get(`/tutorings?tutorID=${id}`)
+    .end((err, res) => {
+      res.should.have.status(400);
+      res.body.should.be.a('object');
+      res.body.should.have.property('error');
+      res.body.error.should.have.property('code');
+      res.body.error.code.should.be.eql(18); 
+      done();
+    });
+  });
+
+  it('Invalid tutor ID', (done) => {
+    let id = 'notvalid';
+    chai.request(server)
+    .get(`/tutorings?tutorID=${id}`)
+    .end((err, res) => {
+      res.should.have.status(400);
+      res.body.should.be.a('object');
+      res.body.should.have.property('error');
+      res.body.error.should.have.property('code');
+      res.body.error.code.should.be.eql(18); 
+      done();
+    });
+  });
+
+  
+  it('Unexistant tutor (flaky)', (done) => {
+    let id = '6d9255549c70c5183fb91028';
+    chai.request(server)
+    .get(`/tutorings?tutorID=${id}`)
+    .end((err, res) => {
+      res.should.have.status(400);
+      res.body.should.be.a('object');
+      res.body.should.have.property('error');
+      res.body.error.should.have.property('code');
+      res.body.error.code.should.be.eql(19); 
+      done();
+    });
+  });
 });
