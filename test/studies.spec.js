@@ -37,6 +37,15 @@ describe('STUDIES', () => {
         done();
     };
 
+    const shouldBeNotFound = (res, done, code) => {
+        res.should.have.status(404);
+        res.body.should.be.an('object');
+        res.body.error.should.have.property('code');
+        res.body.error.code.should.be.eql(code);
+
+        done();
+    };
+
     before(done => {
         db.connectDB()
         .then(async () => {
@@ -152,7 +161,6 @@ describe('STUDIES', () => {
             });
        });
 
-       // Invalid study Id
        it('Invalid study id', (done) => {
            let studyId = 'asd';
            let tutorId = id;
@@ -164,7 +172,16 @@ describe('STUDIES', () => {
            });
        });
 
-       // Study not found
+       it('Non-existent study id', (done) => {
+           let studyId = '56cb91bdc3464f14678934c9';
+           let tutorId = id;
+
+           chai.request(server)
+           .get(`/tutors/${tutorId}/studies/${studyId}`)
+           .end((err, res) => {
+               shouldBeNotFound(res, done, 30);
+           });
+       });
    });
     
     /*
