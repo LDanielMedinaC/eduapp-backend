@@ -37,40 +37,58 @@ const userSchema = new mongoose.Schema({
                 }]
             },
             skills: {
-                type: [
-                    {
-                        placeHolder: {
-                            type: String
-                        }
+                type: [{
+                    placeHolder: {
+                        type: String
                     }
-                ]
+                }]
             },
             workExperience: {
-                type: [
-                    {
-                        placeHolder: {
-                            type: String
-                        }
+                type: [{
+                    placeHolder: {
+                        type: String
                     }
-                ]
+                }]
             },
-            educationBackground: {
-                type: [
-                    {
-                        placeHolder: {
-                            type: String
-                        }
+            studies: {
+                type: [{
+                    institution: {
+                        required: true,
+                        type: String,
+                    },
+                    degree: {
+                        required: true,
+                        type: String,
+                    },
+                    field: {
+                        required: true,
+                        type: String,
+                    },
+                    grade: {
+                        required: true,
+                        type: Number,
+                    },
+                    startDate: {
+                        required: true,
+                        type: Date
+                    },
+                    endDate: {
+                        required: true,
+                        type: Date
+                    },
+                    proofDocURL: {},
+                    validationDate: {
+                        required: true,
+                        type: Date
                     }
-                ]
+                }]
             },
             awards: {
-                type: [
-                    {
-                        placeHolder: {
-                            type: String
-                        }
+                type: [{
+                    placeHolder: {
+                        type: String
                     }
-                ]
+                }]
             }
 
         }

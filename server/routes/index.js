@@ -27,7 +27,15 @@ module.exports = (app) => {
     app.route('/tutors/:id')
     .get(tutorController.getDetails);
 
-    //Topics routes
+    app.route('/tutors/:id/studies')
+    .get(tutorController.getStudies)
+    .post(tutorController.addStudy);
+
+    app.route('/tutors/:tutorId/studies/:studyId')
+    .get(tutorController.getStudy)
+    .delete(tutorController.deleteStudy);
+
+    // Topics routes
     app.route('/topics')
     .get(topicController.list)
     .post(topicController.create);
@@ -41,7 +49,7 @@ module.exports = (app) => {
     app.all('*', (req, res) => res.status(400).send({
         error: {
             status: 400,
-            description: 'Bad request',
+            description: 'Bad request. Not matching route.',
             code: 0
         }
     }));

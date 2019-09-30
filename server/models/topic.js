@@ -1,4 +1,4 @@
-// Mongoose schema definition for landing page 
+// Mongoose schema definition for topic
 var mongoose = require('mongoose');
 
 const topicSchema = new mongoose.Schema({
