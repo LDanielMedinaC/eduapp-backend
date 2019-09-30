@@ -17,18 +17,18 @@ function validateTutoring(tutoring) {
             code: 2
         };
     }
-    let dateRegex = /([0-2][0-9]|3[0-1])\/([0][1-9]|1[0-2])\/(20[0-9][0-9])/
-    if(tutoring.date.match(dateRegex) === null){
+    let year = tutoring.date.substring(6, 11);
+    let month = parseInt(tutoring.date.substring(3, 5)) -1;
+    let day = tutoring.date.substring(0,2)
+    let today = new Date();
+    let timestamp = Date.parse(year, month, day);
+    if(isNaN(timestamp)){
         return {
             status: 400,
             description: 'The date should be in DD/MM/AAAA format. ' + tutoring.date + tutoring.date.match(dateRegex),
             code: 2
         };
     }
-    let today = new Date();
-    let year = tutoring.date.substring(6, 11);
-    let month = parseInt(tutoring.date.substring(3, 5)) -1;
-    let day = tutoring.date.substring(0,2)
     td = new Date(year, month, day);
     if(today.getTime() > td.getTime()){
         return {
