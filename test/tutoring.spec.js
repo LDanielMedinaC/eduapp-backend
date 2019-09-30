@@ -52,7 +52,7 @@ describe('POST /tutorings', () => {
             attributeNames.forEach(function(attributeName){
                 res.body.should.have.property(attributeName);
             });
-            res.body.date.should.be.eql('2019-11-10T06:00:00.000Z');
+            res.body.date.should.be.eql('2019-11-10T00:00:00.000Z');
             res.body.lat.should.be.eql(19.019635);
             res.body.long.should.be.eql(-98.246918);
             res.body.locationType.should.be.eql('Casa del tutor');
@@ -86,7 +86,6 @@ describe('POST /tutorings', () => {
           .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
-            console.log(res);
             res.should.have.status(400);
             res.body.should.be.a('object');
             res.body.should.have.property('error');
