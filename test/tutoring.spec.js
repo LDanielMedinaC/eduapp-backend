@@ -59,7 +59,7 @@ describe('POST /topics', () => {
         delete tutoringAux.date; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -75,7 +75,7 @@ describe('POST /topics', () => {
         tutoringAux.date = "19/20/4"; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -91,7 +91,7 @@ describe('POST /topics', () => {
         tutoringAux.date = '10/3/1999'; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -106,7 +106,7 @@ describe('POST /topics', () => {
         delete tutoringAux.startTime; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -121,7 +121,7 @@ describe('POST /topics', () => {
         tutoringAux.startTime = '123:434'; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -137,7 +137,7 @@ describe('POST /topics', () => {
         tutoringAux.endTime = '10:00'; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -152,7 +152,7 @@ describe('POST /topics', () => {
         delete tutoringAux.locationName; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -167,7 +167,7 @@ describe('POST /topics', () => {
         tutoringAux.lat = 300.0; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -182,7 +182,7 @@ describe('POST /topics', () => {
         tutoringAux.locationType = "Somewhere else"; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -197,7 +197,7 @@ describe('POST /topics', () => {
         tutoringAux.locationName = "wy"; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -212,7 +212,7 @@ describe('POST /topics', () => {
         delete tutoringAux.notes; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -227,7 +227,7 @@ describe('POST /topics', () => {
         tutoringAux.notes = ""; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -242,7 +242,7 @@ describe('POST /topics', () => {
         delete tutoringAux.paymentMethod; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -257,7 +257,7 @@ describe('POST /topics', () => {
         tutoringAux.paymentMethod = "Cupones de descuento"; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -272,7 +272,7 @@ describe('POST /topics', () => {
         delete tutoringAux.topicID; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -287,7 +287,7 @@ describe('POST /topics', () => {
         delete tutoringAux.tutorID; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
@@ -302,7 +302,7 @@ describe('POST /topics', () => {
         delete tutoringAux.userID; 
         chai.request(server)
           .post('/topics')
-          .send(tutoring)
+          .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
