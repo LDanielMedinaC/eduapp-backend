@@ -54,7 +54,7 @@ describe('POST /tutorings', () => {
         });
     });
 
-    /*it('No date was provided.', (done) => {
+    it('No date was provided.', (done) => {
         let tutoringAux = tutoring;
         delete tutoringAux.date; 
         chai.request(server)
@@ -70,7 +70,7 @@ describe('POST /tutorings', () => {
           });
       });
 
-    it('Wrong date format.', (done) => {
+    /*it('Wrong date format.', (done) => {
         let tutoringAux = tutoring;
         tutoringAux.date = "19/20/4"; 
         chai.request(server)
