@@ -1,5 +1,6 @@
 'use strict'
 
+const mongoose = require('mongoose');
 const User = require('../server/models').User;
 
 const tutors = [
@@ -16,6 +17,7 @@ const tutors = [
             skills: [],
             workExperience: [],
             studies: [{
+                _id: new mongoose.mongo.ObjectId('56cb91bdc3464f14678934ca'),
                 institution: 'Alguna Universidad',
                 degree: 'Licenciatura',
                 field: 'Aerospace',
