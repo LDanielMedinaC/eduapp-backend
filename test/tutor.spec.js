@@ -96,3 +96,49 @@ describe('GET /tutors?topic=<topic>', () => {
         });
     });
 });
+
+describe('GET /tutors/:id', () => {
+
+    it('Invalid ID', (done) => {
+       
+        let id = '000';
+ 
+         chai.request(server)
+         .get('/tutors/'+id)
+         .end((err, res) => {
+             res.should.have.status(400);
+             res.body.error.code.should.be.eql(2);
+             done();
+         });
+     });
+
+    it('Given ID is not a tutor', (done) => {
+       
+       let id = '555555555555551d35198a31';
+
+        chai.request(server)
+        .get('/tutors/'+id)
+        .end((err, res) => {
+            res.should.have.status(404);
+            res.body.error.code.should.be.eql(3);
+            done();
+        });
+    });
+
+    it('Succesful get of a tutor', (done) => {
+    
+        chai.request(server)
+        .get('/tutors/')
+        .end((err, res) => {
+
+            let id = res.body[0]._id;
+            
+            chai.request(server)
+            .get('/tutors/' + id)
+            .end((err2, res2) => {
+                res2.should.have.status(200);
+                done();
+            });
+        });
+     });
+});

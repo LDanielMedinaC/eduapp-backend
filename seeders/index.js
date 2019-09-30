@@ -7,7 +7,8 @@ const seeders = [
     require('./topic-seeder'),
     require('./user-seeder'),
     require('./landingpage-seeder'),
-    require('./tutor-seeder')
+    require('./tutor-seeder'),
+    require('./tutoring-seeder')
 ];
 
 const seedAll = () => {
