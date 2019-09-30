@@ -266,7 +266,6 @@ module.exports = {
         }
 
         // Validate study exists
-        let matchingStudy;
         let studies = tutor.tutorDetails.studies;
         if(!studies)
             return {
@@ -277,19 +276,20 @@ module.exports = {
                 }
             };
 
+        let matchingStudy;
         for(let study of studies) {
-            if(study._id = studyId)
+            if(study._id == studyId)
                 matchingStudy = study;
         }
 
         if(!matchingStudy)
-            return {
+            return res.status(404).send({
                 error: {
                     status: 404,
                     description: 'Requested study was not found for given tutor',
                     code: 30
                 }
-            };
+            });
         
         res.status(200).send(matchingStudy);
     },
