@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const ObjectId = require('mongoose').Types.ObjectId;
 const User = require('../models').User;
 const Topic = require('../models').Topic;
-const ObjectId = require('mongoose').Types.ObjectId;
 
 function validateId(id) {
     if(!id || !ObjectId.isValid(id)) {
