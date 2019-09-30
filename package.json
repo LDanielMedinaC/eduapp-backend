@@ -20,7 +20,7 @@
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "firebase-admin": "^8.4.0",
-    "mocha": "^6.2.0",
+    "mocha": "^6.2.1",
     "mongo-seeding": "^3.3.0",
     "mongoose": "^5.6.11"
   },
@@ -33,8 +33,7 @@
   },
   "scripts": {
     "start:dev": "nodemon --exec babel-node ./bin/www",
-    "seed-user": "node seed/user-seeder.js", 
-    "seed-landingpage": "node seed/landingpage-seeder.js",
-    "test": "mocha"
+    "seed": "node seeders",
+    "test": "./scripts/test.sh"
   }
 }

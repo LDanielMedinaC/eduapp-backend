@@ -1,8 +1,6 @@
 # EduApp backend
 This is the backend for EduApp. We are using the MERNF stack (MongoDB + Express + React + Node + Firebase) for this project.
 
-[TOCM]
-
 ## Start the server
 - Pull and run `npm install`.
 - Create the .env configuration file. [See below](#MongoDB).
@@ -30,7 +28,7 @@ You need to create a .env configuration file to set your database connection set
 to connect to remote MonogoDB...
 ```bash
     DB_LOCATION=remote
-    DB_HOST=YOUR_MONGODB_HOST
+    DB_HOST="YOUR_MONGODB_HOST"
     DB_USER=USER_WITH_ACCESS
     DB_PASS=USER_PASSWORD
 ```
@@ -39,9 +37,23 @@ to connect to remote MonogoDB...
 You will also need to set up the service account details for Firebase authentication. Make sure you include the `service-account.json` file under the `server/config/` directory. You can get this file from the Firebase project.
 
 ## Testing
-Make sure you include all the necessary test for your feature. Once your implementation is ready, verify all tests pass with `npm run test`.
+Make sure you include all the necessary tests for your feature. Once your implementation is ready, verify all tests pass with `npm test`.
+
+This will automatically drop the DB, seed anew and start the server but you will need to have mongo running either locally or remotely.
+
+## Seeding
+Make sure to add all your seeders to `seeders/index.js`. Seeders need to export a `seed` function for script compatibility.
+
+To seed the database, run `npm run seed`.
+
+## Documentation
+- [Data model](https://www.lucidchart.com/invitations/accept/69157a37-825d-47ef-a53c-16308f65e7b3)
+- [Board](https://trello.com/eduappback)
+- Please refer to the team's Drive for further documentation.
 
 ## Tools
 Some of the tools used for this project.
 - [Markdown editor](https://pandao.github.io/editor.md/en.html)
 - [HTTP Status Codes](https://www.restapitutorial.com/httpstatuscodes.html)
+- [URL encoder](https://www.urlencoder.io)
+- [Interactive Git branching](https://learngitbranching.js.org/?NODEMO)

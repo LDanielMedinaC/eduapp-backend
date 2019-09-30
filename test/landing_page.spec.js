@@ -4,7 +4,7 @@ const userModel = require('../server/models').landingPage;
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = require('../app')
+const server = 'localhost:8000';
 const should = chai.should();
 
 chai.use(chaiHttp);
@@ -13,7 +13,7 @@ chai.use(chaiHttp);
 * Test PUT to /landingpage
 */
 describe('PUT /landingpage', () => {
-    it('Should update', () => {
+    it('Should update', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -39,10 +39,11 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('Sections');
             res.body.should.have.property('LogoImgURL');
+            done();
         });
     });
 
-    it('Title too short', () => {
+    it('Title too short', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -69,10 +70,11 @@ describe('PUT /landingpage', () => {
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
             res.body.error.code.should.be.eql(2)
+            done();
         });
     });
 
-    it('Title too LONG', () => {
+    it('Title too LONG', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -98,11 +100,12 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done();
         });
     });
 
-    it('Description too long', () => {
+    it('Description too long', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -128,11 +131,12 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done();
         });
     });
 
-    it('Invalid image url', () => {
+    it('Invalid image url', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -158,11 +162,12 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done();
         });
     });
 
-    it('No sections', () => {
+    it('No sections', (done) => {
         let update_lp = {
             Sections: [],
             LogoImgURL: 'http::algo'
@@ -175,11 +180,12 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done();
         });
     });
 
-    it('Invalid URL', () => {
+    it('Invalid URL', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -205,11 +211,12 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done();
         });
     });
 
-    it('Title too long', () => {
+    it('Title too long', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -235,22 +242,23 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done();
         });
     });
 
-    it('Description too long', () => {
+    it('Description too long', (done) => {
         let update_lp = {
             Sections: [
                 {
                     Title: 'Title',
-                    Description: 'Description',
+                    Description: 'This description is too long for the mongoose validation to pass, so it should be rejected and produce a bad response when sent as a payload in the post request for landingpages. If this landing page section description is validated and saved then something is wrong.',
                     BackgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
-                            Description: '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890'
+                            Description: 'Whatever'
                         }
                     ]
                 }
@@ -265,11 +273,12 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done(); 
         });
     });
 
-    it('Invalid URL', () => {
+    it('Invalid URL', (done) => {
         let update_lp = {
             Sections: [
                 {
@@ -295,7 +304,8 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2)
+            res.body.error.code.should.be.eql(2);
+            done();
         });
     });
 
