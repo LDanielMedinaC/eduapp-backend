@@ -22,10 +22,10 @@ const tutors = [
                 degree: 'Licenciatura',
                 field: 'Aerospace',
                 grade: 100,
-                startDate: new Date('1980-01-01'),
-                endDate: new Date('1984-12-31'),
+                startDate: new Date('1980-01-01').toISOString(),
+                endDate: new Date('1984-12-31').toISOString(),
                 proofDocURL: 'https://storage.provider.com/items/asd123dfg456',
-                validationDate: new Date('2019-01-01')
+                validationDate: new Date('2019-01-01').toISOString()
             }],
             awards: []
         }
