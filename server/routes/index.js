@@ -32,6 +32,7 @@ module.exports = (app) => {
     .get(topicController.list)
     .post(topicController.create);
 
+    //Tutoring routes
     app.route('/tutorings')
     .get(tutoringController.list)    
     .post(tutoringController.create)
