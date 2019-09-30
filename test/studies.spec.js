@@ -16,6 +16,7 @@ describe('STUDIES', () => {
     let noStudiesId;
     let mockStudy;
     let mockStudyId;
+    let postedStudyId;
 
     const validStudy = {
         institution: 'MIT',
@@ -89,23 +90,7 @@ describe('STUDIES', () => {
     
         });
     
-        it('Invalid id', (done) => {
-            let tutorId = 'abc';
-    
-            chai.request(server)
-            .get(`/tutors/${tutorId}/studies`)
-            .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(20);
-    
-                done();
-            });
-        });
-    
-        it('No id', (done) => {
+        it('No tutor id', (done) => {
             let tutorId = '';
     
             chai.request(server)
@@ -116,6 +101,22 @@ describe('STUDIES', () => {
                 res.body.should.have.property('error');
                 res.body.error.should.have.property('code');
                 res.body.error.code.should.be.eql(0);
+    
+                done();
+            });
+        });
+
+        it('Invalid tutor id', (done) => {
+            let tutorId = 'abc';
+    
+            chai.request(server)
+            .get(`/tutors/${tutorId}/studies`)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.an('object');
+                res.body.should.have.property('error');
+                res.body.error.should.have.property('code');
+                res.body.error.code.should.be.eql(20);
     
                 done();
             });
@@ -136,7 +137,8 @@ describe('STUDIES', () => {
     
                 done();
             });
-        })
+        });
+
     });
     
     /*
@@ -144,7 +146,7 @@ describe('STUDIES', () => {
     * GET /tutors/:tutorId/studies/:id
     * Should not be needed since GET /tutors/:tutorId already includes studies
     */
-   describe('GET /tutors/:tutorId/studies/:studyId', () => {
+    describe('GET /tutors/:tutorId/studies/:studyId', () => {
        it('Should get study', (done) => {
            let tutorId = id;
            let studyId = mockStudyId;
@@ -161,28 +163,94 @@ describe('STUDIES', () => {
             });
        });
 
-       it('Invalid study id', (done) => {
-           let studyId = 'asd';
-           let tutorId = id;
+       it('No tutor id', (done) => {
+            let tutorId = '';
+            let studyId = mockStudyId;
+    
+            chai.request(server)
+            .get(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.an('object');
+                res.body.should.have.property('error');
+                res.body.error.should.have.property('code');
+                res.body.error.code.should.be.eql(0);
+    
+                done();
+            });
+        });
 
-           chai.request(server)
-           .get(`/tutors/${tutorId}/studies/${studyId}`)
-           .end((err, res) => {
-               shouldBeError(res, done, 20);
-           });
-       });
+        it('Invalid tutor id', (done) => {
+            let tutorId = 'abc';
+            let studyId = mockStudyId;
+    
+            chai.request(server)
+            .get(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.an('object');
+                res.body.should.have.property('error');
+                res.body.error.should.have.property('code');
+                res.body.error.code.should.be.eql(20);
+    
+                done();
+            });
+        });
+    
+        it('Tutor not found', (done) => {
+            // Id is a GUID, virtually impossible to generate twice
+            let tutorId = '5d8d95289f4e1b152e7f84ed';
+            let studyId = mockStudyId;
+    
+            chai.request(server)
+            .get(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                res.should.have.status(404);
+                res.body.should.be.an('object');
+                res.body.should.have.property('error');
+                res.body.error.should.have.property('code');
+                res.body.error.code.should.be.eql(21);
+    
+                done();
+            });
+        });
 
-       it('Non-existent study id', (done) => {
-           let studyId = '56cb91bdc3464f14678934c9';
-           let tutorId = id;
+        // Should get all studies
+        it('No study id', (done) => {
+            let studyId = '';
+            let tutorId = id;
+ 
+            chai.request(server)
+            .get(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.an('array').that.is.not.empty;
+                done();
+            });
+        });
 
-           chai.request(server)
-           .get(`/tutors/${tutorId}/studies/${studyId}`)
-           .end((err, res) => {
-               shouldBeNotFound(res, done, 30);
-           });
-       });
-   });
+        it('Invalid study id', (done) => {
+            let studyId = 'asd';
+            let tutorId = id;
+ 
+            chai.request(server)
+            .get(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, 20);
+            });
+        });
+ 
+        it('Study not found', (done) => {
+            let studyId = '56cb91bdc3464f14678934c9';
+            let tutorId = id;
+ 
+            chai.request(server)
+            .get(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                shouldBeNotFound(res, done, 30);
+            });
+        });
+    });
     
     /*
     * Test create study
@@ -206,11 +274,68 @@ describe('STUDIES', () => {
                 res.body.tutorDetails.studies.should.be.an('array').that.is.not.empty;
 
                 let postedStudy = res.body.tutorDetails.studies[0];
+                postedStudyId = postedStudy._id;
                 expect(postedStudy).to.include(study);
 
                 done();
             });
             
+        });
+
+        it('No tutor id', (done) => {
+            let tutorId = '';
+            let study = { ...validStudy };
+    
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.an('object');
+                res.body.should.have.property('error');
+                res.body.error.should.have.property('code');
+                res.body.error.code.should.be.eql(0);
+    
+                done();
+            });
+        });
+
+        it('Invalid tutor id', (done) => {
+            let tutorId = 'abc';
+            let study = { ...validStudy };
+    
+            console.log(`/tutors/${tutorId}/studies`);
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.an('object');
+                res.body.should.have.property('error');
+                res.body.error.should.have.property('code');
+                res.body.error.code.should.be.eql(20);
+    
+                done();
+            });
+        });
+    
+        it('Tutor not found', (done) => {
+            // Id is a GUID, virtually impossible to generate twice
+            let tutorId = '5d8d95289f4e1b152e7f84ed';
+            let study = { ...validStudy };
+    
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                res.should.have.status(404);
+                res.body.should.be.an('object');
+                res.body.should.have.property('error');
+                res.body.error.should.have.property('code');
+                res.body.error.code.should.be.eql(21);
+    
+                done();
+            });
         });
 
         it('No study', (done) => {
@@ -458,5 +583,89 @@ describe('STUDIES', () => {
     * DELETE /tutors/:tutorId/studies/:id
     * Should not be needed since PUT /tutors/:id can update studies
     */
+    describe('DELETE /tutors/:tutorId/studies/:id', () => {
+        it('Should delete study', (done) => {
+            let tutorId = noStudiesId;
+            let route = `/tutors/${tutorId}/studies/${postedStudyId}`;
+            console.log(route);
+
+            chai.request(server)
+            .delete(route)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.an('object');
+                res.body.should.have.property('tutorDetails');
+                res.body.tutorDetails.should.have.property('studies');
+                res.body.tutorDetails.studies.should.be.an('array').that.is.empty;
+
+                done();
+            });
+        });
+
+        it('No tutor id', (done) => {
+            let tutorId = '';
+
+            console.log(`/tutors/${tutorId}/studies/${postedStudyId}`);
+            chai.request(server)
+            .delete(`/tutors/${tutorId}/studies/${postedStudyId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, 0);
+            });
+        });
+
+        it('Invalid tutor id', (done) => {
+            let tutorId = 'abc';
+
+            chai.request(server)
+            .delete(`/tutors/${tutorId}/studies/${postedStudyId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, 20);
+            });
+        });
+
+        it('Tutor not found', (done) => {
+            let tutorId = '56cb91bdc3464f14678934ca';
+
+            chai.request(server)
+            .delete(`/tutors/${tutorId}/studies/${postedStudyId}`)
+            .end((err, res) => {
+                shouldBeNotFound(res, done, 21);
+            });
+        });
+
+        it('No study id', (done) => {
+            let tutorId = id;
+            let studyId = '';
+
+            chai.request(server)
+            .delete(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, 0);
+            });
+        });
+
+        it('Invalid study id', (done) => {
+            let tutorId = id;
+            let studyId = 'abc';
+
+            chai.request(server)
+            .delete(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, 20);
+            });
+        });
+
+        it('Study not found', (done) => {
+            let tutorId = id;
+            let studyId = '56cb91bdc3464f14678934c9';
+
+            console.log(`/tutors/${tutorId}/studies/${studyId}`);
+            chai.request(server)
+            .delete(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                shouldBeNotFound(res, done, 30);
+            });
+        });
+    });
     
 });

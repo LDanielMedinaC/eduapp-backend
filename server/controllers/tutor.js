@@ -319,7 +319,7 @@ module.exports = {
         let idError = validateId(tutorId);
 
         if(idError)
-            return res.status(idError.status).send(idError);
+            return res.status(idError.status).send({ error: idError });
 
         // Validate tutor exists
         let tutor = await User.findById(tutorId).exec();
@@ -346,6 +346,58 @@ module.exports = {
         try {
             await tutor.save();
             res.status(201).send(tutor);
+        } catch(err) {
+            res.status(500).send({
+                error: {
+                    status: 500,
+                    description: `Database error: ${err.errmsg || err}`,
+                    code: 0
+                }
+            });
+        }
+    },
+    async deleteStudy(req, res) {
+        let tutorId = req.params.tutorId;
+        let studyId = req.params.studyId;
+        let tutorIdError = validateId(tutorId);
+        let studyIdError = validateId(studyId);
+
+        let idError = tutorIdError ? tutorIdError : studyIdError ? studyIdError : null;
+        if(idError)
+            return res.status(idError.status).send({ error: idError });
+
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            return res.status(404).send({
+                error: {
+                    status: 404,
+                    description: "No tutor with given ID was found",
+                    code: 21
+                }
+            });
+        }
+
+        // Validate study exists
+        let studies = tutor.tutorDetails.studies;
+        if(!studies.filter(study => study._id == studyId).length)
+            return res.status(404).send({
+                error: {
+                    status: 404,
+                    description: 'Requested study was not found for given tutor',
+                    code: 30
+                }
+            });
+
+        studies = studies.filter((study) => {
+            return study._id != studyId;
+        });
+
+        tutor.tutorDetails.studies = studies;
+        tutor.markModified('tutorDetails.studies');
+        try {
+            await tutor.save();
+            res.status(200).send(tutor);
         } catch(err) {
             res.status(500).send({
                 error: {
