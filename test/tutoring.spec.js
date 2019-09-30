@@ -11,7 +11,7 @@ chai.use(chaiHttp);
 
 
 
-describe('POST /topics', () => {
+describe('POST /tutorings', () => {
     let tutoring = {
         date: "10/11/2019",
         lat: 19.019635,
@@ -28,9 +28,9 @@ describe('POST /topics', () => {
     };
     let attributeNames = ['date', 'lat','long','locationType', 'locationName', 'topicID', 'tutorID', 'userID','startTime', 'endTime', 'notes', 'paymentMethod']; 
     let attributesValue = [];
-    it('shouldCreate a topic', () => {
+    it('shouldCreate a tutoring', () => {
         chai.request(server)
-        .post('/topics')
+        .post('/tutorings')
         .send(tutoring)
         .end((err, res) => {
             res.should.have.status(200);
@@ -58,7 +58,7 @@ describe('POST /topics', () => {
         let tutoringAux = tutoring;
         delete tutoringAux.date; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -74,7 +74,7 @@ describe('POST /topics', () => {
         let tutoringAux = tutoring;
         tutoringAux.date = "19/20/4"; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -86,11 +86,11 @@ describe('POST /topics', () => {
         });
     });
 
-    it('date provided is in past.', (done) => {
+    it('date provided is in the past.', (done) => {
         let tutoringAux = tutoring;
         tutoringAux.date = '10/3/1999'; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -105,7 +105,7 @@ describe('POST /topics', () => {
         let tutoringAux = tutoring;
         delete tutoringAux.startTime; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -120,7 +120,7 @@ describe('POST /topics', () => {
         let tutoringAux = tutoring;
         tutoringAux.startTime = '123:434'; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -136,7 +136,7 @@ describe('POST /topics', () => {
         tutoringAux.startTime = '19:00'; 
         tutoringAux.endTime = '10:00'; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -151,7 +151,7 @@ describe('POST /topics', () => {
         let tutoringAux = tutoring;
         delete tutoringAux.locationName; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -162,11 +162,11 @@ describe('POST /topics', () => {
             done();
         });
     });
-    it('Invalid coordinates..', (done) => {
+    it('Invalid coordinates.', (done) => {
         let tutoringAux = tutoring;
         tutoringAux.lat = 300.0; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -181,7 +181,7 @@ describe('POST /topics', () => {
         let tutoringAux = tutoring;
         tutoringAux.locationType = "Somewhere else"; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -192,11 +192,11 @@ describe('POST /topics', () => {
             done();
         });
     });
-    it('Location name should have more than 3 and les than 51 chars.', (done) => {
+    it('Location name should have more than 3 and less than 51 chars.', (done) => {
         let tutoringAux = tutoring;
         tutoringAux.locationName = "wy"; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -211,7 +211,7 @@ describe('POST /topics', () => {
         let tutoringAux = tutoring;
         delete tutoringAux.notes; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -222,11 +222,11 @@ describe('POST /topics', () => {
             done();
         });
     });
-    it('Location name should have more than 3 and les than 51 chars.', (done) => {
+    it('Location name should have more than 3 and less than 51 chars.', (done) => {
         let tutoringAux = tutoring;
         tutoringAux.notes = ""; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -241,7 +241,7 @@ describe('POST /topics', () => {
         let tutoringAux = tutoring;
         delete tutoringAux.paymentMethod; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -256,7 +256,7 @@ describe('POST /topics', () => {
         let tutoringAux = tutoring;
         tutoringAux.paymentMethod = "Cupones de descuento"; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -271,7 +271,7 @@ describe('POST /topics', () => {
         let tutoringAux = tutoring;
         delete tutoringAux.topicID; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -286,7 +286,7 @@ describe('POST /topics', () => {
         let tutoringAux = tutoring;
         delete tutoringAux.tutorID; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
@@ -301,7 +301,7 @@ describe('POST /topics', () => {
         let tutoringAux = tutoring;
         delete tutoringAux.userID; 
         chai.request(server)
-          .post('/topics')
+          .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
             res.should.have.status(400);
