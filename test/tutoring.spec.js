@@ -60,8 +60,8 @@ describe('POST /tutorings', () => {
             res.body.topicID.should.be.eql('5d8d49a56ee837016abcd2a7'); 
             res.body.tutorID.should.be.eql('5d8d49a96ee837016abcd2b1'); 
             res.body.userID.should.be.eql('5d8d49a56ee837016abcd2aa'); 
-            res.body.startTime.should.be.eql('2019-11-10T18:00:00.000Z'); 
-            res.body.endTime.should.be.eql('2019-11-11T05:00:00.000Z'); 
+            res.body.startTime.should.be.eql('2019-11-10T12:00:00.000Z'); 
+            res.body.endTime.should.be.eql('2019-11-10T23:00:00.000Z'); 
             res.body.notes.should.be.eql('It\'s not the best student'); 
             res.body.paymentMethod.should.be.eql('cash'); 
             done();
