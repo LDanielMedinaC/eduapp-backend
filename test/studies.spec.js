@@ -50,8 +50,8 @@ describe('STUDIES', () => {
             id = tutor._id;
             noStudiesId = noStudiesTutor._id;
             mockStudy = tutor.tutorDetails.studies[0];
-            delete mockStudy._id;
             mockStudyId = mockStudy._id;
+            delete mockStudy._id;
 
             done();
         })
@@ -140,18 +140,30 @@ describe('STUDIES', () => {
            let tutorId = id;
            let studyId = mockStudyId;
 
-           chai.request(server)
-           .get(`/tutors/${tutorId}/studies/${studyId}`)
-           .end((err, res) => {
+            console.log(`/tutors/${tutorId}/studies/${studyId}`);
+            chai.request(server)
+            .get(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.an('object');
                res.body.should.contain(mockStudy);
 
                done();
-           });
+            });
        });
 
        // Invalid study Id
+       it('Invalid study id', (done) => {
+           let studyId = 'asd';
+           let tutorId = id;
+
+           chai.request(server)
+           .get(`/tutors/${tutorId}/studies/${studyId}`)
+           .end((err, res) => {
+               shouldBeError(res, done, 20);
+           });
+       });
+
        // Study not found
    });
     
