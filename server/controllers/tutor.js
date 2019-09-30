@@ -409,6 +409,198 @@ module.exports = {
             });
         }
     },
+    async updateStudy(req, res) {
+        let tutorId = req.params.tutorId;
+        let studyId = req.params.studyId;
+        let tutorIdError = validateId(tutorId);
+        let studyIdError = validateId(studyId);
+        let payloadStudy = req.body;
+
+        let idError = tutorIdError ? tutorIdError : studyIdError ? studyIdError : null;
+        if(idError)
+            return res.status(idError.status).send({ error: idError });
+
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            return res.status(404).send({
+                error: {
+                    status: 404,
+                    description: "No tutor with given ID was found",
+                    code: 21
+                }
+            });
+        }
+
+        // Validate study exists
+        let studies = tutor.tutorDetails.studies;
+        let matchingStudies = studies.filter(study => study._id == studyId);
+        if(!matchingStudies.length)
+            return res.status(404).send({
+                error: {
+                    status: 404,
+                    description: 'Requested study was not found for given tutor',
+                    code: 30
+                }
+            });
+
+        // validate payload
+        // Should have study
+        if(Object.keys(payloadStudy).length === 0) {
+            return res.status(400).send({
+                error: {
+                    status: 400,
+                    description: 'No study provided',
+                    code: 25
+                }
+            });
+        }
+
+        if(payloadStudy.institution) {
+            // Institution min length 2 characters
+            if(payloadStudy.institution.length < 2) {
+                return res.status(400).send({
+                    error: {
+                        status: 400,
+                        description: 'Institution should be at least 2 characters long',
+                        code: 2
+                    }
+                });
+            }
+        }
+
+        if(payloadStudy.degree) {
+            // Degree min length 2 characters
+            if(payloadStudy.degree.length < 2) {
+                return res.status(400).send({
+                    error: {
+                        status: 400,
+                        description: 'Degree min length is 2 characters',
+                        code: 4
+                    }
+                });
+            }
+        }
+
+        if(payloadStudy.field) {
+            // Field min length 2
+            if(payloadStudy.field.length < 2) {
+                return res.status(400).send({
+                    error: {
+                        status: 400,
+                        description: 'Field min length is 2',
+                        code: 6
+                    }
+                });
+            }
+        }
+
+        if(payloadStudy.grade) {
+            // Grade is an integer
+            if(!Number.isInteger(payloadStudy.grade)) {
+                return res.status(400).send({
+                    error: {
+                        status: 400,
+                        description: 'Grade must be an integer',
+                        code: 8
+                    }
+                });
+            }
+
+            // Grade length is 1 or 2
+            if((payloadStudy.grade + '').length < 1 || (payloadStudy.grade + '').length > 2) {
+                return res.status(400).send({
+                    error: {
+                        status: 400,
+                        description: 'Grade should be 1 or 2 digits long',
+                        code: 9
+                    }
+                });
+            }
+        }
+
+        if(payloadStudy.startDate) {
+            // startDate should be valid date
+            if(!Date.parse(payloadStudy.startDate)) {
+                return res.status(400).send({
+                    error: {
+                        status: 400,
+                        description: 'startDate is not valid',
+                        code: 11
+                    }
+                });
+            }
+        }
+
+        if(payloadStudy.endDate) {
+            // endDate should be valid date
+            if(!Date.parse(payloadStudy.endDate)) {
+                return res.status(400).send({
+                    error: {
+                        status: 400,
+                        description: 'endDate is not valid',
+                        code: 13
+                    }
+                });
+            }
+        }
+
+        if(payloadStudy.startDate && payloadStudy.endDate) {
+            // endDate should be after startDate
+            let startDate = Date.parse(payloadStudy.startDate);
+            let endDate = Date.parse(payloadStudy.endDate);
+            if(startDate >= endDate) {
+                return res.status(400).send({
+                    error: {
+                        status: 400,
+                        description: 'endDate should be after startDate',
+                        code: 14
+                    }
+                });
+            }
+        }
+
+        if(payloadStudy.validationDate) {
+            // validationDate should be valid date
+            if(!Date.parse(payloadStudy.validationDate)) {
+                return res.status(400).send({
+                    error: {
+                        status: 400,
+                        description: 'validationDate is not valid',
+                        code: 16
+                    }
+                });
+            }
+        }
+
+        studies = studies.filter((study) => {
+            return study._id != studyId;
+        });
+
+        let study = matchingStudies[0];
+        for(prop in study) {
+            if(Object.prototype.hasOwnProperty.call(study, prop)) {
+                study.prop = payloadStudy.prop ? payloadStudy.prop : study.prop;
+            }
+        }
+
+        studies.push(study);
+
+        tutor.tutorDetails.studies = studies;
+        tutor.markModified('tutorDetails.studies');
+        try {
+            await tutor.save();
+            res.status(200).send(study);
+        } catch(err) {
+            res.status(500).send({
+                error: {
+                    status: 500,
+                    description: `Database error: ${err.errmsg || err}`,
+                    code: 0
+                }
+            });
+        }
+    },
     async get(req, res) {
         let topic = req.query.topic;
 
