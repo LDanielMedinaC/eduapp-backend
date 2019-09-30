@@ -15,6 +15,26 @@ describe('STUDIES', () => {
     let id;
     let noStudiesId;
 
+    const validStudy = {
+        institution: 'MIT',
+        degree: 'Master',
+        field: 'Aerospace Engineering',
+        grade: 90,
+        startDate: new Date('2011-07-14').toISOString(),
+        endDate: new Date('2013-12-06').toISOString(),
+        proofDocURL: 'https://storage.provider.com/items/asd78we231',
+        validationDate: new Date('2019-06-12').toISOString()
+    };
+
+    const shouldBeError = (res, done, code) => {
+        res.should.have.status(400);
+        res.body.should.be.an('object');
+        res.body.error.should.have.property('code');
+        res.body.error.code.should.be.eql(code);
+
+        done();
+    };
+
     before(done => {
         db.connectDB()
         .then(async () => {
@@ -119,16 +139,7 @@ describe('STUDIES', () => {
     describe('POST /tutors/:id/studies', () => {
         it('Should create study', (done) => {
             let tutorId = noStudiesId;
-            let study = {
-                institution: 'MIT',
-                degree: 'Master',
-                field: 'Aerospace',
-                grade: 90,
-                startDate: new Date('2011-07-14').toISOString(),
-                endDate: new Date('2013-12-06').toISOString(),
-                proofDocURL: 'https://storage.provider.com/items/asd78we231',
-                validationDate: new Date('2019-06-12').toISOString()
-            };
+            let study = { ...validStudy };
 
             chai.request(server)
             .post(`/tutors/${tutorId}/studies`)
@@ -150,245 +161,235 @@ describe('STUDIES', () => {
         });
 
         it('No study', (done) => {
-            let tutorId = noStudiesId;
-            let study = {
-                // No institution
-                degree: 'Master',
-                field: 'Aerospace',
-                grade: 90,
-                startDate: new Date('2011-07-14').toISOString(),
-                endDate: new Date('2013-12-06').toISOString(),
-                proofDocURL: 'https://storage.provider.com/items/asd78we231',
-                validationDate: new Date('2019-06-12').toISOString()
-            };
+            let tutorId = id;
 
             chai.request(server)
             .post(`/tutors/${tutorId}/studies`)
-            .send(study)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(1);
-
-                done();
+                shouldBeError(res, done, 25);
             });
         });
 
-        it('Study too short', (done) => {
-            let tutorId = id;
-            let study = {
-                institution: 'A',
-                degree: 'Master',
-                field: 'Aerospace',
-                grade: 90,
-                startDate: new Date('2011-07-14').toISOString(),
-                endDate: new Date('2013-12-06').toISOString(),
-                proofDocURL: 'https://storage.provider.com/items/asd78we231',
-                validationDate: new Date('2019-06-12').toISOString()
-            };
+        it('No institution', (done) => {
+            let tutorId = noStudiesId;
+            let study = { ...validStudy }
 
+            delete study.institution;
             chai.request(server)
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(2);
-                
-                done();
+                shouldBeError(res, done, 1);
+            });
+        });
+
+        it('Institution too short', (done) => {
+            let tutorId = id;
+            let study = { ...validStudy };
+
+            study.institution = 'A';
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, 2);
             });
         });
 
         it('No degree', (done) => {
             let tutorId = noStudiesId;
-            let study = {
-                institution: 'Universidad Mundial',
-                // No degree
-                field: 'Aerospace',
-                grade: 90,
-                startDate: new Date('2011-07-14').toISOString(),
-                endDate: new Date('2013-12-06').toISOString(),
-                proofDocURL: 'https://storage.provider.com/items/asd78we231',
-                validationDate: new Date('2019-06-12').toISOString()
-            };
+            let study = { ...validStudy };
 
+            delete study.degree;
             chai.request(server)
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(3);
-
-                done();
+                shouldBeError(res, done, 3);
             });
         });
 
         it('Degree too short', (done) => {
             let tutorId = id;
-            let study = {
-                institution: 'MIT',
-                degree: 'A',
-                field: 'Aerospace',
-                grade: 90,
-                startDate: new Date('2011-07-14').toISOString(),
-                endDate: new Date('2013-12-06').toISOString(),
-                proofDocURL: 'https://storage.provider.com/items/asd78we231',
-                validationDate: new Date('2019-06-12').toISOString()
-            };
+            let study = { ...validStudy };
 
+            study.degree = 'A';
             chai.request(server)
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(4);
-                
-                done();
+                shouldBeError(res, done, 4);
             });
         });
 
         it('No field', (done) => {
             let tutorId = noStudiesId;
-            let study = {
-                institution: 'Universidad Mundial',
-                degree: 'Master',
-                // No field
-                grade: 90,
-                startDate: new Date('2011-07-14').toISOString(),
-                endDate: new Date('2013-12-06').toISOString(),
-                proofDocURL: 'https://storage.provider.com/items/asd78we231',
-                validationDate: new Date('2019-06-12').toISOString()
-            };
+            let study = { ...validStudy };
 
+            delete study.field;
             chai.request(server)
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(5);
-
-                done();
+                shouldBeError(res, done, 5);
             });
         });
 
         it('Field too short', (done) => {
             let tutorId = id;
-            let study = {
-                institution: 'MIT',
-                degree: 'Master',
-                field: 'A',
-                grade: 90,
-                startDate: new Date('2011-07-14').toISOString(),
-                endDate: new Date('2013-12-06').toISOString(),
-                proofDocURL: 'https://storage.provider.com/items/asd78we231',
-                validationDate: new Date('2019-06-12').toISOString()
-            };
+            let study = { ...validStudy };
 
+            study.field = 'A';
             chai.request(server)
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(6);
-                
-                done();
+                shouldBeError(res, done, 6);
             });
         });
 
         it('No grade', (done) => {
             let tutorId = id;
-            let study = {
-                institution: 'MIT',
-                degree: 'Master',
-                field: 'Aerospace Engineering',
-                // No grade
-                startDate: new Date('2011-07-14').toISOString(),
-                endDate: new Date('2013-12-06').toISOString(),
-                proofDocURL: 'https://storage.provider.com/items/asd78we231',
-                validationDate: new Date('2019-06-12').toISOString()
-            };
+            let study = { ...validStudy };
 
+            delete study.grade;
             chai.request(server)
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(7);
-                
-                done();
+                shouldBeError(res, done, 7);
             });
         });
 
         it('Grade is not an integer', (done) => {
             let tutorId = id;
-            let study = {
-                institution: 'MIT',
-                degree: 'Master',
-                field: 'Aerospace Engineering',
-                grade: '.5',
-                startDate: new Date('2011-07-14').toISOString(),
-                endDate: new Date('2013-12-06').toISOString(),
-                proofDocURL: 'https://storage.provider.com/items/asd78we231',
-                validationDate: new Date('2019-06-12').toISOString()
-            };
+            let study = { ...validStudy };
 
+            study.grade = .5;
             chai.request(server)
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(8);
-                
-                done();
+                shouldBeError(res, done, 8);
             });
         });
 
         it('Grade is longer than 2 digits', (done) => {
             let tutorId = id;
-            let study = {
-                institution: 'MIT',
-                degree: 'Master',
-                field: 'Aerospace Engineering',
-                grade: 100,
-                startDate: new Date('2011-07-14').toISOString(),
-                endDate: new Date('2013-12-06').toISOString(),
-                proofDocURL: 'https://storage.provider.com/items/asd78we231',
-                validationDate: new Date('2019-06-12').toISOString()
-            };
+            let study = { ...validStudy };
 
+            study.grade = 100;
             chai.request(server)
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(9);
-                
-                done();
+                shouldBeError(res, done, 9);
+            });
+        });
+
+        it('No startDate', (done) => {
+            let tutorId = id;
+            let study = { ...validStudy };
+
+            delete study.startDate;
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, 10);
+            });
+        });
+
+        it('Invalid startDate', (done) => {
+            let tutorId = id;
+            let study = { ...validStudy };
+
+            study.startDate = 'asd';
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, 11);
+            });
+        });
+
+        it('No endDate', (done) => {
+            let tutorId = id;
+            let study = { ...validStudy };
+
+            delete study.endDate;
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, 12);
+            });
+        });
+
+        it('Invalid endDate', (done) => {
+            let tutorId = id;
+            let study = { ...validStudy };
+
+            study.endDate = 'asd';
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, 13);
+            });
+        });
+
+        it('startDate equals endDate', (done) => {
+            let tutorId = id;
+            let study = { ...validStudy };
+
+            study.startDate = study.endDate;
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, 14);
+            });
+        });
+
+        it('startDate is after endDate', (done) => {
+            let tutorId = id;
+            let study = { ...validStudy };
+
+            let tempDate = study.startDate;
+            study.startDate = study.endDate;
+            study.endDate = tempDate;
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, 14);
+            });
+        });
+
+        it('No validationDate', (done) => {
+            let tutorId = id;
+            let study = { ...validStudy };
+
+            delete study.validationDate;
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, 15);
+            });
+        });
+
+        it('Invalid validationDate', (done) => {
+            let tutorId = id;
+            let study = { ...validStudy };
+
+            study.validationDate = 'asd';
+            chai.request(server)
+            .post(`/tutors/${tutorId}/studies`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, 16);
             });
         });
     });

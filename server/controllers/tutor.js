@@ -14,6 +14,17 @@ function validateId(id) {
 }
 
 function validateStudy(study) {
+    // Should have study
+    if(Object.keys(study).length === 0) {
+        return {
+            error: {
+                status: 400,
+                description: 'No study provided',
+                code: 25
+            }
+        };
+    }
+
     // Institution is required
     if(!study.institution) {
         return {
@@ -109,6 +120,85 @@ function validateStudy(study) {
                 status: 400,
                 description: 'Grade should be 1 or 2 digits long',
                 code: 9
+            }
+        };
+    }
+
+    // startDate is required
+    if(!study.startDate) {
+        return {
+            error: {
+                status: 400,
+                description: 'startDate is required',
+                code: 10
+            }
+        };
+    }
+
+    // startDate should be valid date
+    if(!Date.parse(study.startDate)) {
+        return {
+            error: {
+                status: 400,
+                description: 'startDate is not valid',
+                code: 11
+            }
+        };
+    }
+
+    // endDate is required
+    if(!study.endDate) {
+        return {
+            error: {
+                status: 400,
+                description: 'endDate is required',
+                code: 12
+            }
+        };
+    }
+
+    // endDate should be valid date
+    if(!Date.parse(study.endDate)) {
+        return {
+            error: {
+                status: 400,
+                description: 'endDate is not valid',
+                code: 13
+            }
+        };
+    }
+
+    // endDate should be after startDate
+    let startDate = Date.parse(study.startDate);
+    let endDate = Date.parse(study.endDate);
+    if(startDate >= endDate) {
+        return {
+            error: {
+                status: 400,
+                description: 'endDate should be after startDate',
+                code: 14
+            }
+        };
+    }
+
+    // validationDate is required
+    if(!study.validationDate) {
+        return {
+            error: {
+                status: 400,
+                description: 'validationDate is required',
+                code: 15
+            }
+        };
+    }
+
+    // validationDate should be valid date
+    if(!Date.parse(study.validationDate)) {
+        return {
+            error: {
+                status: 400,
+                description: 'validationDate is not valid',
+                code: 16
             }
         };
     }
