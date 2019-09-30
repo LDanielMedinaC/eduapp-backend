@@ -32,7 +32,8 @@ module.exports = (app) => {
     .post(tutorController.addStudy);
 
     app.route('/tutors/:tutorId/studies/:studyId')
-    .get(tutorController.getStudy);
+    .get(tutorController.getStudy)
+    .delete(tutorController.deleteStudy);
 
     // Topics routes
     app.route('/topics')
