@@ -49,6 +49,9 @@ To seed the database, run `npm run seed`.
 ## Documentation
 - [Data model](https://www.lucidchart.com/invitations/accept/69157a37-825d-47ef-a53c-16308f65e7b3)
 - [Board](https://trello.com/eduappback)
+- [Endpoints](https://drive.google.com/open?id=1oAfR1pvqLKjzzp3_yK_BPk635BDDxN6EUFwXg24uPBE)
+- [Architecture](https://drive.google.com/open?id=189EpjWoiuIQwrGSHcb7gFEUf4_Cjabd3)
+- [Landingpage test suit](https://drive.google.com/open?id=1Qv7-VNYZii5T3eXfvRS6P63TOAzUSd6A)
 - Please refer to the team's Drive for further documentation.
 
 ## Tools
