@@ -4,6 +4,7 @@ const tutorController = require('../controllers').tutor;
 const topicController = require('../controllers').topic;
 const authFirebase = require('../middleware/auth').authFirebase;
 const tutoringController = require('../controllers').tutoring;
+const validateIds = require('../middleware/validations/ids-validation');
 
 module.exports = (app) => {
     // Test route
@@ -24,10 +25,10 @@ module.exports = (app) => {
     app.route('/tutors')
     .get(tutorController.get);
 
-    app.route('/tutors/:id')
+    app.route('/tutors/:tutorId')
     .get(tutorController.getDetails);
 
-    app.route('/tutors/:id/studies')
+    app.route('/tutors/:tutorId/studies')
     .get(tutorController.getStudies)
     .post(tutorController.addStudy);
 
@@ -49,7 +50,7 @@ module.exports = (app) => {
     app.all('*', (req, res) => res.status(400).send({
         error: {
             status: 400,
-            description: 'Bad request. Not matching route.',
+            description: 'Bad request. No matching route.',
             code: 0
         }
     }));

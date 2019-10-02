@@ -1,5 +1,7 @@
 const admin = require('firebase-admin');
 const serviceAccount = require('../config/service-account.json');
+const ErrorFactory = require('../resources').ErrorFactory;
+const Errors = require('../resources').Errors
 
 // Initialize Firebase admin
 admin.initializeApp({
@@ -9,11 +11,7 @@ admin.initializeApp({
 const authFirebase = (req, res, next) => {
     const token = req.headers.authorization;
     const authError = {
-        error: {
-            status: 401,
-            description: "Not authorized.",
-            code: 0
-        }
+        error: ErrorFactory.buildError(Errors.NOT_AUTHORIZED, null, null)
     };
 
     // Verify a token was provided

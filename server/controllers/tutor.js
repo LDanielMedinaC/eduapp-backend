@@ -206,8 +206,9 @@ function validateStudy(study) {
 
 module.exports = {
     async getDetails(req, res){
+        let tutorId = req.params.tutorId;
 
-        if (!req.params.id || !ObjectId.isValid(req.params.id)) {
+        if (!tutorId || !ObjectId.isValid(tutorId)) {
             return res.status(400).send({
                 error: {
                     status: 400,
@@ -217,7 +218,7 @@ module.exports = {
             });
         }
 
-        User.findById(req.params.id)
+        User.findById(tutorId)
         .then((user) => {
             if (!user)
             {
@@ -294,7 +295,7 @@ module.exports = {
         res.status(200).send(matchingStudy);
     },
     async getStudies(req, res) {
-        let tutorId = req.params.id;
+        let tutorId = req.params.tutorId;
         let idError = validateId(tutorId);
 
         if(idError)
@@ -315,7 +316,7 @@ module.exports = {
         res.status(200).send(tutor.tutorDetails.studies);
     },
     async addStudy(req, res) {
-        let tutorId = req.params.id;
+        let tutorId = req.params.tutorId;
         let idError = validateId(tutorId);
 
         if(idError)
