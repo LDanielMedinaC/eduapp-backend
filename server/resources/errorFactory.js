@@ -14,7 +14,8 @@ const Errors = {
     NUMBER_UPPER_BOUND: 12,
     INVALID_NUMBER: 13,
     INVALID_FIELD: 14,
-    INVALID_ENCODING: 15
+    INVALID_ENCODING: 15,
+    NOT_AUTHORIZED: 16
 }
 
 const buildError = (error, arg1, arg2) =>{
@@ -90,6 +91,11 @@ const buildError = (error, arg1, arg2) =>{
             errorObj.description = `Field ${arg1} should use ${arg2}`;
             break;
         }
+        case Errors.NOT_AUTHORIZED:{
+            errorObj.description = `Not authorized`;
+            errorObj.status = 401;
+            break;
+        }
         default:{
             errorObj.code = -1;
             errorObj.description = 'Unknown error';
@@ -100,5 +106,6 @@ const buildError = (error, arg1, arg2) =>{
 }
 
 module.exports = {
-
+    Errors,
+    buildError
 }
