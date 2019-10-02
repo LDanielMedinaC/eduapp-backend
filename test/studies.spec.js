@@ -1,14 +1,29 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = 'localhost:8000';
 const should = chai.should();
 const expect = chai.expect;
+
+const server = 'localhost:8000';
+const db = require('../server/models');
 const User = require('../server/models').User;
 const tutors = require('../mock/tutors');
-const db = require('../server/models');
+
 const Errors = require('../server/resources').Errors;
+const shouldBeError = require('./helpers').shouldBeError;
+const shouldBeNotFound = require('./helpers').shouldBeNotFound;
 
 chai.use(chaiHttp);
+
+const validStudy = {
+    institution: 'MIT',
+    degree: 'Master',
+    field: 'Aerospace Engineering',
+    grade: 90,
+    startDate: new Date('2011-07-14').toISOString(),
+    endDate: new Date('2013-12-06').toISOString(),
+    proofDocURL: 'https://storage.provider.com/items/asd78we231',
+    validationDate: new Date('2019-06-12').toISOString()
+};
 
 describe('STUDIES', () => {
     let tutor;
@@ -18,36 +33,6 @@ describe('STUDIES', () => {
     let mockStudy;
     let mockStudyId;
     let postedStudyId;
-
-    const validStudy = {
-        institution: 'MIT',
-        degree: 'Master',
-        field: 'Aerospace Engineering',
-        grade: 90,
-        startDate: new Date('2011-07-14').toISOString(),
-        endDate: new Date('2013-12-06').toISOString(),
-        proofDocURL: 'https://storage.provider.com/items/asd78we231',
-        validationDate: new Date('2019-06-12').toISOString()
-    };
-
-    const shouldBeError = (res, done, code) => {
-        res.should.have.status(400);
-        res.body.should.be.an('object');
-        res.body.should.have.property('error');
-        res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(code);
-
-        done();
-    };
-
-    const shouldBeNotFound = (res, done) => {
-        res.should.have.status(404);
-        res.body.should.be.an('object');
-        res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(Errors.OBJECT_NOT_FOUND);
-
-        done();
-    };
 
     before(done => {
         db.connectDB()
