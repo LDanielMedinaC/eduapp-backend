@@ -40,11 +40,11 @@ describe('STUDIES', () => {
         done();
     };
 
-    const shouldBeNotFound = (res, done, code) => {
+    const shouldBeNotFound = (res, done) => {
         res.should.have.status(404);
         res.body.should.be.an('object');
         res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(code);
+        res.body.error.code.should.be.eql(Errors.OBJECT_NOT_FOUND);
 
         done();
     };
@@ -98,13 +98,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies`)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(0);
-    
-                done();
+                shouldBeError(res, done, 0);
             });
         });
 
@@ -125,13 +119,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies`)
             .end((err, res) => {
-                res.should.have.status(404);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(21);
-    
-                done();
+                shouldBeNotFound(res, done);
             });
         });
 
@@ -166,13 +154,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(0);
-    
-                done();
+                shouldBeError(res, done, 0);
             });
         });
 
@@ -195,13 +177,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                res.should.have.status(404);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(21);
-    
-                done();
+                shouldBeNotFound(res, done);
             });
         });
 
@@ -237,7 +213,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                shouldBeNotFound(res, done, 30);
+                shouldBeNotFound(res, done);
             });
         });
     });
@@ -312,13 +288,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                res.should.have.status(404);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(21);
-    
-                done();
+                shouldBeNotFound(res, done);
             });
         });
 
@@ -613,7 +583,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .delete(`/tutors/${tutorId}/studies/${postedStudyId}`)
             .end((err, res) => {
-                shouldBeNotFound(res, done, 21);
+                shouldBeNotFound(res, done);
             });
         });
 
@@ -647,7 +617,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .delete(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                shouldBeNotFound(res, done, 30);
+                shouldBeNotFound(res, done);
             });
         });
     });
