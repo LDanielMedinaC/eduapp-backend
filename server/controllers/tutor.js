@@ -247,12 +247,6 @@ module.exports = {
     async getStudy(req, res) {
         let tutorId = req.params.tutorId;
         let studyId = req.params.studyId;
-        let tutorIdError = validateId(tutorId);
-        let studyIdError = validateId(studyId);
-
-        let idError = tutorIdError ? tutorIdError : studyIdError ? studyIdError : null;
-        if(idError)
-            return res.status(idError.status).send({ error: idError });
 
         // Validate tutor exists
         let tutor = await User.findById(tutorId).exec();
@@ -317,10 +311,6 @@ module.exports = {
     },
     async addStudy(req, res) {
         let tutorId = req.params.tutorId;
-        let idError = validateId(tutorId);
-
-        if(idError)
-            return res.status(idError.status).send({ error: idError });
 
         // Validate tutor exists
         let tutor = await User.findById(tutorId).exec();
@@ -360,12 +350,6 @@ module.exports = {
     async deleteStudy(req, res) {
         let tutorId = req.params.tutorId;
         let studyId = req.params.studyId;
-        let tutorIdError = validateId(tutorId);
-        let studyIdError = validateId(studyId);
-
-        let idError = tutorIdError ? tutorIdError : studyIdError ? studyIdError : null;
-        if(idError)
-            return res.status(idError.status).send({ error: idError });
 
         // Validate tutor exists
         let tutor = await User.findById(tutorId).exec();

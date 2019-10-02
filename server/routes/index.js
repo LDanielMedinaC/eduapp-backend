@@ -29,12 +29,12 @@ module.exports = (app) => {
     .get(tutorController.getDetails);
 
     app.route('/tutors/:tutorId/studies')
-    .get(tutorController.getStudies)
-    .post(tutorController.addStudy);
+    .get(validateIds, tutorController.getStudies)
+    .post(validateIds, tutorController.addStudy);
 
     app.route('/tutors/:tutorId/studies/:studyId')
-    .get(tutorController.getStudy)
-    .delete(tutorController.deleteStudy);
+    .get(validateIds, tutorController.getStudy)
+    .delete(validateIds, tutorController.deleteStudy);
 
     // Topics routes
     app.route('/topics')

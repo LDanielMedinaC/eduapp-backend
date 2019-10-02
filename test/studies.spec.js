@@ -6,6 +6,7 @@ const expect = chai.expect;
 const User = require('../server/models').User;
 const tutors = require('../mock/tutors');
 const db = require('../server/models');
+const Errors = require('../server/resources').Errors;
 
 chai.use(chaiHttp);
 
@@ -32,6 +33,7 @@ describe('STUDIES', () => {
     const shouldBeError = (res, done, code) => {
         res.should.have.status(400);
         res.body.should.be.an('object');
+        res.body.should.have.property('error');
         res.body.error.should.have.property('code');
         res.body.error.code.should.be.eql(code);
 
@@ -112,13 +114,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies`)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(20);
-    
-                done();
+                shouldBeError(res, done, Errors.INVALID_ID);
             });
         });
     
@@ -187,13 +183,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(20);
-    
-                done();
+                shouldBeError(res, done, Errors.INVALID_ID);
             });
         });
     
@@ -236,7 +226,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                shouldBeError(res, done, 20);
+                shouldBeError(res, done, Errors.INVALID_ID);
             });
         });
  
@@ -309,13 +299,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(20);
-    
-                done();
+                shouldBeError(res, done, Errors.INVALID_ID);
             });
         });
     
@@ -619,7 +603,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .delete(`/tutors/${tutorId}/studies/${postedStudyId}`)
             .end((err, res) => {
-                shouldBeError(res, done, 20);
+                shouldBeError(res, done, Errors.INVALID_ID);
             });
         });
 
@@ -651,7 +635,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .delete(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                shouldBeError(res, done, 20);
+                shouldBeError(res, done, Errors.INVALID_ID);
             });
         });
 
