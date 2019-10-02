@@ -1,6 +1,8 @@
 'use strict'
 
 const ObjectId = require('mongoose').Types.ObjectId;
+const Errors = require('../../resources').Errors;
+const ErrorFactory = require('../../resources').ErrorFactory;
 const idRegex = /(\w+Id)/;
 
 const validateIds = (req, res, next) => {
@@ -16,11 +18,7 @@ const validateIds = (req, res, next) => {
     // Validate id is valid ObjectId
     for(let param in idParams) {
         if(!ObjectId.isValid(idParams[param])) {
-            let error = {
-                status: 400,
-                description: `${idParams[param]} is not a valid id for ${param}`,
-                code: 1
-            };
+            let error = ErrorFactory.buildError(Errors.INVALID_ID, idParams[param], param);
 
             return res.status(error.status).send({ err: error });
         }

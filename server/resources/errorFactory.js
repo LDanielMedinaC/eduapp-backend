@@ -1,4 +1,4 @@
-const Errors = require('./Errors');
+const Errors = require('./Errors').Errors;
 
 const buildError = (error, arg1, arg2) =>{
     var errorObj = {
@@ -26,7 +26,7 @@ const buildError = (error, arg1, arg2) =>{
             break;
         }
         case Errors.INVALID_ID:{
-            errorObj.description = `${arg1} is not a valid Mongoose ID`;
+            errorObj.description = `${arg1} (${arg2}) is not a valid ObjectId`;
             break;
         }
         case Errors.INVALID_DATA_TYPE:{
