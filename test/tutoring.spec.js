@@ -9,23 +9,8 @@ chai.use(chaiHttp);
 
 
 describe('POST /tutorings', () => {
-    let tutoring = {
-        date: "10/11/2019",
-        lat: 19.019635,
-        long: -98.246918,
-        locationType: 'Casa del tutor',
-        locationName: 'Tutor\'s place',
-        topicID: '5d8d49a56ee837016abcd2a7',
-        tutorID: '5d8d49a96ee837016abcd2b1',
-        userID: '5d8d49a56ee837016abcd2aa',
-        startTime: "12:00",
-        endTime: "23:00",
-        notes: 'It\'s not the best student',
-        paymentMethod: 'cash'
-    };
     let attributeNames = ['date', 'lat','long','locationType', 'locationName', 'topicID', 'tutorID', 'userID','startTime', 'endTime', 'notes', 'paymentMethod']; 
-    let attributesValue = [];
-    it('shouldCreate a tutoring', (done) => {
+    /*it('shouldCreate a tutoring', (done) => {
         let tutoringAux = {
           date: "10/11/2019",
           lat: 19.019635,
@@ -58,7 +43,7 @@ describe('POST /tutorings', () => {
             res.body.paymentMethod.should.be.eql('cash'); 
             done();
         });
-    });
+    });*/
 
     it('No date was provided.', (done) => {
         let tutoringAux = {
