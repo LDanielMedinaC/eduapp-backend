@@ -1,17 +1,11 @@
+'use strict'
+
 const mongoose = require('mongoose');
 const ObjectId = require('mongoose').Types.ObjectId;
 const User = require('../models').User;
 const Topic = require('../models').Topic;
-
-function validateId(id) {
-    if(!id || !ObjectId.isValid(id)) {
-        return {
-            status: 400,
-            description: "given id is not a valid ID",
-            code: 20
-        };
-    }
-}
+const ErrorFactory = require('../resources').ErrorFactory;
+const Errors = require('../resources').Errors;
 
 function validateStudy(study) {
     // Should have study
@@ -247,35 +241,16 @@ module.exports = {
     async getStudy(req, res) {
         let tutorId = req.params.tutorId;
         let studyId = req.params.studyId;
-        let tutorIdError = validateId(tutorId);
-        let studyIdError = validateId(studyId);
-
-        let idError = tutorIdError ? tutorIdError : studyIdError ? studyIdError : null;
-        if(idError)
-            return res.status(idError.status).send({ error: idError });
 
         // Validate tutor exists
         let tutor = await User.findById(tutorId).exec();
         if(!tutor || !tutor.tutorDetails ) {
-            return res.status(404).send({
-                error: {
-                    status: 404,
-                    description: "No tutor with given ID was found",
-                    code: 21
-                }
-            });
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
         }
 
         // Validate study exists
         let studies = tutor.tutorDetails.studies;
-        if(!studies)
-            return {
-                error: {
-                    status: 404,
-                    description: 'Requested study was not found for given tutor',
-                    code: 30
-                }
-            };
 
         let matchingStudy;
         for(let study of studies) {
@@ -283,55 +258,33 @@ module.exports = {
                 matchingStudy = study;
         }
 
-        if(!matchingStudy)
-            return res.status(404).send({
-                error: {
-                    status: 404,
-                    description: 'Requested study was not found for given tutor',
-                    code: 30
-                }
-            });
+        if(!matchingStudy) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'study');
+            return res.status(error.status).send({ error: error });
+        }
         
         res.status(200).send(matchingStudy);
     },
     async getStudies(req, res) {
         let tutorId = req.params.tutorId;
-        let idError = validateId(tutorId);
-
-        if(idError)
-            return res.status(idError.status).send({ error: idError });
 
         // Validate tutor exists
         let tutor = await User.findById(tutorId).exec();
         if(!tutor || !tutor.tutorDetails ) {
-            return res.status(404).send({
-                error: {
-                    status: 404,
-                    description: "No tutor with given ID was found",
-                    code: 21
-                }
-            });
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
         }
 
         res.status(200).send(tutor.tutorDetails.studies);
     },
     async addStudy(req, res) {
         let tutorId = req.params.tutorId;
-        let idError = validateId(tutorId);
-
-        if(idError)
-            return res.status(idError.status).send({ error: idError });
 
         // Validate tutor exists
         let tutor = await User.findById(tutorId).exec();
         if(!tutor || !tutor.tutorDetails ) {
-            return res.status(404).send({
-                error: {
-                    status: 404,
-                    description: "No tutor with given ID was found",
-                    code: 21
-                }
-            });
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
         }
 
         // Validate payload
@@ -348,47 +301,27 @@ module.exports = {
             await tutor.save();
             res.status(201).send(tutor);
         } catch(err) {
-            res.status(500).send({
-                error: {
-                    status: 500,
-                    description: `Database error: ${err.errmsg || err}`,
-                    code: 0
-                }
-            });
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            res.status(error.status).send({ error: error });
         }
     },
     async deleteStudy(req, res) {
         let tutorId = req.params.tutorId;
         let studyId = req.params.studyId;
-        let tutorIdError = validateId(tutorId);
-        let studyIdError = validateId(studyId);
-
-        let idError = tutorIdError ? tutorIdError : studyIdError ? studyIdError : null;
-        if(idError)
-            return res.status(idError.status).send({ error: idError });
 
         // Validate tutor exists
         let tutor = await User.findById(tutorId).exec();
         if(!tutor || !tutor.tutorDetails ) {
-            return res.status(404).send({
-                error: {
-                    status: 404,
-                    description: "No tutor with given ID was found",
-                    code: 21
-                }
-            });
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
         }
 
         // Validate study exists
         let studies = tutor.tutorDetails.studies;
-        if(!studies.filter(study => study._id == studyId).length)
-            return res.status(404).send({
-                error: {
-                    status: 404,
-                    description: 'Requested study was not found for given tutor',
-                    code: 30
-                }
-            });
+        if(!studies.filter(study => study._id == studyId).length) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'study');
+            return res.status(error.status).send({ error: error });
+        }
 
         studies = studies.filter((study) => {
             return study._id != studyId;
@@ -400,13 +333,8 @@ module.exports = {
             await tutor.save();
             res.status(200).send(tutor);
         } catch(err) {
-            res.status(500).send({
-                error: {
-                    status: 500,
-                    description: `Database error: ${err.errmsg || err}`,
-                    code: 0
-                }
-            });
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            res.status(error.status).send({ error: error });
         }
     },
     async updateStudy(req, res) {
