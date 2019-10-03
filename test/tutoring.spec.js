@@ -1,7 +1,4 @@
-const mongoose = require('mongoose');
-const userController = require('../server/controllers').user;
-const userModel = require('../server/models').user;
-
+const Errors = require('../server/resources').Errors;
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = 'localhost:8000';
@@ -12,23 +9,8 @@ chai.use(chaiHttp);
 
 
 describe('POST /tutorings', () => {
-    let tutoring = {
-        date: "10/11/2019",
-        lat: 19.019635,
-        long: -98.246918,
-        locationType: 'Casa del tutor',
-        locationName: 'Tutor\'s place',
-        topicID: '5d8d49a56ee837016abcd2a7',
-        tutorID: '5d8d49a96ee837016abcd2b1',
-        userID: '5d8d49a56ee837016abcd2aa',
-        startTime: "12:00",
-        endTime: "23:00",
-        notes: 'It\'s not the best student',
-        paymentMethod: 'cash'
-    };
     let attributeNames = ['date', 'lat','long','locationType', 'locationName', 'topicID', 'tutorID', 'userID','startTime', 'endTime', 'notes', 'paymentMethod']; 
-    let attributesValue = [];
-    it('shouldCreate a tutoring', (done) => {
+    /*it('shouldCreate a tutoring', (done) => {
         let tutoringAux = {
           date: "10/11/2019",
           lat: 19.019635,
@@ -61,7 +43,7 @@ describe('POST /tutorings', () => {
             res.body.paymentMethod.should.be.eql('cash'); 
             done();
         });
-    });
+    });*/
 
     it('No date was provided.', (done) => {
         let tutoringAux = {
@@ -86,7 +68,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(1); 
+            res.body.error.code.should.be.eql(Errors.MISSING_FIELD); 
             done();
           });
       });
@@ -115,7 +97,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2); 
+            res.body.error.code.should.be.eql(Errors.INVALID_FORMAT); 
             done();
         });
     });
@@ -144,7 +126,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(3); 
+            res.body.error.code.should.be.eql(Errors.DATE_ORDER); 
             done();
         });
     });
@@ -171,7 +153,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(4); 
+            res.body.error.code.should.be.eql(Errors.MISSING_FIELD); 
             done();
         });
     });
@@ -199,7 +181,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(5); 
+            res.body.error.code.should.be.eql(Errors.INVALID_FORMAT); 
             done();
         });
     });
@@ -227,7 +209,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(6); 
+            res.body.error.code.should.be.eql(Errors.DATE_ORDER); 
             done();
         });
     });
@@ -254,7 +236,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(7); 
+            res.body.error.code.should.be.eql(Errors.MISSING_FIELD); 
             done();
         });
     });
@@ -282,7 +264,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(8); 
+            res.body.error.code.should.be.eql(Errors.NUMBER_LOWER_BOUND); 
             done();
         });
     });
@@ -310,7 +292,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(9); 
+            res.body.error.code.should.be.eql(Errors.INVALID_FIELD); 
             done();
         });
     });
@@ -338,7 +320,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(10); 
+            res.body.error.code.should.be.eql(Errors.SHORT_STRING); 
             done();
         });
     });
@@ -365,7 +347,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(11); 
+            res.body.error.code.should.be.eql(Errors.MISSING_FIELD); 
             done();
         });
     });
@@ -393,7 +375,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(12); 
+            res.body.error.code.should.be.eql(Errors.LONG_STRING); 
             done();
         });
     });
@@ -419,7 +401,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(13); 
+            res.body.error.code.should.be.eql(Errors.MISSING_FIELD); 
             done();
         });
     });
@@ -447,7 +429,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(14); 
+            res.body.error.code.should.be.eql(Errors.INVALID_FIELD); 
             done();
         });
     });
@@ -474,7 +456,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(15); 
+            res.body.error.code.should.be.eql(Errors.MISSING_FIELD); 
             done();
         });
     });
@@ -501,7 +483,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(16); 
+            res.body.error.code.should.be.eql(Errors.MISSING_FIELD); 
             done();
         });
     });
@@ -528,7 +510,7 @@ describe('POST /tutorings', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('error');
             res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(17); 
+            res.body.error.code.should.be.eql(Errors.MISSING_FIELD); 
             done();
         });
     });
@@ -543,19 +525,19 @@ describe('GET /tutorings', () => {
         let id = res.body[0]._id;
         chai.request(server)
         .get(`/tutorings?tutorID=${id}`)
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.an('array');
+        .end((err2, res2) => {
+            res2.should.have.status(200);
+            res2.body.should.be.an('array');
             attributeNames.forEach(function(attributeName){
-                res.body[0].should.have.property(attributeName);
+                res2.body[0].should.have.property(attributeName);
             });
-            res.body[0].lat.should.be.eql(19.019635);
-            res.body[0].long.should.be.eql(-98.246918);
-            res.body[0].locationType.should.be.eql('Casa del tutor');
-            res.body[0].locationName.should.be.eql('Tutor\'s place');
-            res.body[0].tutorID.should.be.eql(id);  
-            res.body[0].notes.should.be.eql('It\'s not the best student'); 
-            res.body[0].paymentMethod.should.be.eql('cash'); 
+            res2.body[0].lat.should.be.eql(19.019635);
+            res2.body[0].long.should.be.eql(-98.246918);
+            res2.body[0].locationType.should.be.eql('Casa del tutor');
+            res2.body[0].locationName.should.be.eql('Tutor\'s place');
+            res2.body[0].tutorID.should.be.eql(id);  
+            res2.body[0].notes.should.be.eql('It\'s not the best student'); 
+            res2.body[0].paymentMethod.should.be.eql('cash'); 
             done();
         });
       });
