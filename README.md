@@ -51,7 +51,8 @@ To seed the database, run `npm run seed`.
 - [Board](https://trello.com/eduappback)
 - [Endpoints](https://drive.google.com/open?id=1oAfR1pvqLKjzzp3_yK_BPk635BDDxN6EUFwXg24uPBE)
 - [Architecture](https://drive.google.com/open?id=189EpjWoiuIQwrGSHcb7gFEUf4_Cjabd3)
-- [Landingpage test suit](https://drive.google.com/open?id=1Qv7-VNYZii5T3eXfvRS6P63TOAzUSd6A)
+- [Validation suit](https://drive.google.com/open?id=1Qv7-VNYZii5T3eXfvRS6P63TOAzUSd6A)
+- [Errors reference](https://drive.google.com/open?id=1-hMzWe9HpZYY-a8qsRc7i-owiSEKGDAbCIW6a-QH0EE)
 - Please refer to the team's Drive for further documentation.
 
 ## Tools
