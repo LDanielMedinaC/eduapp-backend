@@ -6,6 +6,7 @@ const authFirebase = require('../middleware/auth').authFirebase;
 const tutoringController = require('../controllers').tutoring;
 const validateIds = require('../middleware/validations/ids-validation');
 const validateStudy = require('../middleware/validations/study-validation');
+const validateTutoring = require('../middleware/validations/tutoring-validation');
 
 module.exports = (app) => {
     // Test route
@@ -45,7 +46,7 @@ module.exports = (app) => {
     //Tutoring routes
     app.route('/tutorings')
     .get(tutoringController.list)    
-    .post(tutoringController.create)
+    .post(validateTutoring.validatePostTutoring, tutoringController.create)
 
     // Catch all the routes. This one must always be at the end.
     app.all('*', (req, res) => res.status(400).send({
