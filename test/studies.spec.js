@@ -283,7 +283,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .post(`/tutors/${tutorId}/studies`)
             .end((err, res) => {
-                shouldBeError(res, done, 25);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -296,7 +296,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 1);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -309,7 +309,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 2);
+                shouldBeError(res, done, Errors.SHORT_STRING);
             });
         });
 
@@ -322,7 +322,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 3);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -335,7 +335,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 4);
+                shouldBeError(res, done, Errors.SHORT_STRING);
             });
         });
 
@@ -348,7 +348,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 5);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -361,7 +361,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 6);
+                shouldBeError(res, done, Errors.SHORT_STRING);
             });
         });
 
@@ -374,7 +374,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 7);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -387,7 +387,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 8);
+                shouldBeError(res, done, Errors.INVALID_DATA_TYPE);
             });
         });
 
@@ -400,7 +400,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 9);
+                shouldBeError(res, done, Errors.INVALID_LENGTH);
             });
         });
 
@@ -413,7 +413,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 10);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -426,7 +426,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 11);
+                shouldBeError(res, done, Errors.INVALID_ENCODING);
             });
         });
 
@@ -439,7 +439,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 12);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -452,7 +452,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 13);
+                shouldBeError(res, done, Errors.INVALID_ENCODING);
             });
         });
 
@@ -465,7 +465,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 14);
+                shouldBeError(res, done, Errors.DATE_ORDER);
             });
         });
 
@@ -480,7 +480,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 14);
+                shouldBeError(res, done, Errors.DATE_ORDER);
             });
         });
 
@@ -493,7 +493,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 15);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -506,7 +506,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 16);
+                shouldBeError(res, done, Errors.INVALID_ENCODING);
             });
         });
     });

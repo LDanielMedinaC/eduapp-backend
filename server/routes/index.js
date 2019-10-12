@@ -5,6 +5,7 @@ const topicController = require('../controllers').topic;
 const authFirebase = require('../middleware/auth').authFirebase;
 const tutoringController = require('../controllers').tutoring;
 const validateIds = require('../middleware/validations/ids-validation');
+const validateStudy = require('../middleware/validations/study-validation');
 
 module.exports = (app) => {
     // Test route
@@ -30,7 +31,7 @@ module.exports = (app) => {
 
     app.route('/tutors/:tutorId/studies')
     .get(validateIds, tutorController.getStudies)
-    .post(validateIds, tutorController.addStudy);
+    .post(validateIds, validateStudy, tutorController.addStudy);
 
     app.route('/tutors/:tutorId/studies/:studyId')
     .get(validateIds, tutorController.getStudy)
