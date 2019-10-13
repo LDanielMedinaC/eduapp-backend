@@ -516,6 +516,283 @@ describe('STUDIES', () => {
     * PATCH /tutors/:id/studies
     * Should not be needed since PUT /tutors/:id can update studies
     */
+    describe('PATCH /tutors/:tutorId/studies/:studyId', () => {
+        it('No tutorId', (done) => {
+            let tutorId = '';
+            let studyId = mockStudyId;
+    
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, 0);
+            });
+        });
+
+        it('Invalid tutorId', (done) => {
+            let tutorId = 'asd';
+            let studyId = mockStudyId;
+
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_ID);
+            });
+        });
+
+        it('No studyId', (done) => {
+            let tutorId = id;
+            let studyId = '';
+
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, 0);
+            });
+        });
+
+        it('Invalid studyId', (done) => {
+            let tutorId = id;
+            let studyId = 'asd';
+
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_ID)
+            })
+        });
+
+        it('Tutor does not exist', (done) => {
+            let tutorId = mockStudyId;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeNotFound(res, done, Errors.OBJECT_NOT_FOUND)
+            })
+        });
+
+        it('Study does not exist', (done) => {
+            let tutorId = id;
+            let studyId = id;
+            let study = { ...validStudy };
+
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeNotFound(res, done, Errors.OBJECT_NOT_FOUND)
+            })
+        });
+
+        it('No study', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.MISSING_FIELD)
+            })
+        });
+
+        it('Institution too short', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.institution = 'a';
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.SHORT_STRING);
+            });
+        });
+        
+        it('Degree too short', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.degree = 'a';
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.SHORT_STRING);
+            });
+        });
+
+        it('Field too short', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.field = 'a';
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.SHORT_STRING);
+            });
+        });
+
+        it('Invalid grade (type)', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.grade = 9.6;
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_DATA_TYPE);
+            });
+        });
+
+        it('Invalid grade (length)', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.grade = 100;
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_LENGTH);
+            });
+        });
+
+        it('Invalid startDate', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.startDate = 'asd';
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_ENCODING);
+            });
+        });
+
+        it('Invalid endDate', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.endDate = 'asd';
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_ENCODING);
+            });
+        });
+
+        it('Invalid validationDate', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.validationDate = 'asd';
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_ENCODING);
+            });
+        });
+
+        it('startDate equals endDate', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.startDate = new Date('2019-01-01');
+            study.endDate = study.startDate;
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.DATE_ORDER);
+            });
+        });
+
+        it('Wrong start-end dates order', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.startDate = new Date('2019-01-10');
+            study.endDate = new Date('2019-01-01');
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.DATE_ORDER);
+            });
+        });
+
+        it('validationDate equals endDate', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.startDate = new Date('2019-01-01');
+            study.endDate = new Date('2019-01-10');
+            study.validationDate = study.endDate;
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                res.should.have.status(200);
+                study.startDate = study.startDate.toISOString();
+                study.endDate = study.endDate.toISOString();
+                study.validationDate = study.validationDate.toISOString();
+                res.body.should.contain(study);
+                done();
+            });
+        });
+
+        it('Wrong validationDate order', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.startDate = new Date('2019-01-01');
+            study.endDate = new Date('2019-01-10');
+            study.validationDate = new Date('2019-01-05');
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.DATE_ORDER);
+            });
+        });
+
+        it('Update study', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.institution = 'Tecnológico de Chapingo';
+
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.contain(study);
+                done();
+            });            
+        });
+    });
     
     /*
     * Test delete study

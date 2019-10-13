@@ -86,6 +86,13 @@ const validateStudy = (req, res, next) => {
         return res.status(error.status).send({ error: error });
     }
 
+    // validationDate should be after or equals endDate
+    let validationDate = Date.parse(study.validationDate);
+    if(endDate > validationDate) {
+        let error = ErrorFactory.buildError(Errors.DATE_ORDER, 'endDate', 'startDate')
+        return res.status(error.status).send({ error: error });
+    }
+
     next();
 };
 

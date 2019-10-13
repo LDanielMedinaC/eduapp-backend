@@ -36,6 +36,7 @@ module.exports = (app) => {
 
     app.route('/tutors/:tutorId/studies/:studyId')
     .get(validateIds, tutorController.getStudy)
+    .patch(validateIds, validateStudy, tutorController.updateStudy)
     .delete(validateIds, tutorController.deleteStudy);
 
     // Topics routes
