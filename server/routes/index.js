@@ -5,6 +5,7 @@ const topicController = require('../controllers').topic;
 const authFirebase = require('../middleware/auth').authFirebase;
 const tutoringController = require('../controllers').tutoring;
 const validateIds = require('../middleware/validations/ids-validation');
+const validateStudy = require('../middleware/validations/study-validation');
 const validateTutoring = require('../middleware/validations/tutoring-validation');
 
 module.exports = (app) => {
@@ -30,12 +31,13 @@ module.exports = (app) => {
     .get(tutorController.getDetails);
 
     app.route('/tutors/:tutorId/studies')
-    .get(tutorController.getStudies)
-    .post(tutorController.addStudy);
+    .get(validateIds, tutorController.getStudies)
+    .post(validateIds, validateStudy, tutorController.addStudy);
 
     app.route('/tutors/:tutorId/studies/:studyId')
-    .get(tutorController.getStudy)
-    .delete(tutorController.deleteStudy);
+    .get(validateIds, tutorController.getStudy)
+    .patch(validateIds, validateStudy, tutorController.updateStudy)
+    .delete(validateIds, tutorController.deleteStudy);
 
     // Topics routes
     app.route('/topics')

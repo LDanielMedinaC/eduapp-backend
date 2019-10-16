@@ -34,7 +34,7 @@ const buildError = (error, arg1, arg2) =>{
             break;
         }
         case Errors.INVALID_LENGTH:{
-            errorObj.description = `${arg1} should be exactly ${arg2} chars long`;
+            errorObj.description = `${arg1} should have length ${arg2}`;
             break;
         }
         case Errors.INVALID_FORMAT:{

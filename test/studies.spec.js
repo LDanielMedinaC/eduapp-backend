@@ -1,13 +1,29 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = 'localhost:8000';
 const should = chai.should();
 const expect = chai.expect;
+
+const server = 'localhost:8000';
+const db = require('../server/models');
 const User = require('../server/models').User;
 const tutors = require('../mock/tutors');
-const db = require('../server/models');
+
+const Errors = require('../server/resources').Errors;
+const shouldBeError = require('./helpers').shouldBeError;
+const shouldBeNotFound = require('./helpers').shouldBeNotFound;
 
 chai.use(chaiHttp);
+
+const validStudy = {
+    institution: 'MIT',
+    degree: 'Master',
+    field: 'Aerospace Engineering',
+    grade: 90,
+    startDate: new Date('2011-07-14').toISOString(),
+    endDate: new Date('2013-12-06').toISOString(),
+    proofDocURL: 'https://storage.provider.com/items/asd78we231',
+    validationDate: new Date('2019-06-12').toISOString()
+};
 
 describe('STUDIES', () => {
     let tutor;
@@ -17,35 +33,6 @@ describe('STUDIES', () => {
     let mockStudy;
     let mockStudyId;
     let postedStudyId;
-
-    const validStudy = {
-        institution: 'MIT',
-        degree: 'Master',
-        field: 'Aerospace Engineering',
-        grade: 90,
-        startDate: new Date('2011-07-14').toISOString(),
-        endDate: new Date('2013-12-06').toISOString(),
-        proofDocURL: 'https://storage.provider.com/items/asd78we231',
-        validationDate: new Date('2019-06-12').toISOString()
-    };
-
-    const shouldBeError = (res, done, code) => {
-        res.should.have.status(400);
-        res.body.should.be.an('object');
-        res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(code);
-
-        done();
-    };
-
-    const shouldBeNotFound = (res, done, code) => {
-        res.should.have.status(404);
-        res.body.should.be.an('object');
-        res.body.error.should.have.property('code');
-        res.body.error.code.should.be.eql(code);
-
-        done();
-    };
 
     before(done => {
         db.connectDB()
@@ -96,13 +83,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies`)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(0);
-    
-                done();
+                shouldBeError(res, done, 0);
             });
         });
 
@@ -112,13 +93,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies`)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(20);
-    
-                done();
+                shouldBeError(res, done, Errors.INVALID_ID);
             });
         });
     
@@ -129,13 +104,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies`)
             .end((err, res) => {
-                res.should.have.status(404);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(21);
-    
-                done();
+                shouldBeNotFound(res, done);
             });
         });
 
@@ -170,13 +139,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(0);
-    
-                done();
+                shouldBeError(res, done, 0);
             });
         });
 
@@ -187,13 +150,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(20);
-    
-                done();
+                shouldBeError(res, done, Errors.INVALID_ID);
             });
         });
     
@@ -205,13 +162,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                res.should.have.status(404);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(21);
-    
-                done();
+                shouldBeNotFound(res, done);
             });
         });
 
@@ -236,7 +187,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                shouldBeError(res, done, 20);
+                shouldBeError(res, done, Errors.INVALID_ID);
             });
         });
  
@@ -247,7 +198,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                shouldBeNotFound(res, done, 30);
+                shouldBeNotFound(res, done);
             });
         });
     });
@@ -309,13 +260,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(20);
-    
-                done();
+                shouldBeError(res, done, Errors.INVALID_ID);
             });
         });
     
@@ -328,13 +273,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                res.should.have.status(404);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(21);
-    
-                done();
+                shouldBeNotFound(res, done);
             });
         });
 
@@ -344,7 +283,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .post(`/tutors/${tutorId}/studies`)
             .end((err, res) => {
-                shouldBeError(res, done, 25);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -357,7 +296,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 1);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -370,7 +309,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 2);
+                shouldBeError(res, done, Errors.SHORT_STRING);
             });
         });
 
@@ -383,7 +322,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 3);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -396,7 +335,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 4);
+                shouldBeError(res, done, Errors.SHORT_STRING);
             });
         });
 
@@ -409,7 +348,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 5);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -422,7 +361,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 6);
+                shouldBeError(res, done, Errors.SHORT_STRING);
             });
         });
 
@@ -435,7 +374,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 7);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -448,7 +387,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 8);
+                shouldBeError(res, done, Errors.INVALID_DATA_TYPE);
             });
         });
 
@@ -461,7 +400,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 9);
+                shouldBeError(res, done, Errors.INVALID_LENGTH);
             });
         });
 
@@ -474,7 +413,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 10);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -487,7 +426,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 11);
+                shouldBeError(res, done, Errors.INVALID_ENCODING);
             });
         });
 
@@ -500,7 +439,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 12);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -513,7 +452,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 13);
+                shouldBeError(res, done, Errors.INVALID_ENCODING);
             });
         });
 
@@ -526,7 +465,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 14);
+                shouldBeError(res, done, Errors.DATE_ORDER);
             });
         });
 
@@ -541,7 +480,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 14);
+                shouldBeError(res, done, Errors.DATE_ORDER);
             });
         });
 
@@ -554,7 +493,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 15);
+                shouldBeError(res, done, Errors.MISSING_FIELD);
             });
         });
 
@@ -567,7 +506,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                shouldBeError(res, done, 16);
+                shouldBeError(res, done, Errors.INVALID_ENCODING);
             });
         });
     });
@@ -577,6 +516,283 @@ describe('STUDIES', () => {
     * PATCH /tutors/:id/studies
     * Should not be needed since PUT /tutors/:id can update studies
     */
+    describe('PATCH /tutors/:tutorId/studies/:studyId', () => {
+        it('No tutorId', (done) => {
+            let tutorId = '';
+            let studyId = mockStudyId;
+    
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, 0);
+            });
+        });
+
+        it('Invalid tutorId', (done) => {
+            let tutorId = 'asd';
+            let studyId = mockStudyId;
+
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_ID);
+            });
+        });
+
+        it('No studyId', (done) => {
+            let tutorId = id;
+            let studyId = '';
+
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, 0);
+            });
+        });
+
+        it('Invalid studyId', (done) => {
+            let tutorId = id;
+            let studyId = 'asd';
+
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_ID)
+            })
+        });
+
+        it('Tutor does not exist', (done) => {
+            let tutorId = mockStudyId;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeNotFound(res, done, Errors.OBJECT_NOT_FOUND)
+            })
+        });
+
+        it('Study does not exist', (done) => {
+            let tutorId = id;
+            let studyId = id;
+            let study = { ...validStudy };
+
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeNotFound(res, done, Errors.OBJECT_NOT_FOUND)
+            })
+        });
+
+        it('No study', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.MISSING_FIELD)
+            })
+        });
+
+        it('Institution too short', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.institution = 'a';
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.SHORT_STRING);
+            });
+        });
+        
+        it('Degree too short', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.degree = 'a';
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.SHORT_STRING);
+            });
+        });
+
+        it('Field too short', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.field = 'a';
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.SHORT_STRING);
+            });
+        });
+
+        it('Invalid grade (type)', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.grade = 9.6;
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_DATA_TYPE);
+            });
+        });
+
+        it('Invalid grade (length)', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.grade = 100;
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_LENGTH);
+            });
+        });
+
+        it('Invalid startDate', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.startDate = 'asd';
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_ENCODING);
+            });
+        });
+
+        it('Invalid endDate', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.endDate = 'asd';
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_ENCODING);
+            });
+        });
+
+        it('Invalid validationDate', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.validationDate = 'asd';
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_ENCODING);
+            });
+        });
+
+        it('startDate equals endDate', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.startDate = new Date('2019-01-01');
+            study.endDate = study.startDate;
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.DATE_ORDER);
+            });
+        });
+
+        it('Wrong start-end dates order', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.startDate = new Date('2019-01-10');
+            study.endDate = new Date('2019-01-01');
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.DATE_ORDER);
+            });
+        });
+
+        it('validationDate equals endDate', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.startDate = new Date('2019-01-01');
+            study.endDate = new Date('2019-01-10');
+            study.validationDate = study.endDate;
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                res.should.have.status(200);
+                study.startDate = study.startDate.toISOString();
+                study.endDate = study.endDate.toISOString();
+                study.validationDate = study.validationDate.toISOString();
+                res.body.should.contain(study);
+                done();
+            });
+        });
+
+        it('Wrong validationDate order', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.startDate = new Date('2019-01-01');
+            study.endDate = new Date('2019-01-10');
+            study.validationDate = new Date('2019-01-05');
+            
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.DATE_ORDER);
+            });
+        });
+
+        it('Update study', (done) => {
+            let tutorId = id;
+            let studyId = mockStudyId;
+            let study = { ...validStudy };
+            study.institution = 'Tecnológico de Chapingo';
+
+            chai.request(server)
+            .patch(`/tutors/${tutorId}/studies/${studyId}`)
+            .send(study)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.contain(study);
+                done();
+            });            
+        });
+    });
     
     /*
     * Test delete study
@@ -619,7 +835,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .delete(`/tutors/${tutorId}/studies/${postedStudyId}`)
             .end((err, res) => {
-                shouldBeError(res, done, 20);
+                shouldBeError(res, done, Errors.INVALID_ID);
             });
         });
 
@@ -629,7 +845,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .delete(`/tutors/${tutorId}/studies/${postedStudyId}`)
             .end((err, res) => {
-                shouldBeNotFound(res, done, 21);
+                shouldBeNotFound(res, done);
             });
         });
 
@@ -651,7 +867,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .delete(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                shouldBeError(res, done, 20);
+                shouldBeError(res, done, Errors.INVALID_ID);
             });
         });
 
@@ -663,7 +879,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .delete(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                shouldBeNotFound(res, done, 30);
+                shouldBeNotFound(res, done);
             });
         });
     });

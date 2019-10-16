@@ -70,11 +70,13 @@ const userSchema = new mongoose.Schema({
                     },
                     startDate: {
                         required: true,
-                        type: Date
+                        type: Date,
+                        validate: [datesOrder, 'endDate should be after startDate']
                     },
                     endDate: {
                         required: true,
-                        type: Date
+                        type: Date,
+                        validate: [datesOrder, 'endDate should be after startDate']
                     },
                     proofDocURL: {},
                     validationDate: {
@@ -94,6 +96,10 @@ const userSchema = new mongoose.Schema({
         }
     }
 });
+
+function datesOrder() {
+    return this.endDate > this.startDate;
+}
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

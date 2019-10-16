@@ -20,7 +20,7 @@ const validateIds = (req, res, next) => {
         if(!ObjectId.isValid(idParams[param])) {
             let error = ErrorFactory.buildError(Errors.INVALID_ID, idParams[param], param);
 
-            return res.status(error.status).send({ err: error });
+            return res.status(error.status).send({ error: error });
         }
     }
 
