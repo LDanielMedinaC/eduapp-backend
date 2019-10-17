@@ -55,6 +55,13 @@ To seed the database, run `npm run seed`.
 - [Errors reference](https://drive.google.com/open?id=1-hMzWe9HpZYY-a8qsRc7i-owiSEKGDAbCIW6a-QH0EE)
 - Please refer to the team's Drive for further documentation.
 
+### Sample payloads
+- [Landing Page](https://drive.google.com/open?id=1BScq0vmd000PRShg2aK2mkZf9oJxVJ3C)
+- [Study](https://drive.google.com/open?id=1NG2k3m9XewRFABKn6qMgn9naVwMAvOa6)
+- [Topic](https://drive.google.com/open?id=1ZkNmqaNRRy8YDedZDKSxq3oT3ZHOjSTU)
+- [Tutoring](https://drive.google.com/open?id=1N7jfkEyAZKkfKNL41UaVoDz-tWEEfJi4)
+- [User](https://drive.google.com/open?id=1Lrlcd6tzjDA0MhVxwEvUQS4mRrxY83vK)
+
 Please make sure you update the relevant documentation after merging changes.
 
 ## Tools
