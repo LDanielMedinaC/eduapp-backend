@@ -3,6 +3,11 @@ const chaiHttp = require('chai-http');
 const server = 'localhost:8000';
 const should = chai.should();
 
+
+const Errors = require('../server/resources').Errors;
+const shouldBeError = require('./helpers').shouldBeError;
+const shouldBeNotFound = require('./helpers').shouldBeNotFound;
+
 chai.use(chaiHttp);
 
 /*
@@ -36,12 +41,7 @@ describe('POST /topics', () => {
         .post('/topics')
         .send(topic)
         .end((err, res) => {
-            res.should.have.status(400);
-            res.body.should.be.a('object');
-            res.body.should.have.property('error');
-            res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(1);
-            done();
+            shouldBeError(res, done, Errors.MISSING_FIELD);
         });
     });
 
@@ -54,12 +54,7 @@ describe('POST /topics', () => {
         .post('/topics')
         .send(topic)
         .end((err, res) => {
-            res.should.have.status(400);
-            res.body.should.be.a('object');
-            res.body.should.have.property('error');
-            res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2);
-            done();
+            shouldBeError(res, done, Errors.INVALID_LENGTH)
         });
     });
 
@@ -71,12 +66,7 @@ describe('POST /topics', () => {
         .post('/topics')
         .send(topic)
         .end((err, res) => {
-            res.should.have.status(400);
-            res.body.should.be.a('object');
-            res.body.should.have.property('error');
-            res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(3);
-            done();
+            shouldBeError(res, done, Errors.MISSING_FIELD);
         });
     });
 

@@ -1,25 +1,26 @@
 const Topic = require('../models').Topic;
+const Errors = require('../resources').Errors;
 
 function validateTopic(topic) {
     if(!topic.Name){
         return {
             status: 400,
             description: 'No name was provided.',
-            code: 1
+            code: Errors.MISSING_FIELD
         };
     }
     if(topic.Name.length > 50){
         return {
             status: 400,
             description: 'Topic length must be less than 50 characters.',
-            code: 2
+            code: Errors.INVALID_LENGTH
         };
     }
     if(!topic.Field){
         return {
             status: 400,
             description: 'A topic must have a field.',
-            code: 3
+            code: Errors.MISSING_FIELD
         };
     }
     return null;
@@ -45,7 +46,7 @@ module.exports = {
                     error: {
                         status: 500,
                         description: `Database error: ${err.errmsg}`,
-                        code: 10
+                        code: Errors.DATABASE_ERROR
                     }
                 });
             });
