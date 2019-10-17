@@ -16,7 +16,7 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'No valid ObjectId was provided.',
-                    code: 2
+                    code: Errors.NESTED_OBJECT_NOT_FOUND
                 }
             });
         }
@@ -29,7 +29,7 @@ module.exports = {
                     error: {
                         status: 404,
                         description: 'Tutor does not exist',
-                        code: 3
+                        code: Errors.NESTED_OBJECT_NOT_FOUND
                     }
                 });
             }
@@ -42,7 +42,7 @@ module.exports = {
                 error: {
                     status: 500,
                     description: `Database error: ${err}`,
-                    code: 4
+                    code: Errors.DATABASE_ERROR
                 }
             });
         });
@@ -197,7 +197,7 @@ module.exports = {
                 error: {
                     status: 500,
                     description: `Database error: ${err.errmsg || err}`,
-                    code: 0
+                    code: Errors.DATABASE_ERROR
                 }
             });
         }
@@ -212,7 +212,7 @@ module.exports = {
                     error: {
                         status: 400,
                         description: "Topic should contain at least 1 character",
-                        code: 2
+                        code: Errors.SHORT_STRING
                     }
                 });
             }
@@ -222,7 +222,7 @@ module.exports = {
                     error: {
                         status: 400,
                         description: "Topic is too long",
-                        code: 1
+                        code: Errors.LONG_STRING
                     }
                 });
             }

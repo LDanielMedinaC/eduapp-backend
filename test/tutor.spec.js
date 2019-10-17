@@ -7,6 +7,10 @@ const server = 'localhost:8000';
 
 chai.use(chaiHttp);
 
+const Errors = require('../server/resources').Errors;
+const shouldBeError = require('./helpers').shouldBeError;
+const shouldBeNotFound = require('./helpers').shouldBeNotFound;
+
 describe('GET /tutors', () => {
     it('All tutors', (done) => {
         chai.request(server)
@@ -62,12 +66,7 @@ describe('GET /tutors?topic=<topic>', () => {
         chai.request(server)
         .get(`/tutors?topic=${topic}`)
         .end((err, res) => {
-            res.should.have.status(400);
-            res.body.should.be.a('object');
-            res.body.should.have.property('error');
-            res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(1);
-            done();
+            shouldBeError(res, done, Errors.LONG_STRING);
         });
     });
 
@@ -75,12 +74,7 @@ describe('GET /tutors?topic=<topic>', () => {
         chai.request(server)
         .get('/tutors?topic=')
         .end((err, res) => {
-            res.should.have.status(400);
-            res.body.should.be.a('object');
-            res.body.should.have.property('error');
-            res.body.error.should.have.property('code');
-            res.body.error.code.should.be.eql(2);
-            done();
+            shouldBeError(res, done, Errors.SHORT_STRING);
         });
     });
 
