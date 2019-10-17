@@ -4,6 +4,8 @@ function validateUser(user) {
     // Should validate user
 }
 
+const Errors = require("../resources").Errors
+
 module.exports = {
 
     // Method used to create a new user
@@ -16,7 +18,7 @@ module.exports = {
                 error: {
                     status: 400,
                     description: "No Firebase UID was provided.",
-                    code: 11
+                    code: Errors.MISSING_FIELD
                 }
             });
         }
@@ -27,7 +29,7 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'No user was name provided.',
-                    code: 2
+                    code: Errors.MISSING_FIELD
                 }
             });
         }
@@ -37,7 +39,7 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'Invalid user name length. Should be [2, 27].',
-                    code: 1
+                    code: Errors.INVALID_LENGTH
                 }
             });
         }
@@ -48,7 +50,7 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'Invalid name. Use Spanish characters.',
-                    code: 3
+                    code: Errors.INVALID_FORMAT
                 }
             });
         }
@@ -59,7 +61,7 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'No phone number was provided.',
-                    code: 5
+                    code: Errors.MISSING_FIELD
                 }
             });
         }
@@ -69,7 +71,7 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'Invalid phone number. Should be 10-digit.',
-                    code: 4
+                    code: Errors.INVALID_LENGTH
                 }
             });
         }
@@ -80,7 +82,7 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'Invalid phone number.',
-                    code: 6
+                    code: Errors.INVALID_FORMAT
                 }
             });
         }
@@ -91,7 +93,7 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'No email was provided.',
-                    code: 8
+                    code: Errors.MISSING_FIELD
                 }
             });
         }
@@ -101,7 +103,7 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'Invalid email length. Should be [3, 320].',
-                    code: 7
+                    code: Errors.INVALID_LENGTH
                 }
             });
         }
@@ -112,7 +114,7 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'Invalid email format. Should be user@domain.',
-                    code: 9
+                    code: Errors.INVALID_FORMAT
                 }
             });
         }
@@ -128,7 +130,7 @@ module.exports = {
                 error: {
                     status: 500,
                     description: `Database error: ${err.errmsg}`,
-                    code: 10
+                    code: Errors.DATABASE_ERROR
                 }
             });
         });

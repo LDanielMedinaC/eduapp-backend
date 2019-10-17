@@ -2,6 +2,8 @@ const Tutoring = require('../models').Tutoring;
 const User = require('../models').User;
 const moongoose = require('mongoose');
 
+const Errors = require('../resources').Errors;
+
 module.exports = {
 
     // Method used to create a new tutoring
@@ -17,7 +19,7 @@ module.exports = {
                 error: {
                     status: 500,
                     description: `Database error: ${err.errmsg}`,
-                    code: 10
+                    code: Errors.DATABASE_ERROR
                 }
             });
         });
@@ -32,7 +34,7 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'Invalid ID',
-                    code: 18
+                    code: Errors.INVALID_ID
                 }
             })
         }
@@ -44,7 +46,7 @@ module.exports = {
                 error: {
                     status: 400,
                     description: 'No tutor matched the provided id',
-                    code: 19
+                    code: Errors.NESTED_OBJECT_NOT_FOUND
                 }
             })
         }
