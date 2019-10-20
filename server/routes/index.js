@@ -6,11 +6,13 @@ const tutorController = require('../controllers').tutor;
 const topicController = require('../controllers').topic;
 const tutoringController = require('../controllers').tutoring;
 const feedbackController = require('../controllers').feedback;
+const skillController = require('../controllers').skill;
 
 const validateIds = require('../middleware/validations/ids-validation');
 const validateStudy = require('../middleware/validations/study-validation');
 const validateTutoring = require('../middleware/validations/tutoring-validation');
 const validateFeedback = require('../middleware/validations/feedback-validation');
+const validateSkill = require('../middleware/validations/skill-validation');
 
 module.exports = (app) => {
     // Test route
@@ -42,6 +44,15 @@ module.exports = (app) => {
     .get(validateIds, tutorController.getStudy)
     .patch(validateIds, validateStudy, tutorController.updateStudy)
     .delete(validateIds, tutorController.deleteStudy);
+
+    app.route('/tutors/:tutorId/skills')
+    .get(validateIds, skillController.list)
+    .post(validateIds, validateSkill, skillController.create);
+
+    app.route('/tutors/:tutorId/skills/:skillId')
+    .get(validateIds, skillController.get)
+    .put(validateIds, validateSkill, skillController.update)
+    .delete(validateIds, skillController.delete);
 
     // Topics routes
     app.route('/topics')

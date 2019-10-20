@@ -38,9 +38,11 @@ const userSchema = new mongoose.Schema({
             },
             skills: {
                 type: [{
-                    placeHolder: {
-                        type: String
-                    }
+                    topic: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'Topic'
+                    },
+                    exeprience: Number
                 }]
             },
             workExperience: {
