@@ -1,7 +1,6 @@
 // Mongoose schema definition for landing page 
 var mongoose = require('mongoose');
 
-
 const landingPageSchema = new mongoose.Schema({
     LogoImgURL: {type: String, validate: {
         validator: function (v)
@@ -10,7 +9,7 @@ const landingPageSchema = new mongoose.Schema({
         },
         message: props => `${props.value} is not a valid URL`
     }},
-    ShowcasedTopicsIDs: [mongoose.Schema.Types.ObjectId],
+    ShowcasedTopicsIDs: [{type: mongoose.Schema.Types.ObjectId, ref: 'Topic'}],
     Sections: {
         type: [{
             Title: {
