@@ -309,4 +309,68 @@ describe('PUT /landingpage', () => {
         });
     });
 
+    it('Valid Carrousel URL', (done) => {
+        let update_lp = {
+            Carrousel: ['https::myimageurl']
+        };
+        chai.request(server)
+        .put('/landingpages')
+        .send(update_lp)
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('object');
+            done();
+        });
+    });
+
+    it('Invalid Carrousel URL', (done) => {
+        let update_lp = {
+            Carrousel: 'Htt:invalid'
+        };
+        chai.request(server)
+        .put('/landingpages')
+        .send(update_lp)
+        .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have.property('error');
+            res.body.error.should.have.property('code');
+            res.body.error.code.should.be.eql(2);
+
+            done();
+        });
+    });
+
+    it('No Carrousel updated, remains the same after', (done) => {
+        let update_lp = {
+            Carrousel: 'http::url'
+        };
+        chai.request(server)
+        .put('/landingpages')
+        .send(update_lp)
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('object');
+            
+            let newLP = {
+                Carrousel: []
+            };
+
+            chai.request(server)
+            .put('/landingpages')
+            .send(update_lp)
+            .end((err, res) => {
+
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('Carrousel');
+                res.body.Carrousel.should.be.eql(['http::url']);
+
+                done();
+            });
+
+                
+        });
+    });
+
 });
