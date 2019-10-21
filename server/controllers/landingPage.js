@@ -48,6 +48,7 @@ module.exports = {
                 // Landing page exists, update
                 page.LogoImgURL = landingPage.LogoImgURL || page.LogoImgURL;
                 page.ShowcasedTopicsIDs = landingPage.ShowcasedTopicsIDs || page.ShowcasedTopicsIDs;
+                page.Carrousel = landingPage.Carrousel || page.Carrousel;
                 page.Sections = landingPage.Sections || page.Sections || [];
 
                 //run validators on fields, return if error occurs

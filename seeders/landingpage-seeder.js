@@ -6,6 +6,7 @@ const Topic = require('../server/models').Topic;
 
 const lp = new LandingPage({
     LogoImgURL: 'https://yt3.ggpht.com/a/AGF-l7-ED38XcwKwiqauuL6Ps7nkQyVlDesbohBfGA=s900-c-k-c0xffffffff-no-rj-mo',
+    Carrousel: ['https://smiletutor.sg/wp-content/uploads/2018/10/6-advantages-of-online-tutoring.jpeg', 'https://images.ctfassets.net/p0qf7j048i0q/599C41259E6A4444BB7E1CBB24D1BB81/cd75bc40999bf5a1dca2fae66cc8c144/i609086966.jpg?w=1000&fm=webp'],
     Sections: [
         {
             Title: 'La vida de los dioses griegos',
@@ -36,8 +37,6 @@ let seed = () => {
         let idTopic3 = topic._id;
 
         lp.ShowcasedTopicsIDs = [idTopic1, idTopic2, idTopic3];
-
-        console.log(lp.ShowcasedTopicsIDs);
 
         let seedingLPs = [new Promise((resolve, reject) => {
             lp.save()
