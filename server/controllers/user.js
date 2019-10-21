@@ -132,5 +132,62 @@ module.exports = {
                 }
             });
         });
+    },
+
+    //Method use to update an user
+
+    update(req, res){
+        let user = req.body;
+
+        User.findOne()
+        .then((page) => {
+            if(!page) {
+                // Can't update non-existent page
+                return res.status(404).send({
+                    error: {
+                        status: 404,
+                        description: 'Requested User does not exist.',
+                        code: 1
+                    }
+                });
+            } else {
+                //User exists, update
+                page.phone = user.phone || page.phone;
+                page.country = user.country || page.country;
+                page.language = user.language || user.language;
+
+                //run validators on fields, return if error occurs
+                var err = page.validateSync();
+                if (err)
+                    return res.status(400).send({
+                        error: {
+                            status: 400,
+                            description: err.message || err,
+                            code: 2
+                        }
+                    });
+
+                page.save()
+                .then((updatedPage) => res.status(200).send(updatedPage))
+                .catch((err) => {
+                    res.status(500).send({
+                        error: {
+                            status: 500,
+                            description: `Database error: ${err.errmsg || err}`,
+                            code: 0
+                        }
+                    });
+                });
+            }
+        })
+        .catch((err) => {
+            res.status(500).send({
+                error: {
+                    status: 500,
+                    description: `Database error: ${err.errmsg}`,
+                    code: 2
+                }
+            });
+        });
     }
 }

@@ -383,3 +383,54 @@ describe('POST /user', () => {
   });
 
 });
+
+/*
+* Test PUT to /user
+*/
+describe('PUT /user', () => {
+  it('Should update phone', (done) => {
+      let update_user = {
+          phone: 2223454590
+      };
+      chai.request(server)
+      .put('/user')
+      .send(update_user)
+      .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('phone');
+          done();
+      });
+  });
+
+  it('Should update phone', (done) => {
+    let update_user = {
+        country: 'Chile'
+    };
+    chai.request(server)
+    .put('/user')
+    .send(update_user)
+    .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.should.have.property('country');
+        done();
+      });
+  });
+
+  it('Should update language', (done) => {
+    let update_user = {
+        country: 'Inglés'
+    };
+    chai.request(server)
+    .put('/user')
+    .send(update_user)
+    .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.should.have.property('language');
+        done();
+  });
+
+});
+});
