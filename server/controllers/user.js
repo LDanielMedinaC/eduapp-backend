@@ -134,6 +134,30 @@ module.exports = {
         });
     },
 
+    // Method to show user
+    show(req, res){
+
+        var query;
+        
+        query = User.findOne();
+
+        query.exec((err, us) => {
+            
+            if (err)
+            { 
+                err.status = 404;
+                err.description = "No User";
+                err.code = 1;
+                res.send(err);
+            }
+            else
+            {
+                res.status = 200;
+                res.json(us);
+            }
+        });
+    },
+
     //Method use to update an user
 
     update(req, res){

@@ -384,6 +384,22 @@ describe('POST /user', () => {
 
 });
 
+
+/*
+* Test GET to /user
+*/
+
+describe('GET /user', () => {
+  it('An user', (done) => {
+      chai.request(server)
+      .get('/user')
+      .end((err, res) => {
+          res.should.have.status(200);
+          done();
+      });
+  });
+});
+
 /*
 * Test PUT to /user
 */
@@ -398,12 +414,17 @@ describe('PUT /user', () => {
       .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
+          res.body.should.have.property('email');
+          res.body.should.have.property('name');
           res.body.should.have.property('phone');
+          res.body.should.have.property('country');
+          res.body.should.have.property('language');
+          
           done();
       });
   });
 
-  it('Should update phone', (done) => {
+  it('Should update country', (done) => {
     let update_user = {
         country: 'Chile'
     };
@@ -413,7 +434,12 @@ describe('PUT /user', () => {
     .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a('object');
+        res.body.should.have.property('email');
+        res.body.should.have.property('name');
+        res.body.should.have.property('phone');
         res.body.should.have.property('country');
+        res.body.should.have.property('language');
+
         done();
       });
   });
@@ -428,7 +454,12 @@ describe('PUT /user', () => {
     .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a('object');
+        res.body.should.have.property('email');
+        res.body.should.have.property('name');
+        res.body.should.have.property('phone');
+        res.body.should.have.property('country');
         res.body.should.have.property('language');
+        
         done();
   });
 
