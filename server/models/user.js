@@ -40,9 +40,13 @@ const userSchema = new mongoose.Schema({
                 type: [{
                     topic: {
                         type: mongoose.Schema.Types.ObjectId,
-                        ref: 'Topic'
+                        ref: 'Topic',
+                        required: true
                     },
-                    exeprience: Number
+                    exeprience:{
+                        type: Number,
+                        required: true
+                    }
                 }]
             },
             workExperience: {

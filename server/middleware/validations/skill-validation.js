@@ -28,14 +28,8 @@ const validateSkill = (req, res, next) => {
     }
 
     // Name min length 2 characters
-    if(skill.name && study.institution.name <= 1) {
+    if(skill.name && skill.name <= 1) {
         let error = ErrorFactory.buildError(Errors.SHORT_STRING, 'name', '1');
-        return res.status(error.status).send({ error: error });
-    }
-
-    // Name max length 50 characters
-    if(skill.name && study.institution.name >= 50) {
-        let error = ErrorFactory.buildError(Errors.LONG_STRING, 'name', '50');
         return res.status(error.status).send({ error: error });
     }
 

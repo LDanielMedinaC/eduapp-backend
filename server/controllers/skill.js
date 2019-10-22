@@ -56,32 +56,50 @@ module.exports = {
 
         let session = await mongoose.startSession();
 
-        session.startTransaction();
+        await session.startTransaction();
 
-        let relatedTopic = await Topic.findOne({'Name': nSkill.name, 'Field': nSkill.Field}).exec;
+        let relatedTopic = await Topic.findOne({'Name': nSkill.name, 'Field': nSkill.Field}).exec();
 
-        if(relatedTopic){
-            
-            tutor.skills.push({
+        //console.log(relatedTopic);
+        let skillId = new mongoose.mongo.ObjectId();
+
+        if(relatedTopic){            
+            tutor.tutorDetails.skills.push({
                 topic: relatedTopic._id,
                 experience: nSkill.experience,
-                _id: new mongoose.mongo.ObjectId()
+                _id: skillId
             });
+
+            if(!relatedTopic.Tutors)
+                relatedTopic.Tutors = [];
 
             relatedTopic.Tutors.push(tutorId);
 
+            console.log(tutor);
+
+            tutor.markModified('tutorDetails.skills');
+
             tutor.save()
-            .catch((err) => {
+            .then((t) => {
+                relatedTopic.save()
+                .then(async (u) => {
+                    await session.commitTransaction();
+                    return res.status(200).send({
+                        _id: skillId,
+                        experience: nSkill.experience,
+                        name: nSkill.name,
+                        field: nSkill.field
+                    });
+                })
+                .catch(async (err) => {
+                    await session.abortTransaction();
+                    return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                })
+            })
+            .catch(async (err) => {
                 await session.abortTransaction();
                 return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
             });
-
-            relatedTopic.save()
-            .catch((err) => {
-                await session.abortTransaction();
-                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
-            })
-
         }
         else{
             let newTopic = new Topic({
@@ -95,29 +113,37 @@ module.exports = {
             newTopic.save()
             .then((nTopic) => {
                 topicId = nTopic._id;
+
+                tutor.markModified('tutorDetails.skills');
+
+                tutor.tutorDetails.skills.push({
+                    topic: topicId,
+                    experience: nSkill.experience,
+                    _id: skillId
+                });
+                
+                console.log(tutor);
+
+                tutor.save()
+                .then(async (updatedTuror) => {
+                    await session.commitTransaction();
+                    return res.status(200).send({
+                        _id: skillId,
+                        experience: nSkill.experience,
+                        name: nSkill.name,
+                        field: nSkill.field
+                    });
+                })
+                .catch(async (err) => {
+                    await session.abortTransaction();
+                    return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                })
             })
-            .catch((err) => {
+            .catch(async (err) => {
                 await session.abortTransaction();
                 return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
             });
-
-            tutor.skills.push({
-                topic: topicId,
-                experience: nSkill.experience,
-                _id: new mongoose.mongo.ObjectId()
-            });
-            
-            tutor.save()
-            .then()
-            .catch((err) => {
-                await session.abortTransaction();
-                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
-            })
-
         }
-        
-        await session.commitTransaction();
-        return res.status(200).send(nSkill);
     },
 
     async get(req, res){
@@ -130,7 +156,7 @@ module.exports = {
             return res.status(error.status).send({ error: error });
         }
 
-        let skills = tutor.skills;
+        let skills = tutor.tutorDetails.skills;
 
         for(let skill of skills){
             if(skill._id == skillId){
@@ -167,12 +193,12 @@ module.exports = {
             return res.status(error.status).send({ error: error });
         }
 
-        let skills = tutor.skills;
+        let skills = tutor.tutorDetails.skills;
 
         let fSkill = skills.filter(skill => skill._id == skillId);
 
         if(!fSkill.length) {
-            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'study');
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'skill');
             return res.status(error.status).send({ error: error });
         }
 
@@ -180,127 +206,132 @@ module.exports = {
 
         let session = await mongoose.startSession();
 
-        session.startTransaction();
+        await session.startTransaction();
         
         let topic = await Topic.findById(skill.topic);
 
         if(!topic){
-            session.abortTransaction();
+            await session.abortTransaction();
             let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'related topic');
             return res.status(error.status).send({ error: error });
         }
-
-        if( ((nSkill.name && nSkill.name == topic.Name) || !nSkill.name) && ((nSkill.field && nSkill.field == topic.Field) || !nSkill.field)){
-            skill.experience = nSkill.experience || skill.experience;
-            tutor.save()
-            .then((updatedTutor) => {
-                session.commitTransaction();
-                return res.status(200).send({
-                    name: topic.Name,
-                    field: topic.Field,
-                    experience: skill.experience,
-                    _id: skillId
-                })
-            })
-            .catch((err) => {
-                session.abortTransaction();
-                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
-            })
-        }
-
-        if(topic.length.length == 1){
-            topic.Name = nSkill.name || topic.Name;
-            topic.Field = nSkill.field || topic.Field;
-            skill.experience = nSkill.experience || skill.experience;
-
-            nSkill.name = topic.Name
-            nSkill.Field = topic.Field;
-            nSkill.experience = skill.experience;
-            nSkill._id = skill._id;
-
-            topic.save()
-            .then()
-            .catch((err) => {
-                session.abortTransaction();
-                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
-            })
-
-            tutoy.save()
-            .then((updatedTutor) => {
-                session.commitTransaction();
-                return res.status(200).send(nSkill);
-            })
-            .catch((err) => {
-                session.abortTransaction();
-                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
-            })
-        }
-
-        let delTutor = topic.tutors.filter(tutor => tutor != tutorId);
-        topic.tutors = delTutor;
-
-        relatedTopic.tutors.push(tutorId);
-        topic.save()
-        .then()
-        .catch((err) => {
-            session.abortTransaction();
-            return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
-        })
-        
-        skill.experience = nSkill.experience || skill.experience;
-
-        let relatedTopic = await Topic.findOne({'Name': nSkill.name, 'Field': nSkill.Field}).exec;
-
-        if(relatedTopic){
-            skill.topic = relatedTopic._id;
-            tutor.save()
-            .then()
-            .catch((err) => {
-                session.abortTransaction();
-                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
-            })
-            relatedTopic.save()
-            .then((updatedTopic) => {
-                session.commitTransaction();
-                return res.status(200).send({
-                    name: updatedTopic.Name,
-                    field: updatedTopic.Field,
-                    experience: skill.experience,
-                    _id: skill._id
-                })
-            })
-            .catch((err) => {
-                session.abortTransaction();
-                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
-            })
-        }
         else{
-            let newTopic = new Topic({
-                Name: nSkill.name || topic.name,
-                Field: nSkill.field || topic.skill
-            })
-            newTopic.save()
-            .then((nTopic) => {
-                skill.topic = nTopic._id;
+            if( ((nSkill.name && nSkill.name == topic.Name) || !nSkill.name) && ((nSkill.field && nSkill.field == topic.Field) || !nSkill.field)){
+                skill.experience = nSkill.experience || skill.experience;
                 tutor.save()
-                .then((updatedTutor) => {
-                    session.commitTransaction();
+                .then(async (updatedTutor) => {
+                    console.log("0");
+                    await session.commitTransaction();
                     return res.status(200).send({
-                        name: nTopic.Name,
-                        field: nTopic.Field,
+                        name: topic.Name,
+                        field: topic.Field,
                         experience: skill.experience,
-                        _id: skill._id
+                        _id: skillId
                     })
                 })
-                .catch((err) => {
-                    session.abortTransaction();
+                .catch(async (err) => {
+                    await session.abortTransaction();
                     return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
                 })
-            })
-            .catch((err) => {
-                session.abortTransaction();
-                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
-            })
+            }
+            else{
+                if(topic.Tutors.length == 1){
+                    topic.Name = nSkill.name || topic.Name;
+                    topic.Field = nSkill.field || topic.Field;
+                    skill.experience = nSkill.experience || skill.experience;
+
+                    nSkill.name = topic.Name
+                    nSkill.Field = topic.Field;
+                    nSkill.experience = skill.experience;
+                    nSkill._id = skill._id;
+
+                    topic.save()
+                    .then()
+                    .catch(async (err) => {
+                        await session.abortTransaction();
+                        return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                    })
+
+                    tutor.save()
+                    .then(async (updatedTutor) => {
+                        console.log("1");
+                        await session.commitTransaction();
+                        return res.status(200).send(nSkill);
+                    })
+                    .catch(async (err) => {
+                        await session.abortTransaction();
+                        return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                    })
+                }
+                else{
+                    let delTutor = topic.Tutors.filter(tutor => tutor != tutorId);
+                    topic.Tutors = delTutor;
+                    topic.save()
+                    .then(async (updatedTopic) => {
+                        skill.experience = nSkill.experience || skill.experience;
+                        let relatedTopic = await Topic.findOne({'Name': nSkill.name, 'Field': nSkill.Field}).exec();
+
+                        if(relatedTopic){
+                            skill.topic = relatedTopic._id;
+                            tutor.save()
+                            .then(() => {
+                                relatedTopic.save()
+                                .then(async (updatedTopic) => {
+                                    console.log("2");
+                                    await session.commitTransaction();
+                                    return res.status(200).send({
+                                        name: updatedTopic.Name,
+                                        field: updatedTopic.Field,
+                                        experience: skill.experience,
+                                        _id: skill._id
+                                    })
+                                })
+                                .catch(async (err) => {
+                                    await session.abortTransaction();
+                                    return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                                })
+                            })
+                            .catch(async (err) => {
+                                await session.abortTransaction();
+                                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                            })
+                        }
+                        else{
+                            let newTopic = new Topic({
+                                Name: nSkill.name || topic.name,
+                                Field: nSkill.field || topic.skill
+                            })
+                            newTopic.save()
+                            .then((nTopic) => {
+                                skill.topic = nTopic._id;
+                                tutor.save()
+                                .then(async (updatedTutor) => {
+                                    console.log("3");
+                                    await session.commitTransaction();
+                                    return res.status(200).send({
+                                        name: nTopic.Name,
+                                        field: nTopic.Field,
+                                        experience: skill.experience,
+                                        _id: skill._id
+                                    })
+                                })
+                                .catch(async (err) => {
+                                    await session.abortTransaction();
+                                    return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                                })
+                            })
+                            .catch(async (err) => {
+                                await session.abortTransaction();
+                                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                            })
+                        }
+                    })
+                    .catch(async (err) => {
+                        await session.abortTransaction();
+                        return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                    })
+                }
+            }
         }
     },
 
@@ -314,72 +345,82 @@ module.exports = {
             return res.status(error.status).send({ error: error });
         }
 
-        let skills = tutor.skills;
+        let skills = tutor.tutorDetails.skills;
 
-        if(!skills.filter(skill => skill._id == skillId).length) {
-            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'study');
+        let fSkill = skills.filter(skill => skill._id == skillId);
+
+        if(!fSkill.length) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'skill');
             return res.status(error.status).send({ error: error });
         }
 
+        let skill = fSkill[0];
+
         let session = await mongoose.startSession();
 
-        session.startTransaction();
+        await session.startTransaction();
 
         let topic = await Topic.findById(skill.topic);
 
         if(!topic){
             let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'related topic');
-            session.abortTransaction();
+            await session.abortTransaction();
             return res.status(error.status).send({ error: error });
         }
-
-        let delSkill = skills.filter((skill) =>{
-            return skill._id != skillId;
-        });
-
-        if(topic.tutors.length == 1){
-            try{
-                await Topic.findByIdAndDelete(topic._id).exec;
-            }
-            catch (err){
-                let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
-                session.abortTransaction();
-                return res.status(error.status).send({ error: error });
-            }
-            tutor.skills = delSkill;
-            tutor.save()
-            .then((updatedTutor) => {
-                session.commitTransaction()
-                return res.status(200).send(updatedTutor);
-            })
-            .catch((err) => {
-                session.abortTransaction();
-                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
-            });  
-        }
         else{
-            let delTutors = topic.tutors.filter((tutor) =>{
-                return tutor != tutorId;
+
+            let delSkill = skills.filter((skill) =>{
+                return skill._id != skillId;
             });
-            topic.tutors = delTutors;
-            tutor.skills = delSkill;
-            topic.save()
-            .then((updatedTopic) => {
-                tutor.save()
-                .then((updatedTutor) => {
-                    session.commitTransaction();
-                    return res.status(200).send(updatedTutor)
+
+            if(topic.Tutors.length == 1){
+                let flag = false;
+                try{
+                    await Topic.findByIdAndDelete(topic._id).exec();
+                    flag = true;
+                }
+                catch (err){
+                    let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+                    await session.abortTransaction();
+                    return res.status(error.status).send({ error: error });
+                }
+                if(flag){
+                    tutor.tutorDetails.skills = delSkill;
+                    tutor.save()
+                    .then(async (updatedTutor) => {
+                        await session.commitTransaction()
+                        return res.status(200).send(updatedTutor);
+                    })
+                    .catch(async (err) => {
+                        await session.abortTransaction();
+                        return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                    });
+                }  
+            }
+            else{
+                let delTutors = topic.Tutors.filter((tutor) =>{
+                    return tutor != tutorId;
+                });
+                topic.Tutors = delTutors;
+                tutor.tutorDetails.skills = delSkill;
+                topic.save()
+                .then(async (updatedTopic) => {
+                    tutor.save()
+                    .then(async (updatedTutor) => {
+                        await session.commitTransaction();
+                        return res.status(200).send(updatedTutor)
+                    })
+                    .catch(async (err) => {
+                        await session.abortTransaction();
+                        return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                    });  
                 })
-                .catch((err) => {
-                    session.abortTransaction();
+                .catch(async (err) => {
+                    await session.abortTransaction();
                     return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
                 });  
-            })
-            .catch((err) => {
-                session.abortTransaction();
-                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
-            });  
 
+            }
         }
     }
 }
