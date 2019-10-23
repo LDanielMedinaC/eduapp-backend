@@ -80,6 +80,7 @@ To seed the database, run `npm run seed`.
 - [Topic](https://drive.google.com/open?id=1ZkNmqaNRRy8YDedZDKSxq3oT3ZHOjSTU)
 - [Tutoring](https://drive.google.com/open?id=1N7jfkEyAZKkfKNL41UaVoDz-tWEEfJi4)
 - [User](https://drive.google.com/open?id=1Lrlcd6tzjDA0MhVxwEvUQS4mRrxY83vK)
+- [Feedback](https://drive.google.com/open?id=1BOjC4GRn8B1mLD4XXKDCNoM5gRLdTS6C)
 
 Please make sure you update the relevant documentation after merging changes.
 

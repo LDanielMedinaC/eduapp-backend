@@ -43,7 +43,7 @@ let forward = async (req, res) => {
         return res.status(error.status).send({ error: error });
     }
 
-    return res.status(200).send({ msg: "Sent" });
+    return res.status(200).send({ message: "Sent" });
 }
 
 module.exports = {
