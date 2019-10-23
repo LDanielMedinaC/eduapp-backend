@@ -78,6 +78,9 @@ const buildError = (error, arg1, arg2) =>{
             errorObj.status = 401;
             break;
         }
+        case Errors.INVALID_URL: {
+            errorObj.description = `Field ${arg1} requires a valir URL.`;
+        }
         default:{
             errorObj.code = -1;
             errorObj.description = 'Unknown error';

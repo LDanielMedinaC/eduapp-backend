@@ -92,9 +92,130 @@ describe('Tutor Certification POST', () => {
 
         chai.request(server)
         .post(`/tutors/ffffffffffffff0123456789/certifications`)
-        .send(study)
+        .send(validCertificationNoDiploma)
         .end((err, res) => {
             shouldBeNotFound(res, done);
+        });
+
+    });
+
+    it('Failed insert: no institution', (done) => {
+
+        let noInstCert = {...validCertificationWDiploma};
+        delete noInstCert.institution;
+
+        chai.request(server)
+        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .send(noInstCert)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.MISSING_FIELD);
+
+        });
+
+    });
+
+    it('Failed insert: no title', (done) => {
+
+        let noTitleCert = {...validCertificationWDiploma};
+        delete noTitleCert.title;
+
+        chai.request(server)
+        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .send(noTitleCert)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.MISSING_FIELD);
+
+        });
+
+    });
+
+    it('Failed insert: no date', (done) => {
+
+        let noDateCert = {...validCertificationWDiploma};
+        delete noDateCert.date;
+
+        chai.request(server)
+        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .send(noDateCert)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.MISSING_FIELD);
+
+        });
+
+    });
+
+    it('Failed insert: institution too short', (done) => {
+
+        let certCopy = {...validCertificationWDiploma};
+        certCopy.institution = "l";
+
+        chai.request(server)
+        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .send(certCopy)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.SHORT_STRING);
+
+        });
+
+    });
+
+    it('Failed insert: title too short', (done) => {
+
+        let certCopy = {...validCertificationWDiploma};
+        certCopy.title = "l";
+
+        chai.request(server)
+        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .send(certCopy)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.SHORT_STRING);
+
+        });
+
+    });
+
+    it('Failed insert: date wrong format', (done) => {
+
+        let certCopy = {...validCertificationWDiploma};
+        certCopy.date = "1999-30-15";
+
+        chai.request(server)
+        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .send(certCopy)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_FORMAT);
+
+        });
+
+    });
+
+    it('Failed insert: date is in the future', (done) => {
+
+        let certCopy = {...validCertificationWDiploma};
+        certCopy.date = new Date();
+        certCopy.date.setDate(certCopy.date.getDate() + 1);
+
+        chai.request(server)
+        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .send(certCopy)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.DATE_ORDER);
+
+        });
+
+    });
+
+    it('Failed insert: diploma url is invalid', (done) => {
+
+        let certCopy = {...validCertificationWDiploma};
+        certCopy.diplomaURL = 'agjkgjadk';
+
+        chai.request(server)
+        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .send(certCopy)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_URL);
+
         });
 
     });
