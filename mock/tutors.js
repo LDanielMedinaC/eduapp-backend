@@ -27,7 +27,14 @@ const tutors = [
                 proofDocURL: 'https://storage.provider.com/items/asd123dfg456',
                 validationDate: new Date('2019-01-01').toISOString()
             }],
-            awards: []
+            certifications: [
+                {
+                    institution: 'ITESM',
+                    title: 'SCRUM',
+                    date: new Date('2016-11-02'),
+                    diplomaURL: 'http::gcloud/bucket/12454545bcd/item/a4555d121'
+                }
+            ]
         }
     }),
     new User({
@@ -43,7 +50,7 @@ const tutors = [
             skills: [],
             workExperience: [],
             studies: [],
-            awards: []
+            certifications: []
         }
     })
 ];

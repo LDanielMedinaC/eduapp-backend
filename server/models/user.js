@@ -85,9 +85,21 @@ const userSchema = new mongoose.Schema({
                     }
                 }]
             },
-            awards: {
+            certifications: {
                 type: [{
-                    placeHolder: {
+                    institution: {
+                        type: String,
+                        required: true
+                    },
+                    title: {
+                        type: String,
+                        required: true
+                    },
+                    date: {
+                        type: Date,
+                        required: true
+                    },
+                    diplomaURL: {
                         type: String
                     }
                 }]
