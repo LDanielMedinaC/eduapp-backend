@@ -15,7 +15,8 @@ const Errors = {
     INVALID_NUMBER: 13,
     INVALID_FIELD: 14,
     INVALID_ENCODING: 15,
-    NOT_AUTHORIZED: 16
+    NOT_AUTHORIZED: 16,
+    INVALID_CHARSET: 17
 }
 
 module.exports = {
