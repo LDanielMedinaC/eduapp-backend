@@ -16,6 +16,8 @@ module.exports = (app) => {
 
     // User routes
     app.route('/users')
+    .get(userController.show)
+    .put(userController.update)
     .post(userController.create);
 
     // Landing Page routes

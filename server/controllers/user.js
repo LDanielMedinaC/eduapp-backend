@@ -164,9 +164,9 @@ module.exports = {
         let user = req.body;
 
         User.findOne()
-        .then((page) => {
-            if(!page) {
-                // Can't update non-existent page
+        .then((us) => {
+            if(!us) {
+                // Can't update non-existent user
                 return res.status(404).send({
                     error: {
                         status: 404,
@@ -176,9 +176,9 @@ module.exports = {
                 });
             } else {
                 //User exists, update
-                page.phone = user.phone || page.phone;
-                page.country = user.country || page.country;
-                page.language = user.language || user.language;
+                us.phone = user.phone || us.phone;
+                us.country = user.country || us.country;
+                us.language = user.language || us.language;
 
                 //run validators on fields, return if error occurs
                 var err = page.validateSync();
@@ -191,8 +191,8 @@ module.exports = {
                         }
                     });
 
-                page.save()
-                .then((updatedPage) => res.status(200).send(updatedPage))
+                us.save()
+                .then((updatedUser) => res.status(200).send(updatedUser))
                 .catch((err) => {
                     res.status(500).send({
                         error: {
