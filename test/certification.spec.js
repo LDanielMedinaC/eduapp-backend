@@ -336,3 +336,112 @@ describe ('Tutor Certification GET/:id', () => {
     });
 
 });
+
+describe ('Tutor Certification GET', () => {
+    let noCertTutor;
+    let dbTutor;
+
+    before(done => {
+        db.connectDB()
+        .then(async () => {
+
+            dbTutor = await User.findOne({ 'email': tutors[0].email }).exec();
+            noCertTutor = await User.findOne({ 'email': tutors[1].email }).exec();
+
+            db.disconnectDB()
+
+            done();
+        })
+        .catch(err => {
+            done(new Error(err));
+        });
+
+    });
+
+    it('Invalid tutor ID', (done) => {
+
+        chai.request(server)
+        .get(`/tutors/qwerty/certifications`)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_ID);
+        });
+
+    });
+
+    it('Tutor not found', (done) => {
+
+        chai.request(server)
+        .get(`/tutors/ffffffffffffff0123456789/certifications`)
+        .end((err, res) => {
+            shouldBeNotFound(res, done);
+        });
+
+    });
+
+    it('GET of tutor with no certifications', (done) => {
+
+        chai.request(server)
+        .get(`/tutors/${dbTutor._id}/certifications`)
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.an('array').that.is.empty;
+
+            done();
+        });
+
+    });
+
+    it('Correct get of certifications', (done) => {
+
+        //Insert 1 cert in a tutor with none
+        chai.request(server)
+        .post(`/tutors/${dbTutor._id}/certifications`)
+        .send(validCertificationWDiploma)
+        .end((err, res) => {
+
+            res.should.have.status(200);
+            res.body.should.be.an('object');
+
+            //Inser other cert in same tutor
+            chai.request(server)
+            .post(`/tutors/${dbTutor._id}/certifications`)
+            .send(validCertificationNoDiploma)
+            .end((err2, res2) => {
+                res2.should.have.status(200);
+                res2.body.should.be.an('object');
+
+                //Verify GET of both certifications 
+                chai.request(server)
+                .get(`/tutors/${dbTutor._id}/certifications`)
+                .end((err3, res3) => {
+
+                    res3.should.have.status(200);
+                    res3.body.should.be.an('array').that.is.not.empty;
+                    res3.body.should.have.length(2);
+
+                    const resCert1 = {
+                        institution: res3.body[0].institution,
+                        title: res3.body[0].title,
+                        date: res3.body[0].date,
+                        diplomaURL: res3.body[0].diplomaURL,
+                    }
+                    const resCert1 = {
+                        institution: res3.body[1].institution,
+                        title: res3.body[1].title,
+                        date: res3.body[1].date,
+                        diplomaURL: res3.body[1].diplomaURL,
+                    }
+
+                    _.isEqual(resCert1, validCertificationWDiploma).should.be.eql('true'); 
+                    _.isEqual(resCert2, validCertificationNoDiploma).should.be.eql('true'); 
+
+                    done();
+                });
+            });
+
+            
+        });
+
+    });
+
+});
