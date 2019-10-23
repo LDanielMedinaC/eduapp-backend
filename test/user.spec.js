@@ -386,19 +386,6 @@ describe('POST /user', () => {
 
 describe('GET /users/:id', () => {
 
-    it('Invalid ID', (done) => {
-       
-        let id = '000';
- 
-         chai.request(server)
-         .get('/users/'+id)
-         .end((err, res) => {
-             res.should.have.status(400);
-             res.body.error.code.should.be.eql(2);
-             done();
-         });
-     });
-
     it('Given ID is not a user', (done) => {
        
        let id = '555555555555551d35198a31';
@@ -418,7 +405,7 @@ describe('GET /users/:id', () => {
         .get('/users/')
         .end((err, res) => {
 
-            let id = res.body[0]._id;
+            let id = res.body[0].uid;
             
             chai.request(server)
             .get('/users/' + id)
