@@ -382,7 +382,9 @@ describe('POST /user', () => {
       });
   });
 
-  describe('GET /users/:id', () => {
+});
+
+describe('GET /users/:id', () => {
 
     it('Invalid ID', (done) => {
        
@@ -426,6 +428,4 @@ describe('POST /user', () => {
             });
         });
      });
-});
-
 });
