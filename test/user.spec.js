@@ -382,47 +382,50 @@ describe('POST /user', () => {
       });
   });
 
+  describe('GET /users/:id', () => {
+
+    it('Invalid ID', (done) => {
+       
+        let id = '000';
+ 
+         chai.request(server)
+         .get('/users/'+id)
+         .end((err, res) => {
+             res.should.have.status(400);
+             res.body.error.code.should.be.eql(2);
+             done();
+         });
+     });
+
+    it('Given ID is not a user', (done) => {
+       
+       let id = '555555555555551d35198a31';
+
+        chai.request(server)
+        .get('/users/'+id)
+        .end((err, res) => {
+            res.should.have.status(404);
+            res.body.error.code.should.be.eql(3);
+            done();
+        });
+    });
+
+    it('Succesful get of a user', (done) => {
+    
+        chai.request(server)
+        .get('/users/')
+        .end((err, res) => {
+
+            let id = res.body[0]._id;
+            
+            chai.request(server)
+            .get('/users/' + id)
+            .end((err2, res2) => {
+                res2.should.have.status(200);
+                done();
+            });
+        });
+     });
 });
 
-
-/*
-* Test GET to /user
-*/
-
-describe('GET /user', () => {
-  it('An user', (done) => {
-      chai.request(server)
-      .get('/user')
-      .end((err, res) => {
-          res.should.have.status(200);
-          done();
-      });
-  });
-});
-
-/*
-* Test PUT to /user
-*/
-describe('PUT /user', () => {
-
-  it('Should update', (done) => {
-    let update_user = {
-        language: 'Inglés',
-        country: 'Chile',
-        phone: 2223454590
-    };
-    chai.request(server)
-    .put('/user')
-    .send(update_user)
-    .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.a('object');
-        res.body.should.have.property('phone');
-        res.body.should.have.property('country');
-        res.body.should.have.property('language');
-        
-        done();
-  });
-
-});
 });

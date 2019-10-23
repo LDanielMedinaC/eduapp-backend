@@ -134,27 +134,35 @@ module.exports = {
         });
     },
 
-    // Method to show user
-    show(req, res){
+    // Method used to get an User by ID
 
-        var query;
-        
-        query = User.findOne();
+    getDetails(req, res){
+        let userID = req.params.userID;
 
-        query.exec((err, us) => {
-            
-            if (err)
-            { 
-                err.status = 404;
-                err.description = "No User";
-                err.code = 1;
-                res.send(err);
-            }
-            else
+        User.findById(userID)
+        .then((user) => {
+            if (!user)
             {
-                res.status = 200;
-                res.json(us);
+                return res.status(404).send({
+                    error: {
+                        status: 404,
+                        description: 'User does not exist',
+                        code: 3
+                    }
+                });
             }
+
+            return res.status(200).send(user);
+        })
+        .catch( (err) => 
+        {
+            res.status(500).send({
+                error: {
+                    status: 500,
+                    description: `Database error: ${err}`,
+                    code: 4
+                }
+            });
         });
     },
 
