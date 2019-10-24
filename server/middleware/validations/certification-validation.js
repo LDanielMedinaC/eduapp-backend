@@ -46,6 +46,13 @@ const validateCertification = (req, res, next) => {
         return res.status(error.status).send({ error: error });
     }
 
+    //DiplomaURL (if existent) should be a valid URL
+    if (cert.diplomaURL && !(/^(http|https|ftp)::*/.test(cert.diplomaURL)))
+    {
+        let error = ErrorFactory.buildError(Errors.INVALID_URL, 'diplomaURL');
+        return res.status(error.status).send({ error: error });
+    }
+
     next();
 };
 
