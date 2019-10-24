@@ -399,13 +399,13 @@ describe('GET /users/:id', () => {
         });
     });
 
-    it('Succesful get of a user', (done) => {
+    it('Succesful get of an user', (done) => {
     
         chai.request(server)
         .get('/users/')
         .end((err, res) => {
 
-            let id = res.body[0].uid;
+            let id = 'aaabbbccc';
             
             chai.request(server)
             .get('/users/' + id)
