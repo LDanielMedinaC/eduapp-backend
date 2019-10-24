@@ -52,6 +52,27 @@ const tutors = [
             studies: [],
             certifications: []
         }
+    }),
+    new User({
+        uid: 'abff123',
+        email: 'mkleo@smash.mx',
+        name: 'Mak Leonidas',
+        phone: '2223335577',
+        country: 'Mexico',
+        language: 'es',
+        tutorDetails: {
+            taughtTopicsIDs: [],
+            paymentAccounts: [],
+            skills: [],
+            workExperience: [],
+            studies: [],
+            certifications: [{
+                institution: 'SSBU Montreal',
+                title: 'Neutral JS Básico',
+                date: new Date('2018-12-07').toISOString(),
+                diplomaURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS4yr_4GeloD1ou0E2acZ-ept3QcunQet9qbu0N-dgvRXyPA9qB'
+            }]
+        }
     })
 ];
 
