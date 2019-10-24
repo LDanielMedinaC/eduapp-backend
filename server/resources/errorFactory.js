@@ -79,7 +79,12 @@ const buildError = (error, arg1, arg2) =>{
             break;
         }
         case Errors.INVALID_URL: {
-            errorObj.description = `Field ${arg1} requires a valir URL.`;
+            errorObj.description = `Field \'${arg1}\' requires a valir URL.`;
+            break;
+        }
+        case Errors.DATE_IN_FUTURE: {
+            errorObj.description = `Date \'${arg1}\' cannot be in the future. Current date: ${arg2}`;
+            break;
         }
         default:{
             errorObj.code = -1;

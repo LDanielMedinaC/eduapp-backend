@@ -221,7 +221,7 @@ describe('Tutor Certification POST', () => {
         .post(`/tutors/${noCertTutor._id}/certifications`)
         .send(certCopy)
         .end((err, res) => {
-            shouldBeError(res, done, Errors.DATE_ORDER);
+            shouldBeError(res, done, Errors.DATE_IN_FUTURE);
 
         });
 
@@ -664,7 +664,7 @@ describe('Tutor Certification PUT', () => {
         .put(`/tutors/${dbTutor._id}/certifications/${updateCert._id}`)
         .send(certCopy)
         .end((err, res) => {
-            shouldBeError(res, done, Errors.DATE_ORDER);
+            shouldBeError(res, done, Errors.DATE_IN_FUTURE);
 
         });
 
