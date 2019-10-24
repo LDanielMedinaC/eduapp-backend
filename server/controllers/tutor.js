@@ -256,7 +256,31 @@ module.exports = {
     */
 
     async getCert(req, res) {
+        let tutorId = req.params.tutorId;
+        let certID = req.params.certificationId;
 
+         // Validate tutor exists
+         let tutor = await User.findById(tutorId).exec();
+         if(!tutor || !tutor.tutorDetails ) {
+             let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+             return res.status(error.status).send({ error: error });
+         }
+ 
+         // Validate cert exists
+         let certifications = tutor.tutorDetails.certifications;
+ 
+         let martchingCert;
+         for(let cert of certifications) {
+             if(cert._id == certID)
+                 martchingCert = cert;
+         }
+ 
+         if(!martchingCert) {
+             let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'certification');
+             return res.status(error.status).send({ error: error });
+         }
+         
+         res.status(200).send(martchingCert);
     },
 
 
