@@ -63,6 +63,12 @@ Make sure to add all your seeders to `seeders/index.js`. Seeders need to export 
 To seed the database, run `npm run seed`.
 
 ## Secrets
+Travis needs the encrypted configuration files listed below:
+
+- `.env`
+- `server/config/service-account.json`
+- `server/config/mail-accounts.json`
+
 - [Encrypting Travis files](https://docs.travis-ci.com/user/encrypting-files/)
 
 ## Documentation
