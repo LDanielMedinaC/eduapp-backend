@@ -246,5 +246,34 @@ module.exports = {
         .then(tutors => {
             return res.status(200).send(tutors);
         });
-    }
+    },
+
+    /*
+    ##########################
+    ##### CERTIFICATIONS #####
+    ##########################
+    
+    */
+
+    async getCert(req, res) {
+
+    },
+
+
+    async getAllCerts(req, res) {
+
+    },
+
+    async insertCert(req, res) {
+
+    },
+
+    async updateCert(req, res) {
+
+    },
+
+    async deleteCert(req, res) {
+
+    },
+
 };

@@ -2,10 +2,12 @@ const userController = require('../controllers').user;
 const landingPageController = require('../controllers').landingPage;
 const tutorController = require('../controllers').tutor;
 const topicController = require('../controllers').topic;
-const authFirebase = require('../middleware/auth').authFirebase;
 const tutoringController = require('../controllers').tutoring;
+
+const authFirebase = require('../middleware/auth').authFirebase;
 const validateIds = require('../middleware/validations/ids-validation');
 const validateStudy = require('../middleware/validations/study-validation');
+const validateCertification = require('../middleware/validations/certification-validation');
 const validateTutoring = require('../middleware/validations/tutoring-validation');
 
 module.exports = (app) => {
@@ -38,6 +40,16 @@ module.exports = (app) => {
     .get(validateIds, tutorController.getStudy)
     .patch(validateIds, validateStudy, tutorController.updateStudy)
     .delete(validateIds, tutorController.deleteStudy);
+
+    // Tutor certifications
+    app.route('/tutors/:tutorId/certitifications')
+    .get(validateIds, tutorController.getAllCerts)
+    .post(validateIds, validateCertification, tutorController.insertCert);
+
+    app.route('/tutors/:tutorId/certitifications/:certitificationId')
+    .get(validateIds, tutorController.getCert)
+    .put(validateIds, validateCertification, tutorController.updateCert)
+    .delete(validateIds, tutorController.deleteCert);
 
     // Topics routes
     app.route('/topics')
