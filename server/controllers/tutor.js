@@ -316,7 +316,7 @@ module.exports = {
         tutor.save()
         .then( (tutor) => {
             const insertedCertIndex = tutor.tutorDetails.certifications.length - 1;
-            res.send(201).send(tutor.tutorDetails.certifications[insertedCertIndex]);
+            res.status(201).send(tutor.tutorDetails.certifications[insertedCertIndex]);
         })
         .catch((err) => {
             let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
@@ -359,7 +359,32 @@ module.exports = {
     },
 
     async deleteCert(req, res) {
+        let tutorId = req.params.tutorId;
+        let certId = req.params.certificationId;
 
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        // Validate cert exists
+        let certifications = tutor.tutorDetails.certifications;
+        if(!certifications.filter(cert => cert._id == certId).length) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'certification');
+            return res.status(error.status).send({ error: error });
+        }
+
+        tutor.tutorDetails.certifications.pull({_id: certId});
+        tutor.save()
+        .then( (tutor) => {
+            res.status(200).send();
+        })
+        .catch((err) => {
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            return res.status(error.status).send({ error: error });
+        });
     },
 
 };
