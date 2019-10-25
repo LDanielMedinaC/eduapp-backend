@@ -425,7 +425,7 @@ describe ('Tutor Certification GET', () => {
                         date: res3.body[0].date,
                         diplomaURL: res3.body[0].diplomaURL,
                     }
-                    const resCert1 = {
+                    const resCert2 = {
                         institution: res3.body[1].institution,
                         title: res3.body[1].title,
                         date: res3.body[1].date,

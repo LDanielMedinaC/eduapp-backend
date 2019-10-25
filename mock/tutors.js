@@ -54,10 +54,10 @@ const tutors = [
         }
     }),
     new User({
-        uid: 'abff123',
+        uid: 'abff123456',
         email: 'mkleo@smash.mx',
         name: 'Mak Leonidas',
-        phone: '2223335577',
+        phone: '2223335555',
         country: 'Mexico',
         language: 'es',
         tutorDetails: {
