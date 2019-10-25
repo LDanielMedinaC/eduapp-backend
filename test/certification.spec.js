@@ -54,7 +54,7 @@ describe('Tutor Certification POST', () => {
         .post(`/tutors/${noCertTutor._id}/certifications`)
         .send(validCertificationNoDiploma)
         .end((err, res) => {
-            res.should.have.status(200);
+            res.should.have.status(201);
             res.body.should.be.an('object');
 
             done();
@@ -68,7 +68,7 @@ describe('Tutor Certification POST', () => {
         .post(`/tutors/${noCertTutor._id}/certifications`)
         .send(validCertificationWDiploma)
         .end((err, res) => {
-            res.should.have.status(200);
+            res.should.have.status(201);
             res.body.should.be.an('object');
 
             done();
@@ -82,7 +82,7 @@ describe('Tutor Certification POST', () => {
         .post(`/tutors/${noCertTutor._id}/certifications`)
         .send(validCertificationWDiploma)
         .end((err, res) => {
-            res.should.have.status(200);
+            res.should.have.status(201);
             res.body.should.be.an('object');
 
             const returnedObj = {

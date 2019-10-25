@@ -272,7 +272,7 @@ module.exports = {
          let martchingCert;
          for(let cert of certifications) {
              if(cert._id == certID)
-                 martchingCert = cert;
+                martchingCert = cert;
          }
  
          if(!martchingCert) {
@@ -285,15 +285,77 @@ module.exports = {
 
 
     async getAllCerts(req, res) {
+        let tutorId = req.params.tutorId;
 
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        res.status(200).send(tutor.tutorDetails.certifications);
     },
 
     async insertCert(req, res) {
+        let tutorId = req.params.tutorId;
 
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        // Validate payload
+        let certification = req.body;
+
+        // Insert into array
+        tutor.tutorDetails.certification.push(study);
+
+        tutor.save()
+        .then( (tutor) => {
+            const insertedCertIndex = tutor.tutorDetails.certifications.length - 1;
+            res.send(201).send(tutor.tutorDetails.certifications[insertedCertIndex]);
+        })
+        .catch((err) => {
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            return res.status(error.status).send({ error: error });
+        });
     },
 
     async updateCert(req, res) {
+        let tutorId = req.params.tutorId;
+        let certId = req.params.certId;
+        let updatedCert = req.body;
 
+         // Validate tutor exists
+        const tutor = await User.findById(tutorId)
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        User.findOneAndUpdate({
+            "_id": tutorId, "tutorDetails.certifications._id": certId
+        }, {
+            "$set" : {
+                "tutorDetails.certifications.$": updatedCert
+            }
+        }, function (err, user){
+
+            if (!err)
+            {
+                let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'certification');
+                return res.status(error.status).send({ error: error });
+            }
+            else
+            {
+                let certs = user.tutorDetails.certifications.filter(c => c._id == certId);
+                
+                res.status(200).send(certs[0]);
+            }
+        })
     },
 
     async deleteCert(req, res) {
