@@ -11,6 +11,7 @@ const validateIds = require('../middleware/validations/ids-validation');
 const validateStudy = require('../middleware/validations/study-validation');
 const validateTutoring = require('../middleware/validations/tutoring-validation');
 const validateFeedback = require('../middleware/validations/feedback-validation');
+const validateUser = require('../middleware/validations/user-validation');
 
 module.exports = (app) => {
     // Test route
@@ -24,7 +25,7 @@ module.exports = (app) => {
     
     app.route('/users/:userId')
     .get(userController.getDetails)
-    .put(userController.update);
+    .put(validateUser, userController.update);
 
     // Landing Page routes
     app.route('/landingpages')
