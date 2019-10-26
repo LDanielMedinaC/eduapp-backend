@@ -7,6 +7,7 @@ const topicController = require('../controllers').topic;
 const tutoringController = require('../controllers').tutoring;
 const feedbackController = require('../controllers').feedback;
 const paymentAccountController = require('../controllers').paymentAccount;
+const invoiceController = require('../controllers').invoice;
 
 const validateIds = require('../middleware/validations/ids-validation');
 const validateStudy = require('../middleware/validations/study-validation');
@@ -15,6 +16,7 @@ const validateTutoring = require('../middleware/validations/tutoring-validation'
 const validateFeedback = require('../middleware/validations/feedback-validation');
 const validatePaymentAccount = require('../middleware/validations/paymentAccount-validation');
 const validateUser = require('../middleware/validations/user-validation');
+const validateInvoice = require('../middleware/validations/invoice-validation');
 
 module.exports = (app) => {
     // Test route
@@ -70,6 +72,16 @@ module.exports = (app) => {
     .get(validateIds, tutorController.getCert)
     .put(validateIds, validateCertification, tutorController.updateCert)
     .delete(validateIds, tutorController.deleteCert);
+
+    //Tutor invoices
+    app.route('/tutors/:tutorId/invoices')
+    .get(validateIds, invoiceController.list)
+    .post(validateIds, validateInvoice, invoiceController.create);
+
+    app.route('/tutors/:tutorId/invoices/:invoiceId')
+    .get(validateIds, invoiceController.get)
+    .put(validateIds, validateInvoice, invoiceController.update)
+    .delete(validateIds, invoiceController.delete);
 
     // Topics routes
     app.route('/topics')
