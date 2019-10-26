@@ -7,15 +7,15 @@ const validateUser = (req, res, next) => {
 
     let user = req.body;
 
-    let number_comprobation = us.phone.toString();
+    let number_comprobation = user.phone.toString();
                 
     //Invalid user name
 
     if(user.name.length < 2 ){
-        let error = ErrorFactory.buildError(Errors.SHORT_STRING, us.name, us);
+        let error = ErrorFactory.buildError(Errors.SHORT_STRING, user.name, user);
         return res.status(error.status).send({ error: error });
-    }else if(us.name.length > 127){
-        let error = ErrorFactory.buildError(Errors.LONG_STRING, us.name, us);
+    }else if(user.name.length > 127){
+        let error = ErrorFactory.buildError(Errors.LONG_STRING, user.name, user);
         return res.status(error.status).send({ error: error });
     }
 
@@ -23,7 +23,7 @@ const validateUser = (req, res, next) => {
 
     let nameRegex = /^[A-Za-zÑñÁáÉéÍíÓóÚuÜü ]+$/g;
     if(!user.name.match(nameRegex)) {
-        let error = ErrorFactory.buildError(Errors.INVALID_FORMAT, us.name, us);
+        let error = ErrorFactory.buildError(Errors.INVALID_FORMAT, user.name, user);
 
         return res.status(error.status).send({ error: error });
     }
@@ -31,32 +31,32 @@ const validateUser = (req, res, next) => {
 
     // Validate phone number
     if(number_comprobation.length < 10) {
-        let error = ErrorFactory.buildError(Errors.NUMBER_LOWER_BOUND, us.phone, 10);
+        let error = ErrorFactory.buildError(Errors.NUMBER_LOWER_BOUND, user.phone, 10);
         return res.status(error.status).send({ error: error });
     }else if(number_comprobation.length > 10){
-        let error = ErrorFactory.buildError(Errors.NUMBER_UPPER_BOUND, us.phone, 10);
+        let error = ErrorFactory.buildError(Errors.NUMBER_UPPER_BOUND, user.phone, 10);
         return res.status(error.status).send({ error: error });
     }
 
     let phoneRegex = /\d{10,10}/g;
     if(!user.phone.match(phoneRegex)) {
-        let error = ErrorFactory.buildError(Errors.INVALID_FORMAT, us.phone, 'string');
+        let error = ErrorFactory.buildError(Errors.INVALID_FORMAT, user.phone, 'string');
         return res.status(error.status).send({ error: error });
     }
 
     // Validate email
 
     if(user.email.length < 8) {
-        let error = ErrorFactory.buildError(Errors.SHORT_STRING, us.email, 8);
+        let error = ErrorFactory.buildError(Errors.SHORT_STRING, user.email, 8);
         return res.status(error.status).send({ error: error });
-    }else if(us.email.length > 50){
-        let error = ErrorFactory.buildError(Errors.LONG_STRING, us.name, 50);
+    }else if(user.email.length > 50){
+        let error = ErrorFactory.buildError(Errors.LONG_STRING, user.email, 50);
         return res.status(error.status).send({ error: error });
     }
 
     let emailRegex = /[\w-_\.]+@[\w-_\.]+/g;
     if(!user.email.match(emailRegex)) {
-        let error = ErrorFactory.buildError(Errors.INVALID_FORMAT, us.email, emailRegex);
+        let error = ErrorFactory.buildError(Errors.INVALID_FORMAT, user.email, emailRegex);
         return res.status(error.status).send({ error: error });
     }
 

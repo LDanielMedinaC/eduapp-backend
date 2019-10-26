@@ -173,19 +173,19 @@ module.exports = {
 
         User.findById(userID)
         .then((user_found) => {
-            if (!us)
+            if (!user_found)
             {   
-                let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, userID, us);
+                let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, userID, user_found);
 
                 return res.status(error.status).send({ error: error });
 
             } else {
                 //User exists, update
-                user_found.name = user_found.name || user.name;
-                user_found.email = user_found.email || user.email;
-                user_found.phone = user_found.phone || user.phone;
-                user_found.country = user_found.country || user.country;
-                user_found.language = user_found.language || user.language;
+                user_found.name = user.name || user_found.name;
+                user_found.email = user.email || user_found.email;
+                user_found.phone = user.phone || user_found.phone;
+                user_found.country = user.country || user_found.country;
+                user_found.language = user.language || user_found.language;
 
                 //SAVE THE UPDATE
 
