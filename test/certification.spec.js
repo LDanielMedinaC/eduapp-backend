@@ -257,9 +257,6 @@ describe ('Tutor Certification GET/:id', () => {
             dbTutor = await User.findOne({ 'email': tutors[0].email }).exec();
             noCertTutor = await User.findOne({ 'email': tutors[1].email }).exec();
 
-            console.log(dbTutor);
-            console.log(dbTutor.tutorDetails.certifications);
-            console.log(dbTutor.tutorDetails.certifications[0]);
             existingCert = dbTutor.tutorDetails.certifications[0];
 
             db.disconnectDB()
@@ -288,7 +285,6 @@ describe ('Tutor Certification GET/:id', () => {
         chai.request(server)
         .get(`/tutors/ffffffffffffff0123456789/certifications/${existingCert._id}`)
         .end((err, res) => {
-            console.log(res.body);
             shouldBeNotFound(res, done);
         });
 
@@ -321,9 +317,11 @@ describe ('Tutor Certification GET/:id', () => {
         .post(`/tutors/${dbTutor._id}/certifications`)
         .send(validCertificationWDiploma)
         .end((err, res) => {
-            res.should.have.status(200);
+            res.should.have.status(201);
             res.body.should.be.an('object');
             res.body.should.have.property('_id');
+
+            console.log(res.body);
 
             chai.request(server)
             .get(`/tutors/${dbTutor._id}/certifications/${res.body._id}`)
@@ -403,7 +401,7 @@ describe ('Tutor Certification GET', () => {
         .send(validCertificationWDiploma)
         .end((err, res) => {
 
-            res.should.have.status(200);
+            res.should.have.status(201);
             res.body.should.be.an('object');
 
             //Inser other cert in same tutor
@@ -411,7 +409,7 @@ describe ('Tutor Certification GET', () => {
             .post(`/tutors/${dbTutor._id}/certifications`)
             .send(validCertificationNoDiploma)
             .end((err2, res2) => {
-                res2.should.have.status(200);
+                res2.should.have.status(201);
                 res2.body.should.be.an('object');
 
                 //Verify GET of both certifications 

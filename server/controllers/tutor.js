@@ -318,7 +318,13 @@ module.exports = {
         tutor.save()
         .then( (tutor) => {
             const insertedCertIndex = tutor.tutorDetails.certifications.length - 1;
-            res.status(201).send(tutor.tutorDetails.certifications[insertedCertIndex]);
+            const cert = tutor.tutorDetails.certifications[insertedCertIndex]
+
+            cert._id = new ObjectId();
+
+            console.log(`\nInserted CERTIFICATION: ${cert}\n`);
+
+            res.status(201).send(cert);
         })
         .catch((err) => {
             let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);

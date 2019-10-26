@@ -29,6 +29,7 @@ const tutors = [
             }],
             certifications: [
                 {
+                    _id: new mongoose.mongo.ObjectId('56cb91bdc3464f14678934aa'),
                     institution: 'ITESM',
                     title: 'SCRUM',
                     date: new Date('2016-11-02').toISOString(),
@@ -67,6 +68,7 @@ const tutors = [
             workExperience: [],
             studies: [],
             certifications: [{
+                _id: new mongoose.mongo.ObjectId('56cb91bdc3464f14678934bb'),
                 institution: 'SSBU Montreal',
                 title: 'Neutral JS Básico',
                 date: new Date('2018-12-07').toISOString(),
