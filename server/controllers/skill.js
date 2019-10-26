@@ -93,12 +93,12 @@ module.exports = {
                 })
                 .catch(async (err) => {
                     await session.abortTransaction();
-                    return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                    return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                 })
             })
             .catch(async (err) => {
                 await session.abortTransaction();
-                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
             });
         }
         else{
@@ -136,12 +136,12 @@ module.exports = {
                 })
                 .catch(async (err) => {
                     await session.abortTransaction();
-                    return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                    return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                 })
             })
             .catch(async (err) => {
                 await session.abortTransaction();
-                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
             });
         }
     },
@@ -218,6 +218,7 @@ module.exports = {
         else{
             if( ((nSkill.name && nSkill.name == topic.Name) || !nSkill.name) && ((nSkill.field && nSkill.field == topic.Field) || !nSkill.field)){
                 skill.experience = nSkill.experience || skill.experience;
+                tutor.markModified('tutorDetails.skills');
                 tutor.save()
                 .then(async (updatedTutor) => {
                     console.log("0");
@@ -231,7 +232,7 @@ module.exports = {
                 })
                 .catch(async (err) => {
                     await session.abortTransaction();
-                    return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                    return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                 })
             }
             else{
@@ -249,9 +250,9 @@ module.exports = {
                     .then()
                     .catch(async (err) => {
                         await session.abortTransaction();
-                        return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                        return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                     })
-
+                    tutor.markModified('tutorDetails.skills');
                     tutor.save()
                     .then(async (updatedTutor) => {
                         console.log("1");
@@ -260,7 +261,7 @@ module.exports = {
                     })
                     .catch(async (err) => {
                         await session.abortTransaction();
-                        return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                        return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                     })
                 }
                 else{
@@ -273,6 +274,7 @@ module.exports = {
 
                         if(relatedTopic){
                             skill.topic = relatedTopic._id;
+                            tutor.markModified('tutorDetails.skills');
                             tutor.save()
                             .then(() => {
                                 relatedTopic.save()
@@ -288,12 +290,12 @@ module.exports = {
                                 })
                                 .catch(async (err) => {
                                     await session.abortTransaction();
-                                    return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                                    return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                                 })
                             })
                             .catch(async (err) => {
                                 await session.abortTransaction();
-                                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                                return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                             })
                         }
                         else{
@@ -317,18 +319,18 @@ module.exports = {
                                 })
                                 .catch(async (err) => {
                                     await session.abortTransaction();
-                                    return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                                    return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                                 })
                             })
                             .catch(async (err) => {
                                 await session.abortTransaction();
-                                return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                                return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                             })
                         }
                     })
                     .catch(async (err) => {
                         await session.abortTransaction();
-                        return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                        return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                     })
                 }
             }
@@ -386,6 +388,7 @@ module.exports = {
                 }
                 if(flag){
                     tutor.tutorDetails.skills = delSkill;
+                    tutor.markModified('tutorDetails.skills');
                     tutor.save()
                     .then(async (updatedTutor) => {
                         await session.commitTransaction()
@@ -393,7 +396,7 @@ module.exports = {
                     })
                     .catch(async (err) => {
                         await session.abortTransaction();
-                        return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                        return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                     });
                 }  
             }
@@ -403,6 +406,7 @@ module.exports = {
                 });
                 topic.Tutors = delTutors;
                 tutor.tutorDetails.skills = delSkill;
+                tutor.markModified('tutorDetails.skills');
                 topic.save()
                 .then(async (updatedTopic) => {
                     tutor.save()
@@ -412,12 +416,12 @@ module.exports = {
                     })
                     .catch(async (err) => {
                         await session.abortTransaction();
-                        return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                        return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                     });  
                 })
                 .catch(async (err) => {
                     await session.abortTransaction();
-                    return res.status(500).send(ErrorFactory.buildError(Errors.DATABASE_ERROR, err));
+                    return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                 });  
 
             }
