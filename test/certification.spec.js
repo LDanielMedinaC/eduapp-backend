@@ -330,7 +330,7 @@ describe ('Tutor Certification GET/:id', () => {
             .end ((err2, res2) => {
 
                 res2.should.have.status(200);
-                _.isEqual(res2.body, res.body).should.be.eql('true'); //GET obj is value-equal to the one returned by POST
+                _.isEqual(res2.body, res.body).should.be.eql(true); //GET obj is value-equal to the one returned by POST
 
                 done();
             });
@@ -436,8 +436,8 @@ describe ('Tutor Certification GET', () => {
                         diplomaURL: res3.body[1].diplomaURL,
                     }
 
-                    _.isEqual(resCert1, validCertificationWDiploma).should.be.eql('true'); 
-                    _.isEqual(resCert2, validCertificationNoDiploma).should.be.eql('true'); 
+                    _.isEqual(resCert1, validCertificationWDiploma).should.be.eql(true); 
+                    _.isEqual(resCert2, validCertificationNoDiploma).should.be.eql(true); 
 
                     done();
                 });
@@ -515,7 +515,7 @@ describe('Tutor Certification PUT', () => {
                 date: res.body.date,
                 diplomaURL: res.body.diplomaURL
             }
-            _.isEqual(returnedObj, validCertificationWDiploma).should.be.eql('true');
+            _.isEqual(returnedObj, validCertificationWDiploma).should.be.eql(true);
 
             done();
         });
