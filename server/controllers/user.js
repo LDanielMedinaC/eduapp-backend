@@ -169,17 +169,16 @@ module.exports = {
     update(req, res){
         let user = req.body;
 
-        User.findOne()
+        let userID = req.params.userId;
+
+        User.findOne({'uid': userID})
         .then((us) => {
-            if(!us) {
-                // Can't update non-existent user
-                return res.status(404).send({
-                    error: {
-                        status: 404,
-                        description: 'Requested User does not exist.',
-                        code: 1
-                    }
-                });
+            if (!us)
+            {   
+                let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, userID, us);
+
+                return res.status(error.status).send({ error: error });
+
             } else {
                 //User exists, update
                 us.phone = user.phone || us.phone;
@@ -187,7 +186,7 @@ module.exports = {
                 us.language = user.language || us.language;
 
                 //run validators on fields, return if error occurs
-                var err = page.validateSync();
+                var err = us.validateSync();
                 if (err)
                     return res.status(400).send({
                         error: {

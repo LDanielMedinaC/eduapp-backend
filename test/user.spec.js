@@ -418,3 +418,31 @@ describe('GET /users/:id', () => {
         
      });
 });
+
+/*
+* Test PUT to /user
+*/
+describe('PUT /users', () => {
+  it('Should update', (done) => {
+
+    let id = 'usuario3';
+
+    let update_user = {
+        language: 'Inglés',
+        country: 'Chile',
+        phone: 2223454590
+    };
+
+    chai.request(server)
+    .put('/users/'+id)
+    .send(update_user)
+    .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.should.have.property('phone');
+        res.body.should.have.property('country');
+        res.body.should.have.property('language');
+        done();
+    });
+  });
+});
