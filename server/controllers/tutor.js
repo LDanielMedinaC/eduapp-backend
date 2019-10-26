@@ -311,7 +311,9 @@ module.exports = {
         let certification = req.body;
 
         // Insert into array
-        tutor.tutorDetails.certification.push(study);
+        if(!tutor.tutorDetails.certifications)
+            tutor.tutorDetails.certifications = [];
+        tutor.tutorDetails.certifications.push(certification);
 
         tutor.save()
         .then( (tutor) => {

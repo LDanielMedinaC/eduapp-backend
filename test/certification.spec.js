@@ -91,7 +91,7 @@ describe('Tutor Certification POST', () => {
                 date: res.body.date,
                 diplomaURL: res.body.diplomaURL
             }
-            _.isEqual(returnedObj, validCertificationWDiploma).should.be.eql('true');
+            _.isEqual(returnedObj, validCertificationWDiploma).should.be.eql(true);
 
             done();
         });
@@ -257,6 +257,9 @@ describe ('Tutor Certification GET/:id', () => {
             dbTutor = await User.findOne({ 'email': tutors[0].email }).exec();
             noCertTutor = await User.findOne({ 'email': tutors[1].email }).exec();
 
+            console.log(dbTutor);
+            console.log(dbTutor.tutorDetails.certifications);
+            console.log(dbTutor.tutorDetails.certifications[0]);
             existingCert = dbTutor.tutorDetails.certifications[0];
 
             db.disconnectDB()
@@ -285,6 +288,7 @@ describe ('Tutor Certification GET/:id', () => {
         chai.request(server)
         .get(`/tutors/ffffffffffffff0123456789/certifications/${existingCert._id}`)
         .end((err, res) => {
+            console.log(res.body);
             shouldBeNotFound(res, done);
         });
 
