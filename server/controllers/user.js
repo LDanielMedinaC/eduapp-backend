@@ -172,7 +172,7 @@ module.exports = {
         let userID = req.params.userId;
 
         User.findById(userID)
-        .then((us) => {
+        .then((user_found) => {
             if (!us)
             {   
                 let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, userID, us);
@@ -181,15 +181,15 @@ module.exports = {
 
             } else {
                 //User exists, update
-                us.name = user.name || us.name;
-                us.email = user.email || us.email;
-                us.phone = user.phone || us.phone;
-                us.country = user.country || us.country;
-                us.language = user.language || us.language;
+                user_found.name = user_found.name || user.name;
+                user_found.email = user_found.email || user.email;
+                user_found.phone = user_found.phone || user.phone;
+                user_found.country = user_found.country || user.country;
+                user_found.language = user_found.language || user.language;
 
                 //SAVE THE UPDATE
 
-                us.save()
+                user_found.save()
                 .then((updatedUser) => res.status(200).send(updatedUser))
                 .catch((err) => {
                     res.status(500).send({

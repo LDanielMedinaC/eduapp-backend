@@ -5,13 +5,13 @@ let Errors = require('../../resources').Errors;
 
 const validateUser = (req, res, next) => {
 
-    let us = req.body;
+    let user = req.body;
 
     let number_comprobation = us.phone.toString();
                 
     //Invalid user name
 
-    if(us.name.length < 2 ){
+    if(user.name.length < 2 ){
         let error = ErrorFactory.buildError(Errors.SHORT_STRING, us.name, us);
         return res.status(error.status).send({ error: error });
     }else if(us.name.length > 127){
@@ -22,7 +22,7 @@ const validateUser = (req, res, next) => {
     //Invalid name
 
     let nameRegex = /^[A-Za-zÑñÁáÉéÍíÓóÚuÜü ]+$/g;
-    if(!us.name.match(nameRegex)) {
+    if(!user.name.match(nameRegex)) {
         let error = ErrorFactory.buildError(Errors.INVALID_FORMAT, us.name, us);
 
         return res.status(error.status).send({ error: error });
@@ -39,14 +39,14 @@ const validateUser = (req, res, next) => {
     }
 
     let phoneRegex = /\d{10,10}/g;
-    if(!us.phone.match(phoneRegex)) {
+    if(!user.phone.match(phoneRegex)) {
         let error = ErrorFactory.buildError(Errors.INVALID_FORMAT, us.phone, 'string');
         return res.status(error.status).send({ error: error });
     }
 
     // Validate email
 
-    if(us.email.length < 8) {
+    if(user.email.length < 8) {
         let error = ErrorFactory.buildError(Errors.SHORT_STRING, us.email, 8);
         return res.status(error.status).send({ error: error });
     }else if(us.email.length > 50){
@@ -55,7 +55,7 @@ const validateUser = (req, res, next) => {
     }
 
     let emailRegex = /[\w-_\.]+@[\w-_\.]+/g;
-    if(!us.email.match(emailRegex)) {
+    if(!user.email.match(emailRegex)) {
         let error = ErrorFactory.buildError(Errors.INVALID_FORMAT, us.email, emailRegex);
         return res.status(error.status).send({ error: error });
     }
