@@ -7,6 +7,8 @@ const chaiHttp = require('chai-http');
 const server = 'localhost:8000';
 const should = chai.should();
 
+
+const Errors = require('../server/resources').Errors;
 const shouldBeError = require('./helpers').shouldBeError;
 const shouldBeNotFound = require('./helpers').shouldBeNotFound;
 
@@ -428,9 +430,11 @@ describe('PUT /users', () => {
     let id = 'usuario3';
 
     let update_user = {
+        email: 'juancho_great@live.com.mx',
+        name: 'Juan Ernesto',
+        phone: '2223454590',
         language: 'Inglés',
-        country: 'Chile',
-        phone: 2223454590
+        country: 'Chile'
     };
 
     chai.request(server)
@@ -442,7 +446,238 @@ describe('PUT /users', () => {
         res.body.should.have.property('phone');
         res.body.should.have.property('country');
         res.body.should.have.property('language');
+        res.body.should.have.property('email');
+        res.body.should.have.property('name');
         done();
     });
+  });
+
+  it('Wrong id', (done) => {
+
+    let id = 'usuario0';
+
+    let update_user = {
+        email: 'juancho_great@live.com.mx',
+        name: 'Juan Ernesto',
+        phone: '2223454590',
+        language: 'Inglés',
+        country: 'Chile'
+    };
+
+    chai.request(server)
+    .put('/users/' + id)
+    .send(update_user)
+    .end((err, res) => {
+      shouldBeNotFound(res, done);
+    });
+
+  });
+
+  it('User name too short', (done) => {
+
+    let id = 'usuario3';
+
+    let update_user = {
+      email: 'juancho_great@live.com.mx',
+      name: 'U',
+      phone: '2223454590',
+      language: 'Inglés',
+      country: 'Chile'
+    };
+    chai.request(server)
+      .put('/users/'+id)
+      .send(update_user)
+      .end((err, res) => {
+        shouldBeError(res, done, Errors.SHORT_STRING);
+      });
+  });
+
+  it('User name too long', (done) => {
+
+    let id = 'usuario3';
+
+    let update_user = {
+      email: 'juancho_great@live.com.mx',
+      name: 'abcdefghifabcdefghifabcdefghifabcdefghifabcdefghifabcdefghifabcdefghifabcdefghifabcdefghifabcdefghifabcdefghifabcdefghifangjolnb',
+      phone: '2223454590',
+      language: 'Inglés',
+      country: 'Chile'
+    };
+    chai.request(server)
+      .put('/users/'+id)
+      .send(update_user)
+      .end((err, res) => {
+        shouldBeError(res, done, Errors.LONG_STRING);
+      });
+  });
+
+  it('Non alphabetic chars in name', (done) => {
+
+    let id = 'usuario3';
+
+    let update_user = {
+      email: 'juancho_great@live.com.mx',
+      name: 'Juan Ernesto 1',
+      phone: '2223454590',
+      language: 'Inglés',
+      country: 'Chile'
+    };
+    chai.request(server)
+      .put('/users/'+id)
+      .send(update_user)
+      .end((err, res) => {
+        shouldBeError(res, done, Errors.INVALID_FORMAT);
+      });
+  });
+
+  it('Phone too short', (done) => {
+
+    let id = 'usuario3';
+
+    let update_user = {
+      email: 'juancho_great@live.com.mx',
+      name: 'Juan Ernesto',
+      phone: '222345',
+      language: 'Inglés',
+      country: 'Chile'
+    };
+    chai.request(server)
+      .put('/users/'+id)
+      .send(update_user)
+      .end((err, res) => {
+        shouldBeError(res, done, Errors.NUMBER_LOWER_BOUND);
+      });
+  });
+
+  it('Phone too long', (done) => {
+
+    let id = 'usuario3';
+
+    let update_user = {
+      email: 'juancho_great@live.com.mx',
+      name: 'Juan Ernesto',
+      phone: '2223454590234',
+      language: 'Inglés',
+      country: 'Chile'
+    };
+    chai.request(server)
+      .put('/users/'+id)
+      .send(update_user)
+      .end((err, res) => {
+        shouldBeError(res, done, Errors.NUMBER_UPPER_BOUND);
+      });
+  });
+
+  it('Invalid phone', (done) => {
+    let id = 'usuario3';
+
+    let update_user = {
+      email: 'juancho_great@live.com.mx',
+      name: 'Juan Ernesto',
+      phone: '222345a459',
+      language: 'Inglés',
+      country: 'Chile'
+    };
+    chai.request(server)
+      .put('/users/'+id)
+      .send(update_user)
+      .end((err, res) => {
+        shouldBeError(res, done, Errors.INVALID_FORMAT);
+      });
+  });
+
+  it('Too short email', (done) => {
+    let id = 'usuario3';
+
+    let update_user = {
+      email: 'a@',
+      name: 'Juan Ernesto',
+      phone: '2223454590',
+      language: 'Inglés',
+      country: 'Chile'
+    };
+    chai.request(server)
+      .put('/users/'+id)
+      .send(update_user)
+      .end((err, res) => {
+        shouldBeError(res, done, Errors.SHORT_STRING);
+      });
+  });
+
+  it('Too long email', (done) => {
+
+    let id = 'usuario3';
+
+      let update_user = {
+        email: 'abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij@mail.com',
+        name: 'Juan Ernesto',
+        phone: '2223454590',
+        language: 'Inglés',
+        country: 'Chile'
+      };
+      chai.request(server)
+        .put('/users/'+id)
+        .send(update_user)
+        .end((err, res) => {
+          shouldBeError(res, done, Errors.LONG_STRING);
+        });
+  });
+
+  it('@ at 0', (done) => {
+
+    let id = 'usuario3';
+
+    let update_user = {
+      email: '@live.com.mx',
+      name: 'Juan Ernesto',
+      phone: '2223454590',
+      language: 'Inglés',
+      country: 'Chile'
+    };
+    chai.request(server)
+      .put('/users/'+id)
+      .send(update_user)
+      .end((err, res) => {
+        shouldBeError(res, done, Errors.INVALID_FORMAT);
+      });
+  });
+
+  it('@ at end', (done) => {
+
+    let id = 'usuario3';
+
+    let update_user = {
+      email: 'useremail.com@',
+      name: 'Juan Ernesto',
+      phone: '2223454590',
+      language: 'Inglés',
+      country: 'Chile'
+    };
+    chai.request(server)
+      .put('/users/'+id)
+      .send(update_user)
+      .end((err, res) => {
+        shouldBeError(res, done, Errors.INVALID_FORMAT);
+    });
+
+  });
+
+  it('No @', (done) => {
+
+    let id = 'usuario3';
+
+    let update_user = {
+      email: 'useremaillive.com.mx',
+      name: 'Juan Ernesto',
+      phone: '2223454590',
+      language: 'Inglés',
+      country: 'Chile'
+    };
+    chai.request(server)
+      .put('/users/'+id)
+      .send(update_user)
+      .end((err, res) => {
+        shouldBeError(res, done, Errors.INVALID_FORMAT);
+      });
   });
 });
