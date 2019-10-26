@@ -141,7 +141,7 @@ module.exports = {
     getDetails(req, res){
         let userID = req.params.userId;
 
-        User.findOne({'uid': userID})
+        User.findById(userID)
         .then((user) => {
             if (!user)
             {   
@@ -171,7 +171,7 @@ module.exports = {
 
         let userID = req.params.userId;
 
-        User.findOne({'uid': userID})
+        User.findById(userID)
         .then((us) => {
             if (!us)
             {   

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const userController = require('../server/controllers').user;
-const userModel = require('../server/models').user;
+const User = require('../server/models').User;
+const db = require('../server/models');
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -395,22 +396,40 @@ describe('POST /user', () => {
 
 describe('GET /users/:id', () => {
 
+    let user;
+
+    before(done => {
+      db.connectDB()
+      .then(async () => {
+          console.log('DB connected');
+          user = await User.findOne({ 'uid':  'usuario3'}).exec();
+
+          db.disconnectDB()
+          console.log('DB disconnected');
+
+          id = user._id;
+
+          done();
+      })
+      .catch(err => {
+          done(new Error(err));
+      });
+
+    });
+
     it('Given ID is not a user', (done) => {
        
-      let id = 'guerrerosupremo';
+      let new_id = '5db48a252f3af03923defe7f';
 
         chai.request(server)
-        .get('/users/'+id)
+        .get('/users/'+new_id)
         .end((err, res) => {
             shouldBeNotFound(res, done);
         });
     });
 
     it('Succesful get of an user', (done) => {
-    
-      
-      let id = 'usuario3';
-            
+             
         chai.request(server)
         .get('/users/' + id)
         .end((err, res) => {
@@ -425,9 +444,29 @@ describe('GET /users/:id', () => {
 * Test PUT to /user
 */
 describe('PUT /users', () => {
-  it('Should update', (done) => {
 
-    let id = 'usuario3';
+  let user;
+
+  before(done => {
+    db.connectDB()
+    .then(async () => {
+        console.log('DB connected');
+        user = await User.findOne({ 'uid':  'usuario3'}).exec();
+
+        db.disconnectDB()
+        console.log('DB disconnected');
+
+        id = user._id;
+
+        done();
+    })
+    .catch(err => {
+        done(new Error(err));
+    });
+
+  });
+
+  it('Should update', (done) => {
 
     let update_user = {
         email: 'juancho_great@live.com.mx',
@@ -454,7 +493,7 @@ describe('PUT /users', () => {
 
   it('Wrong id', (done) => {
 
-    let id = 'usuario0';
+    let id = '5db48a252f3af03923defe7f';
 
     let update_user = {
         email: 'juancho_great@live.com.mx',
@@ -475,8 +514,6 @@ describe('PUT /users', () => {
 
   it('User name too short', (done) => {
 
-    let id = 'usuario3';
-
     let update_user = {
       email: 'juancho_great@live.com.mx',
       name: 'U',
@@ -493,8 +530,6 @@ describe('PUT /users', () => {
   });
 
   it('User name too long', (done) => {
-
-    let id = 'usuario3';
 
     let update_user = {
       email: 'juancho_great@live.com.mx',
@@ -513,8 +548,6 @@ describe('PUT /users', () => {
 
   it('Non alphabetic chars in name', (done) => {
 
-    let id = 'usuario3';
-
     let update_user = {
       email: 'juancho_great@live.com.mx',
       name: 'Juan Ernesto 1',
@@ -531,8 +564,6 @@ describe('PUT /users', () => {
   });
 
   it('Phone too short', (done) => {
-
-    let id = 'usuario3';
 
     let update_user = {
       email: 'juancho_great@live.com.mx',
@@ -551,8 +582,6 @@ describe('PUT /users', () => {
 
   it('Phone too long', (done) => {
 
-    let id = 'usuario3';
-
     let update_user = {
       email: 'juancho_great@live.com.mx',
       name: 'Juan Ernesto',
@@ -569,8 +598,6 @@ describe('PUT /users', () => {
   });
 
   it('Invalid phone', (done) => {
-    let id = 'usuario3';
-
     let update_user = {
       email: 'juancho_great@live.com.mx',
       name: 'Juan Ernesto',
@@ -587,8 +614,6 @@ describe('PUT /users', () => {
   });
 
   it('Too short email', (done) => {
-    let id = 'usuario3';
-
     let update_user = {
       email: 'a@',
       name: 'Juan Ernesto',
@@ -605,8 +630,6 @@ describe('PUT /users', () => {
   });
 
   it('Too long email', (done) => {
-
-    let id = 'usuario3';
 
       let update_user = {
         email: 'abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij@mail.com',
@@ -625,8 +648,6 @@ describe('PUT /users', () => {
 
   it('@ at 0', (done) => {
 
-    let id = 'usuario3';
-
     let update_user = {
       email: '@live.com.mx',
       name: 'Juan Ernesto',
@@ -643,8 +664,6 @@ describe('PUT /users', () => {
   });
 
   it('@ at end', (done) => {
-
-    let id = 'usuario3';
 
     let update_user = {
       email: 'useremail.com@',
@@ -663,8 +682,6 @@ describe('PUT /users', () => {
   });
 
   it('No @', (done) => {
-
-    let id = 'usuario3';
 
     let update_user = {
       email: 'useremaillive.com.mx',
