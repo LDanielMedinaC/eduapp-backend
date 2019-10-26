@@ -40,7 +40,7 @@ const tutoringSchema = new mongoose.Schema({
         ref: 'Topic',
         required: true
     },
-    tutorID: {
+    tutorId: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true

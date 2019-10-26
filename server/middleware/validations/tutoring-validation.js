@@ -21,7 +21,7 @@ const validateTutoring = async (tutoring, required, td, st, et) => {
         return ErrorFactory.buildError(Errors.MISSING_FIELD, 'payment method', null);
     if(!tutoring.topicID && required)
         return ErrorFactory.buildError(Errors.MISSING_FIELD, 'topic id', null);
-    if(!tutoring.tutorID && required)
+    if(!tutoring.tutorId && required)
         return ErrorFactory.buildError(Errors.MISSING_FIELD, 'tutor id', null);
     if(!tutoring.userID && required)
         return ErrorFactory.buildError(Errors.MISSING_FIELD, 'user id', null);
@@ -91,8 +91,8 @@ const validateTutoring = async (tutoring, required, td, st, et) => {
         return ErrorFactory.buildError(Errors.INVALID_ID, 'topicID', tutoring.topicID);
     if(tutoring.userID && !ObjectId.isValid(tutoring.userID))
         return ErrorFactory.buildError(Errors.INVALID_ID, 'userID', tutoring.userID);
-    if(tutoring.tutorID && !ObjectId.isValid(tutoring.tutorID))
-        return ErrorFactory.buildError(Errors.INVALID_ID, 'tutorID', tutoring.tutorID);
+    if(tutoring.tutorId && !ObjectId.isValid(tutoring.tutorId))
+        return ErrorFactory.buildError(Errors.INVALID_ID, 'tutorId', tutoring.tutorId);
     if(tutoring.topicID){
         let topic = await Topic.findById(tutoring.topicID);
         if(!topic)
@@ -103,8 +103,8 @@ const validateTutoring = async (tutoring, required, td, st, et) => {
         if(!user)
             return ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'user', null);
     }
-    if(tutoring.tutorID){
-        let tutor = await User.findById(tutoring.tutorID);
+    if(tutoring.tutorId){
+        let tutor = await User.findById(tutoring.tutorId);
         if(!tutor || !tutor.tutorDetails)
             return ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor', null);
     }
