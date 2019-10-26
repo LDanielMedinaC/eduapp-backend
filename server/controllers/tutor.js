@@ -328,7 +328,7 @@ module.exports = {
 
     async updateCert(req, res) {
         let tutorId = req.params.tutorId;
-        let certId = req.params.certId;
+        let certId = req.params.certificationId;
         let updatedCert = req.body;
 
          // Validate tutor exists

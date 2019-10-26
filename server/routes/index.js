@@ -42,11 +42,11 @@ module.exports = (app) => {
     .delete(validateIds, tutorController.deleteStudy);
 
     // Tutor certifications
-    app.route('/tutors/:tutorId/certitifications')
+    app.route('/tutors/:tutorId/certifications')
     .get(validateIds, tutorController.getAllCerts)
     .post(validateIds, validateCertification, tutorController.insertCert);
 
-    app.route('/tutors/:tutorId/certitifications/:certitificationId')
+    app.route('/tutors/:tutorId/certifications/:certificationId')
     .get(validateIds, tutorController.getCert)
     .put(validateIds, validateCertification, tutorController.updateCert)
     .delete(validateIds, tutorController.deleteCert);
