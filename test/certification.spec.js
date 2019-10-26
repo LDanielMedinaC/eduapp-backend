@@ -473,8 +473,6 @@ describe('Tutor Certification PUT', () => {
         .send(validCertificationNoDiploma)
         .end((err, res) => {
 
-            console.log(res.body);
-
             res.should.have.status(200);
             res.body.should.be.an('object');
 
@@ -764,8 +762,9 @@ describe ('Tutor Certification DELETE', () => {
             chai.request(server)
             .get(`/tutors/${dbTutor._id}/certifications/`)
             .end((err, res) => {
+
                 res.should.have.status(200);
-                res.body.should.be.an('aray').that.is.empty;
+                res.body.should.be.an('array').that.is.empty;
 
                 done();
                 

@@ -394,8 +394,12 @@ module.exports = {
             return res.status(error.status).send({ error: error });
         }
 
-        const newArray = 0;
-        tutor.tutorDetails.certifications.pull({_id: certId});
+        //Create new array without the deleted certification and save
+        let newArray = tutor.tutorDetails.certifications.filter(cert => cert._id != certId);
+        tutor.tutorDetails.certifications = newArray;
+
+        tutor.markModified('tutorDetails.certifications');
+
         tutor.save()
         .then( (tutor) => {
             res.status(200).send();
