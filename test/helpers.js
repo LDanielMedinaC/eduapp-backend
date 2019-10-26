@@ -4,6 +4,10 @@ const chai = require('chai');
 const should = chai.should();
 const Errors = require('../server/resources').Errors;
 
+const randomCharCode = () => {
+    return Math.round((Math.random() * (122 - 97) + 97));
+};
+
 const shouldBeError = (res, done, code) => {
     res.should.have.status(400);
     res.body.should.be.an('object');
@@ -24,7 +28,16 @@ const shouldBeNotFound = (res, done) => {
     done();
 };
 
+const randomString = (length) => {
+    let string = '';
+    for(let i = 0; i < length; i++)
+        string += String.fromCharCode(randomCharCode());
+    
+    return string;
+};
+
 module.exports = {
     shouldBeError,
-    shouldBeNotFound
+    shouldBeNotFound,
+    randomString
 };

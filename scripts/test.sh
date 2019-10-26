@@ -11,7 +11,7 @@ echo $(date)
 killall -9 node
 [[ -f nohup.out ]] && rm nohup.out
 nohup npm run start:dev > nohup.out &
-sleep 5
+sleep 4
 
 # Run tests
 if (mocha $1)

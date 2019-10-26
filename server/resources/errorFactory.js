@@ -78,9 +78,14 @@ const buildError = (error, arg1, arg2) =>{
             errorObj.status = 401;
             break;
         }
+        case Errors.INVALID_CHARSET: {
+            errorObj.description = `Field ${arg1} should use ${arg2} characters`;
+            break;
+        }
         default:{
             errorObj.code = -1;
-            errorObj.description = 'Unknown error';
+            errorObj.description = 'Unknown error' + (arg1 ? `: ${arg1}` : '');
+            errorObj.status = 500;
         }
     }
 
