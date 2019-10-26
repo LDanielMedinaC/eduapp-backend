@@ -323,8 +323,6 @@ module.exports = {
             const insertedCertIndex = tutor.tutorDetails.certifications.length - 1;
             const cert = tutor.tutorDetails.certifications[insertedCertIndex]
 
-            console.log(`\nInserted CERTIFICATION: ${cert.json}\n`);
-
             res.status(201).send(cert);
         })
         .catch((err) => {
@@ -345,28 +343,37 @@ module.exports = {
             return res.status(error.status).send({ error: error });
         }
 
+        // Validate certification exists
+        let certifications = tutor.tutorDetails.certifications;
+        let dbCert = certifications.find(cert => {
+            return cert._id == certId;
+        });
+
+        if (!dbCert)
+        {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'certification');
+            return res.status(error.status).send({ error: error });
+        }
+
+        //Replace certification 
+        let certIndex =  certifications.findIndex(cert => {
+            return cert._id == certId;
+        });
+        updatedCert._id = certId;
+        certifications[certIndex] = updatedCert;
+
+        //Save
         tutor.markModified('tutorDetails.certifications');
 
-        User.findOneAndUpdate({
-            "_id": tutorId, "tutorDetails.certifications._id": certId
-        }, {
-            "$set" : {
-                "tutorDetails.certifications.$": updatedCert
-            }
-        }, function (err, user){
+        tutor.save()
+        .then( (tutor) => {
 
-            if (!err)
-            {
-                let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'certification');
-                return res.status(error.status).send({ error: error });
-            }
-            else
-            {
-                let certs = user.tutorDetails.certifications.filter(c => c._id == certId);
-                
-                res.status(200).send(certs[0]);
-            }
+            res.status(200).send(updatedCert);
         })
+        .catch((err) => {
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            return res.status(error.status).send({ error: error });
+        });
     },
 
     async deleteCert(req, res) {
@@ -387,6 +394,7 @@ module.exports = {
             return res.status(error.status).send({ error: error });
         }
 
+        const newArray = 0;
         tutor.tutorDetails.certifications.pull({_id: certId});
         tutor.save()
         .then( (tutor) => {

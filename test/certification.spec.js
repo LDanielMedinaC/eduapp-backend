@@ -472,6 +472,9 @@ describe('Tutor Certification PUT', () => {
         .put(`/tutors/${dbTutor._id}/certifications/${updateCert._id}`)
         .send(validCertificationNoDiploma)
         .end((err, res) => {
+
+            console.log(res.body);
+
             res.should.have.status(200);
             res.body.should.be.an('object');
 
