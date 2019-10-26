@@ -33,7 +33,9 @@
   },
   "scripts": {
     "start:dev": "nodemon --exec babel-node ./bin/www",
-    "seed": "node seeders",
+    "db:reset": "./scripts/db-reset.sh",
+    "db:drop": "./scripts/db-drop.sh",
+    "db:seed": "node seeders",
     "test": "./scripts/test.sh"
   }
 }
