@@ -17,7 +17,7 @@ module.exports = (app) => {
     // User routes
     app.route('/users')
     .post(userController.create);
-
+    
     app.route('/users/:userId')
     .get(userController.getDetails);
 

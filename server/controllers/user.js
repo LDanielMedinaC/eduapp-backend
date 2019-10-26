@@ -1,4 +1,6 @@
 const User = require('../models').User;
+const Errors = require('../resources').Errors;
+const ErrorFactory = require('../resources').ErrorFactory;
 
 function validateUser(user) {
     // Should validate user
@@ -137,19 +139,15 @@ module.exports = {
     // Method used to get an User by ID
 
     getDetails(req, res){
-        let userID = req.params.userID;
+        let userID = req.params.userId;
 
-        User.findById(userID)
+        User.findOne({'uid': userID})
         .then((user) => {
             if (!user)
-            {
-                return res.status(404).send({
-                    error: {
-                        status: 404,
-                        description: 'User does not exist',
-                        code: 3
-                    }
-                });
+            {   
+                let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, userID, user);
+
+                return res.status(error.status).send({ error: error });
             }
 
             return res.status(200).send(user);

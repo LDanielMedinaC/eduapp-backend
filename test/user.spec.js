@@ -7,6 +7,9 @@ const chaiHttp = require('chai-http');
 const server = 'localhost:8000';
 const should = chai.should();
 
+const shouldBeError = require('./helpers').shouldBeError;
+const shouldBeNotFound = require('./helpers').shouldBeNotFound;
+
 chai.use(chaiHttp);
 
 /*
@@ -384,35 +387,34 @@ describe('POST /user', () => {
 
 });
 
+/*
+* Test GET to /user/:id
+*/
+
 describe('GET /users/:id', () => {
 
     it('Given ID is not a user', (done) => {
        
-       let id = '555555555555551d35198a31';
+      let id = 'guerrerosupremo';
 
         chai.request(server)
         .get('/users/'+id)
         .end((err, res) => {
-            res.should.have.status(404);
-            res.body.error.code.should.be.eql(3);
-            done();
+            shouldBeNotFound(res, done);
         });
     });
 
     it('Succesful get of an user', (done) => {
     
-        chai.request(server)
-        .get('/users/')
-        .end((err, res) => {
-
-            let id = 'aaabbbccc';
+      
+      let id = 'usuario3';
             
-            chai.request(server)
-            .get('/users/' + id)
-            .end((err2, res2) => {
-                res2.should.have.status(200);
-                done();
-            });
+        chai.request(server)
+        .get('/users/' + id)
+        .end((err, res) => {
+          res.should.have.status(200);
+          done();
         });
+        
      });
 });
