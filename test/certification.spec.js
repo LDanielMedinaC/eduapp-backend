@@ -51,7 +51,7 @@ describe('Tutor Certification POST', () => {
     it('Valid certification POST no diploma', (done) => {
 
         chai.request(server)
-        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/certifications`)
         .send(validCertificationNoDiploma)
         .end((err, res) => {
             res.should.have.status(201);
@@ -65,7 +65,7 @@ describe('Tutor Certification POST', () => {
     it('Valid certification POST w diploma', (done) => {
 
         chai.request(server)
-        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/certifications`)
         .send(validCertificationWDiploma)
         .end((err, res) => {
             res.should.have.status(201);
@@ -79,7 +79,7 @@ describe('Tutor Certification POST', () => {
     it('Correct insertion', (done) => {
 
         chai.request(server)
-        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/certifications`)
         .send(validCertificationWDiploma)
         .end((err, res) => {
             res.should.have.status(201);
@@ -127,7 +127,7 @@ describe('Tutor Certification POST', () => {
         delete noInstCert.institution;
 
         chai.request(server)
-        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/certifications`)
         .send(noInstCert)
         .end((err, res) => {
             shouldBeError(res, done, Errors.MISSING_FIELD);
@@ -142,7 +142,7 @@ describe('Tutor Certification POST', () => {
         delete noTitleCert.title;
 
         chai.request(server)
-        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/certifications`)
         .send(noTitleCert)
         .end((err, res) => {
             shouldBeError(res, done, Errors.MISSING_FIELD);
@@ -157,7 +157,7 @@ describe('Tutor Certification POST', () => {
         delete noDateCert.date;
 
         chai.request(server)
-        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/certifications`)
         .send(noDateCert)
         .end((err, res) => {
             shouldBeError(res, done, Errors.MISSING_FIELD);
@@ -172,7 +172,7 @@ describe('Tutor Certification POST', () => {
         certCopy.institution = "l";
 
         chai.request(server)
-        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/certifications`)
         .send(certCopy)
         .end((err, res) => {
             shouldBeError(res, done, Errors.SHORT_STRING);
@@ -187,7 +187,7 @@ describe('Tutor Certification POST', () => {
         certCopy.title = "l";
 
         chai.request(server)
-        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/certifications`)
         .send(certCopy)
         .end((err, res) => {
             shouldBeError(res, done, Errors.SHORT_STRING);
@@ -202,7 +202,7 @@ describe('Tutor Certification POST', () => {
         certCopy.date = "1999-30-15";
 
         chai.request(server)
-        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/certifications`)
         .send(certCopy)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_FORMAT);
@@ -218,7 +218,7 @@ describe('Tutor Certification POST', () => {
         certCopy.date.setDate(certCopy.date.getDate() + 1);
 
         chai.request(server)
-        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/certifications`)
         .send(certCopy)
         .end((err, res) => {
             shouldBeError(res, done, Errors.DATE_IN_FUTURE);
@@ -233,7 +233,7 @@ describe('Tutor Certification POST', () => {
         certCopy.diplomaURL = 'agjkgjadk';
 
         chai.request(server)
-        .post(`/tutors/${noCertTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/certifications`)
         .send(certCopy)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_URL);
@@ -246,7 +246,6 @@ describe('Tutor Certification POST', () => {
 
 describe ('Tutor Certification GET/:id', () => {
 
-    let noCertTutor;
     let dbTutor;
     let existingCert;
 
@@ -255,7 +254,6 @@ describe ('Tutor Certification GET/:id', () => {
         .then(async () => {
 
             dbTutor = await User.findOne({ 'email': tutors[0].email }).exec();
-            noCertTutor = await User.findOne({ 'email': tutors[1].email }).exec();
 
             existingCert = dbTutor.tutorDetails.certifications[0];
 
@@ -321,8 +319,6 @@ describe ('Tutor Certification GET/:id', () => {
             res.body.should.be.an('object');
             res.body.should.have.property('_id');
 
-            console.log(res.body);
-
             chai.request(server)
             .get(`/tutors/${dbTutor._id}/certifications/${res.body._id}`)
             .end ((err2, res2) => {
@@ -383,7 +379,7 @@ describe ('Tutor Certification GET', () => {
     it('GET of tutor with no certifications', (done) => {
 
         chai.request(server)
-        .get(`/tutors/${dbTutor._id}/certifications`)
+        .get(`/tutors/${noCertTutor._id}/certifications`)
         .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.an('array').that.is.empty;
@@ -397,16 +393,16 @@ describe ('Tutor Certification GET', () => {
 
         //Insert 1 cert in a tutor with none
         chai.request(server)
-        .post(`/tutors/${dbTutor._id}/certifications`)
+        .post(`/tutors/${noCertTutor._id}/certifications`)
         .send(validCertificationWDiploma)
         .end((err, res) => {
 
             res.should.have.status(201);
             res.body.should.be.an('object');
 
-            //Inser other cert in same tutor
+            //Insert other cert in same tutor
             chai.request(server)
-            .post(`/tutors/${dbTutor._id}/certifications`)
+            .post(`/tutors/${noCertTutor._id}/certifications`)
             .send(validCertificationNoDiploma)
             .end((err2, res2) => {
                 res2.should.have.status(201);
@@ -414,7 +410,7 @@ describe ('Tutor Certification GET', () => {
 
                 //Verify GET of both certifications 
                 chai.request(server)
-                .get(`/tutors/${dbTutor._id}/certifications`)
+                .get(`/tutors/${noCertTutor._id}/certifications`)
                 .end((err3, res3) => {
 
                     res3.should.have.status(200);
@@ -425,14 +421,14 @@ describe ('Tutor Certification GET', () => {
                         institution: res3.body[0].institution,
                         title: res3.body[0].title,
                         date: res3.body[0].date,
-                        diplomaURL: res3.body[0].diplomaURL,
+                        diplomaURL: res3.body[0].diplomaURL
                     }
                     const resCert2 = {
                         institution: res3.body[1].institution,
                         title: res3.body[1].title,
                         date: res3.body[1].date,
-                        diplomaURL: res3.body[1].diplomaURL,
                     }
+
 
                     _.isEqual(resCert1, validCertificationWDiploma).should.be.eql(true); 
                     _.isEqual(resCert2, validCertificationNoDiploma).should.be.eql(true); 

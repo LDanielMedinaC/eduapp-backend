@@ -309,20 +309,21 @@ module.exports = {
 
         // Validate payload
         let certification = req.body;
+        certification._id = new mongoose.mongo.ObjectId();
 
         // Insert into array
         if(!tutor.tutorDetails.certifications)
             tutor.tutorDetails.certifications = [];
         tutor.tutorDetails.certifications.push(certification);
+        
+        tutor.markModified('tutorDetails.certifications');
 
         tutor.save()
         .then( (tutor) => {
             const insertedCertIndex = tutor.tutorDetails.certifications.length - 1;
             const cert = tutor.tutorDetails.certifications[insertedCertIndex]
 
-            cert._id = new ObjectId();
-
-            console.log(`\nInserted CERTIFICATION: ${cert}\n`);
+            console.log(`\nInserted CERTIFICATION: ${cert.json}\n`);
 
             res.status(201).send(cert);
         })
@@ -343,6 +344,8 @@ module.exports = {
             let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
             return res.status(error.status).send({ error: error });
         }
+
+        tutor.markModified('tutorDetails.certifications');
 
         User.findOneAndUpdate({
             "_id": tutorId, "tutorDetails.certifications._id": certId
