@@ -520,7 +520,7 @@ describe('GET /tutorings', () => {
   let attributeNames = ['date', 'lat','long','locationType', 'locationName', 'topicID', 'tutorID', 'userID','startTime', 'endTime', 'notes', 'paymentMethod'];
   it('should retrieve a tutoring', (done) => {
       chai.request(server)
-      .get('/tutors/')
+      .get('/tutors')
       .end((err, res) => {
         let id = res.body[0]._id;
         chai.request(server)

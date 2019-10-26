@@ -1,9 +1,10 @@
 require('dotenv').config();
-
-var User = require('../server/models').User;
+const mongoose = require('mongoose');
+const User = require('../server/models').User;
 
 const users = [
     new User({
+        _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe7c'),
         uid: 'usuario1',
         email: 'hector_great@itesm.mx',
         name: 'Hector Suarez',
