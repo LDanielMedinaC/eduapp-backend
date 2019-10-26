@@ -31,7 +31,7 @@ const tutors = [
                 {
                     institution: 'ITESM',
                     title: 'SCRUM',
-                    date: new Date('2016-11-02'),
+                    date: new Date('2016-11-02').toISOString(),
                     diplomaURL: 'http::gcloud/bucket/12454545bcd/item/a4555d121'
                 }
             ]
