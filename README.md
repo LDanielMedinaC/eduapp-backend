@@ -3,10 +3,11 @@ This is the backend for EduApp. We are using the MERNF stack (MongoDB + Express 
 
 ## Start the server
 - Pull and run `npm install`.
-- Create the .env configuration file. [See below](#MongoDB).
+- Create the `.env` configuration file. [See below](#MongoDB).
 - Import your Firebase service account. [See below](#Firebase).
+- Create the `mail-accounts.json` file. [See below](#Email)
 - Make sure mongodb is running.
-- Run `npm run start:dev` to to start the server in dev mode.
+- Run `npm run start:dev` to start the server in dev mode.
 
 You can use PostMan to send a request to the server. Assuming you're on localhost, use GET `localhost:8000/` and send the request. You should see following response:
 
@@ -36,6 +37,21 @@ to connect to remote MonogoDB...
 ### Firebase
 You will also need to set up the service account details for Firebase authentication. Make sure you include the `service-account.json` file under the `server/config/` directory. You can get this file from the Firebase project.
 
+### Email
+Some features will send an email as per requirements specification. You will need to have a local copy of the `mail-accounts.json` file, under the `server/config/` directory, so these features work. The contents of this file are as follows:
+```json
+{
+    "host": "<mail-host>",
+    "port": <port>,
+    "auth": {
+        "user": "<user-email>",
+        "pass": "<user-password>"
+    },
+    "recipient": "<recipient-email>"
+}
+```
+`auth` details are details for the account from which mails will be sent, while `recipient` is the email address for the default recipient of system notifications.
+
 ## Testing
 Make sure you include all the necessary tests for your feature. Once your implementation is ready, verify all tests pass with `npm test`.
 
@@ -45,6 +61,15 @@ This will automatically drop the DB, seed anew and start the server but you will
 Make sure to add all your seeders to `seeders/index.js`. Seeders need to export a `seed` function for script compatibility.
 
 To seed the database, run `npm run seed`.
+
+## Secrets
+Travis needs the encrypted configuration files listed below:
+
+- `.env`
+- `server/config/service-account.json`
+- `server/config/mail-accounts.json`
+
+- [Encrypting Travis files](https://docs.travis-ci.com/user/encrypting-files/)
 
 ## Documentation
 - [Board](https://trello.com/eduappback)
@@ -61,6 +86,7 @@ To seed the database, run `npm run seed`.
 - [Topic](https://drive.google.com/open?id=1ZkNmqaNRRy8YDedZDKSxq3oT3ZHOjSTU)
 - [Tutoring](https://drive.google.com/open?id=1N7jfkEyAZKkfKNL41UaVoDz-tWEEfJi4)
 - [User](https://drive.google.com/open?id=1Lrlcd6tzjDA0MhVxwEvUQS4mRrxY83vK)
+- [Feedback](https://drive.google.com/open?id=1BOjC4GRn8B1mLD4XXKDCNoM5gRLdTS6C)
 
 Please make sure you update the relevant documentation after merging changes.
 
