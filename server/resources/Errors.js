@@ -17,7 +17,7 @@ const Errors = {
     INVALID_ENCODING: 15,
     NOT_AUTHORIZED: 16,
     INVALID_URL: 17,
-
+    INVALID_CHARSET: 18,
     DATE_IN_FUTURE: 19
 }
 
