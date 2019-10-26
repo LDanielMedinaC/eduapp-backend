@@ -1,17 +1,21 @@
 require('dotenv').config();
+const mongoose = require('mongoose');
 
 const Topic = require('../server/models').Topic;
 
 const topics = [
     new Topic({
+        _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe78'),
         Name: 'Álgebra Lineal',
         Field: 'Matemáticas'
     }),
     new Topic({
+        _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe79'),
         Name: 'Cálculo Vectorial',
         Field: 'Matemáticas'
     }),
     new Topic({
+        _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe7a'),
         Name: 'Ecuaciones Diferenciales',
         Field: 'Matemáticas'
     }),
