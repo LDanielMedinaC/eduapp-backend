@@ -5,8 +5,6 @@ const landingPageController = require('../controllers').landingPage;
 const tutorController = require('../controllers').tutor;
 const topicController = require('../controllers').topic;
 const tutoringController = require('../controllers').tutoring;
-
-const authFirebase = require('../middleware/auth').authFirebase;
 const feedbackController = require('../controllers').feedback;
 
 const validateIds = require('../middleware/validations/ids-validation');
