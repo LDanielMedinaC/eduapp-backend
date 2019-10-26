@@ -25,7 +25,7 @@ const validatePaymentAccount = (req, res, next) => {
         }
     }
 
-    if(methods.indexOf(payment.method) == -1){
+    if(payment.method && methods.indexOf(payment.method) == -1){
         let error = ErrorFactory.buildError(Errors.INVALID_FIELD, 'payment method', methods);
         return res.status(error.status).send({error: error});
     }

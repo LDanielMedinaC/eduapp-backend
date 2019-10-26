@@ -17,6 +17,10 @@ module.exports = {
             return res.status(error.status).send({ error: error });
         }
 
+        if(!tutor.tutorDetails.paymentAccounts){
+            tutor.tutorDetails.paymentAccounts = [];
+        }
+
         let methods = tutor.tutorDetails.paymentAccounts;
 
         return res.status(200).send(methods);
@@ -33,6 +37,10 @@ module.exports = {
         }
 
         let paymentAccount = req.body;
+
+        if(!tutor.tutorDetails.paymentAccounts){
+            tutor.tutorDetails.paymentAccounts = [];
+        }
 
         let paymentAccounts = tutor.tutorDetails.paymentAccounts
 
@@ -67,6 +75,10 @@ module.exports = {
             return res.status(error.status).send({ error: error });
         }
 
+        if(!tutor.tutorDetails.paymentAccounts){
+            tutor.tutorDetails.paymentAccounts = [];
+        }
+
         let accounts = tutor.tutorDetails.paymentAccounts;
 
         for(let account of accounts){
@@ -87,6 +99,10 @@ module.exports = {
         if(!tutor || !tutor.tutorDetails ) {
             let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
             return res.status(error.status).send({ error: error });
+        }
+
+        if(!tutor.tutorDetails.paymentAccounts){
+            tutor.tutorDetails.paymentAccounts = [];
         }
 
         let accounts = tutor.tutorDetails.paymentAccounts;
@@ -124,6 +140,10 @@ module.exports = {
         if(!tutor || !tutor.tutorDetails ) {
             let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
             return res.status(error.status).send({ error: error });
+        }
+
+        if(!tutor.tutorDetails.paymentAccounts){
+            tutor.tutorDetails.paymentAccounts = [];
         }
 
         let accounts = tutor.tutorDetails.paymentAccounts;
