@@ -246,5 +246,168 @@ module.exports = {
         .then(tutors => {
             return res.status(200).send(tutors);
         });
-    }
+    },
+
+    /*
+    ##########################
+    ##### CERTIFICATIONS #####
+    ##########################
+    
+    */
+
+    async getCert(req, res) {
+        let tutorId = req.params.tutorId;
+        let certID = req.params.certificationId;
+
+         // Validate tutor exists
+         let tutor = await User.findById(tutorId).exec();
+         if(!tutor || !tutor.tutorDetails ) {
+             let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+             return res.status(error.status).send({ error: error });
+         }
+ 
+         // Validate cert exists
+         let certifications = tutor.tutorDetails.certifications;
+ 
+         let martchingCert;
+         for(let cert of certifications) {
+             if(cert._id == certID)
+                martchingCert = cert;
+         }
+ 
+         if(!martchingCert) {
+             let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'certification');
+             return res.status(error.status).send({ error: error });
+         }
+         
+         res.status(200).send(martchingCert);
+    },
+
+
+    async getAllCerts(req, res) {
+        let tutorId = req.params.tutorId;
+
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        res.status(200).send(tutor.tutorDetails.certifications);
+    },
+
+    async insertCert(req, res) {
+        let tutorId = req.params.tutorId;
+
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        // Validate payload
+        let certification = req.body;
+        certification._id = new mongoose.mongo.ObjectId();
+
+        // Insert into array
+        if(!tutor.tutorDetails.certifications)
+            tutor.tutorDetails.certifications = [];
+        tutor.tutorDetails.certifications.push(certification);
+        
+        tutor.markModified('tutorDetails.certifications');
+
+        tutor.save()
+        .then( (tutor) => {
+            const insertedCertIndex = tutor.tutorDetails.certifications.length - 1;
+            const cert = tutor.tutorDetails.certifications[insertedCertIndex]
+
+            res.status(201).send(cert);
+        })
+        .catch((err) => {
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            return res.status(error.status).send({ error: error });
+        });
+    },
+
+    async updateCert(req, res) {
+        let tutorId = req.params.tutorId;
+        let certId = req.params.certificationId;
+        let updatedCert = req.body;
+
+         // Validate tutor exists
+        const tutor = await User.findById(tutorId)
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        // Validate certification exists
+        let certifications = tutor.tutorDetails.certifications;
+        let dbCert = certifications.find(cert => {
+            return cert._id == certId;
+        });
+
+        if (!dbCert)
+        {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'certification');
+            return res.status(error.status).send({ error: error });
+        }
+
+        //Replace certification 
+        let certIndex =  certifications.findIndex(cert => {
+            return cert._id == certId;
+        });
+        updatedCert._id = certId;
+        certifications[certIndex] = updatedCert;
+
+        //Save
+        tutor.markModified('tutorDetails.certifications');
+
+        tutor.save()
+        .then( (tutor) => {
+
+            res.status(200).send(updatedCert);
+        })
+        .catch((err) => {
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            return res.status(error.status).send({ error: error });
+        });
+    },
+
+    async deleteCert(req, res) {
+        let tutorId = req.params.tutorId;
+        let certId = req.params.certificationId;
+
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        // Validate cert exists
+        let certifications = tutor.tutorDetails.certifications;
+        if(!certifications.filter(cert => cert._id == certId).length) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'certification');
+            return res.status(error.status).send({ error: error });
+        }
+
+        //Create new array without the deleted certification and save
+        let newArray = tutor.tutorDetails.certifications.filter(cert => cert._id != certId);
+        tutor.tutorDetails.certifications = newArray;
+
+        tutor.markModified('tutorDetails.certifications');
+
+        tutor.save()
+        .then( (tutor) => {
+            res.status(200).send();
+        })
+        .catch((err) => {
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            return res.status(error.status).send({ error: error });
+        });
+    },
+
 };
