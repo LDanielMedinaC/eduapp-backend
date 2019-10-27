@@ -369,3 +369,203 @@ describe('WorkExp POST', () => {
 
 
 });
+
+describe ('WorkExp GET/:id', () => {
+
+    let dbTutor;
+    let existingWE;
+
+    before(done => {
+        db.connectDB()
+        .then(async () => {
+
+            dbTutor = await User.findOne({ 'email': tutors[0].email }).exec();
+
+            existingWE = dbTutor.tutorDetails.workExperiences[0];
+
+            db.disconnectDB()
+
+            done();
+        })
+        .catch(err => {
+            done(new Error(err));
+        });
+
+    });
+
+    it('Invalid tutor ID', (done) => {
+
+        chai.request(server)
+        .get(`/tutors/qwerty/workexperiences/${existingWE._id}`)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_ID);
+        });
+
+    });
+
+    it('Tutor not found', (done) => {
+
+
+        chai.request(server)
+        .get(`/tutors/ffffffffffffff0123456789/workexperiences/${existingWE._id}`)
+        .end((err, res) => {
+            shouldBeNotFound(res, done);
+        });
+
+    });
+
+    it('Invalid workExp ID', (done) => {
+
+        chai.request(server)
+        .get(`/tutors/${dbTutor._id}/workexperiences/qwerty`)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_ID);
+        });
+
+    });
+
+    it('workExp not found', (done) => {
+
+
+        chai.request(server)
+        .get(`/tutors/${dbTutor._id}/workexperiences/ffffffffffffff0123456789`)
+        .end((err, res) => {
+            shouldBeNotFound(res, done);
+        });
+
+    });
+
+    it('Valid GET/:id', (done) => {
+
+        chai.request(server)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
+        .send(workExp)
+        .end((err, res) => {
+            res.should.have.status(201);
+            res.body.should.be.an('object');
+            res.body.should.have.property('_id');
+
+            chai.request(server)
+            .get(`/tutors/${dbTutor._id}/workexperiences/${res.body._id}`)
+            .end ((err2, res2) => {
+
+                res2.should.have.status(200);
+                _.isEqual(res2.body, res.body).should.be.eql(true); //GET obj is value-equal to the one returned by POST
+
+                done();
+            });
+        });
+
+        
+    });
+
+});
+
+describe ('WorkExp GET', () => {
+    let noWETutor;
+
+    before(done => {
+        db.connectDB()
+        .then(async () => {
+
+            noWETutor = await User.findOne({ 'email': tutors[1].email }).exec();
+
+            db.disconnectDB()
+
+            done();
+        })
+        .catch(err => {
+            done(new Error(err));
+        });
+
+    });
+
+    it('Invalid tutor ID', (done) => {
+
+        chai.request(server)
+        .get(`/tutors/qwerty/workexperiences`)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_ID);
+        });
+
+    });
+
+    it('Tutor not found', (done) => {
+
+        chai.request(server)
+        .get(`/tutors/ffffffffffffff0123456789/workexperiences`)
+        .end((err, res) => {
+            shouldBeNotFound(res, done);
+        });
+
+    });
+
+    it('GET of tutor with no work experiences', (done) => {
+
+        chai.request(server)
+        .get(`/tutors/${noWETutor._id}/workexperiences`)
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.an('array').that.is.empty;
+
+            done();
+        });
+
+    });
+
+    it('Correct get of work experiences', (done) => {
+
+        //Insert 1 WE in a tutor with none
+        chai.request(server)
+        .post(`/tutors/${noWETutor._id}/workexperiences`)
+        .send(workExp)
+        .end((err, res) => {
+
+            res.should.have.status(201);
+            res.body.should.be.an('object');
+
+            //Insert other WE in same tutor
+            chai.request(server)
+            .post(`/tutors/${noWETutor._id}/workexperiences`)
+            .send(workExpStillWorking)
+            .end((err2, res2) => {
+                res2.should.have.status(201);
+                res2.body.should.be.an('object');
+
+                //Verify GET of both work experiences 
+                chai.request(server)
+                .get(`/tutors/${noWETutor._id}/workexperiences`)
+                .end((err3, res3) => {
+
+                    res3.should.have.status(200);
+                    res3.body.should.be.an('array').that.is.not.empty;
+                    res3.body.should.have.length(2);
+
+                    const resCert1 = {
+                        institution: res3.body[0].institution,
+                        department: res3.body[0].department,
+                        beginDate: res3.body[0].beginDate,
+                        endDate: res3.body[0].endDate,
+                        stillWorking: false
+                    }
+                    const resCert2 = {
+                        institution: res3.body[1].institution,
+                        department: res3.body[1].department,
+                        beginDate: res3.body[1].beginDate,
+                        endDate: res3.body[1].endDate,
+                        stillWorking: true
+                    }
+
+                    _.isEqual(resCert1, workExp).should.be.eql(true); 
+                    _.isEqual(resCert2, workExpStillWorking).should.be.eql(true); 
+
+                    done();
+                });
+            });
+
+            
+        });
+
+    });
+
+});
