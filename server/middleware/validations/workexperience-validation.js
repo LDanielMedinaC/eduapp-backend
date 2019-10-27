@@ -70,7 +70,7 @@ const validateWorkexperience = (req, res, next) => {
         // endDate should be after beginDate
         let beginDate = Date.parse(workExp.beginDate);
         let endDate = Date.parse(workExp.endDate);
-        if(startDate > endDate) {
+        if(startDate >= endDate) {
             let error = ErrorFactory.buildError(Errors.DATE_ORDER, 'endDate', 'beginDate')
             return res.status(error.status).send({ error: error });
         }
