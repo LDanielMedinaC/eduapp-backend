@@ -15,7 +15,7 @@ const tutors = [
             taughtTopicsIDs: [],
             paymentAccounts: [],
             skills: [],
-            workExperience: [{
+            workExperiences: [{
                 _id: new mongoose.mongo.ObjectId('aaaa91bdc3464f14678934ca'),
                 institution: 'Macrosoft',
                 department: 'Bing',
@@ -55,7 +55,7 @@ const tutors = [
             taughtTopicsIDs: [],
             paymentAccounts: [],
             skills: [],
-            workExperience: [],
+            workExperiences: [],
             studies: [],
             certifications: []
         }
@@ -71,7 +71,7 @@ const tutors = [
             taughtTopicsIDs: [],
             paymentAccounts: [],
             skills: [],
-            workExperience: [{
+            workExperiences: [{
                 _id: new mongoose.mongo.ObjectId('bcad91bdc3464f14678934ca'),
                 institution: 'ITESM',
                 department: 'Ingeniería y Ciencias',

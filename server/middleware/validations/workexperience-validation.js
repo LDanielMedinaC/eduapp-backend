@@ -32,7 +32,7 @@ const validateWorkexperience = (req, res, next) => {
     }
 
     // Department min length 2 characters
-    if(workExp.title.length < 2) {
+    if(workExp.department.length < 2) {
         let error = ErrorFactory.buildError(Errors.SHORT_STRING, 'department', '2');
         return res.status(error.status).send({ error: error });
     }
@@ -70,7 +70,7 @@ const validateWorkexperience = (req, res, next) => {
         // endDate should be after beginDate
         let beginDate = Date.parse(workExp.beginDate);
         let endDate = Date.parse(workExp.endDate);
-        if(startDate >= endDate) {
+        if(beginDate >= endDate) {
             let error = ErrorFactory.buildError(Errors.DATE_ORDER, 'endDate', 'beginDate')
             return res.status(error.status).send({ error: error });
         }

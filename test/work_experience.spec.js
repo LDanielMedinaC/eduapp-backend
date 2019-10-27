@@ -58,6 +58,7 @@ describe('WorkExp POST', () => {
         .post(`/tutors/${dbTutor._id}/workexperiences`)
         .send(workExp)
         .end((err, res) => {
+
             res.should.have.status(201);
             res.body.should.be.an('object');
 
@@ -68,13 +69,17 @@ describe('WorkExp POST', () => {
 
     it('Valid work exp POST still working (beginDate is after endDate)', (done) => {
 
-        workExpStillWorking.endDate.setDate(workExpStillWorking.beginDate.getDate() + 1);
+        let we = {...workExpStillWorking};
+        we.beginDate = new Date(we.beginDate);
+        we.endDate = new Date(we.endDate);
+
+        we.endDate.setDate(we.beginDate.getDate() + 1);
 
         chai.request(server)
         .post(`/tutors/${dbTutor._id}/workexperiences`)
-        .send(workExpStillWorking)
+        .send(we)
         .end((err, res) => {
-            res.should.have.status(200);
+            res.should.have.status(201);
             res.body.should.be.an('object');
 
             done();
@@ -84,13 +89,17 @@ describe('WorkExp POST', () => {
 
     it('Valid work exp POSt still working (endDate is in the future)', (done) => {
 
-        workExpStillWorking.endDate.setDate((new Date()).getDate() + 10);
+        let we = {...workExpStillWorking};
+        we.beginDate = new Date(we.beginDate);
+        we.endDate = new Date(we.endDate);
+
+        we.endDate.setDate((new Date()).getDate() + 10);
 
         chai.request(server)
         .post(`/tutors/${dbTutor._id}/workexperiences`)
-        .send(workExpStillWorking)
+        .send(we)
         .end((err, res) => {
-            res.should.have.status(200);
+            res.should.have.status(201);
             res.body.should.be.an('object');
 
             done();
@@ -119,8 +128,9 @@ describe('WorkExp POST', () => {
                 department: res.body.department,
                 beginDate: res.body.beginDate,
                 endDate: res.body.endDate,
-                stillWorking: false
+                stillWorking: false //field is added in controller if not present
             }
+            we.stillWorking = false;
             _.isEqual(returnedObj, we).should.be.eql(true);
 
             done();
@@ -288,7 +298,7 @@ describe('WorkExp POST', () => {
     it('Failed insert: beginDate wrong format', (done) => {
 
         let certCopy = {...workExp};
-        certCopy.beginDate = "99/12/12";
+        certCopy.beginDate = "99/1212";
 
         certCopy.stillWorking = true;
 
@@ -305,7 +315,7 @@ describe('WorkExp POST', () => {
     it('Failed insert: endDate wrong format', (done) => {
 
         let certCopy = {...workExp};
-        certCopy.endDate = "99/12/12";
+        certCopy.endDate = "99/1212";
 
         chai.request(server)
         .post(`/tutors/${dbTutor._id}/workexperiences`)
@@ -616,6 +626,7 @@ describe('WorkExp PUT', () => {
         .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
         .send(workExp)
         .end((err, res) => {
+
             res.should.have.status(200);
             res.body.should.be.an('object');
 
@@ -626,11 +637,15 @@ describe('WorkExp PUT', () => {
 
     it('Valid work exp PUT still working (beginDate is after endDate)', (done) => {
 
-        workExpStillWorking.endDate.setDate(workExpStillWorking.beginDate.getDate() + 1);
+        let we = {...workExpStillWorking};
+        we.beginDate = new Date(we.beginDate);
+        we.endDate = new Date(we.endDate);
+
+        we.endDate.setDate(we.beginDate.getDate() + 1);
 
         chai.request(server)
         .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
-        .send(workExpStillWorking)
+        .send(we)
         .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.an('object');
@@ -642,11 +657,15 @@ describe('WorkExp PUT', () => {
 
     it('Valid work exp PUT still working (endDate is in the future)', (done) => {
 
-        workExpStillWorking.endDate.setDate((new Date()).getDate() + 10);
+        let we = {...workExpStillWorking};
+        we.beginDate = new Date(we.beginDate);
+        we.endDate = new Date(we.endDate);
+
+        we.endDate.setDate((new Date()).getDate() + 10);
 
         chai.request(server)
         .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
-        .send(workExpStillWorking)
+        .send(we)
         .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.an('object');
@@ -677,8 +696,9 @@ describe('WorkExp PUT', () => {
                 department: res.body.department,
                 beginDate: res.body.beginDate,
                 endDate: res.body.endDate,
-                stillWorking: false
+                stillWorking: false //field is added in controller if not present
             }
+            we.stillWorking = false;
             _.isEqual(returnedObj, we).should.be.eql(true);
 
             done();
@@ -708,7 +728,7 @@ describe('WorkExp PUT', () => {
 
     });
 
-    it('Invalid workExp ID', (done) => {
+    it('Invalid WorkExp ID', (done) => {
 
         chai.request(server)
         .put(`/tutors/${dbTutor._id}/workexperiences/qwerty`)
@@ -868,7 +888,7 @@ describe('WorkExp PUT', () => {
     it('Failed update: beginDate wrong format', (done) => {
 
         let certCopy = {...workExp};
-        certCopy.beginDate = "99/12/12";
+        certCopy.beginDate = "99/1212";
 
         certCopy.stillWorking = true;
 
@@ -885,7 +905,7 @@ describe('WorkExp PUT', () => {
     it('Failed update: endDate wrong format', (done) => {
 
         let certCopy = {...workExp};
-        certCopy.endDate = "99/12/12";
+        certCopy.endDate = "99/1212";
 
         chai.request(server)
         .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
