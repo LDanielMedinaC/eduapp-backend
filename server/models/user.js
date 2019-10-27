@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
                     }
                 }]
             },
-            workExperience: {
+            workExperiences: {
                 type: [{
                     institution: {
                         type: String,
