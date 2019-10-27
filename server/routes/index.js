@@ -10,6 +10,7 @@ const feedbackController = require('../controllers').feedback;
 const validateIds = require('../middleware/validations/ids-validation');
 const validateStudy = require('../middleware/validations/study-validation');
 const validateCertification = require('../middleware/validations/certification-validation');
+const validateWorkExp = require('../middleware/validations/workexperience-validation');
 const validateTutoring = require('../middleware/validations/tutoring-validation');
 const validateFeedback = require('../middleware/validations/feedback-validation');
 
@@ -53,6 +54,17 @@ module.exports = (app) => {
     .get(validateIds, tutorController.getCert)
     .put(validateIds, validateCertification, tutorController.updateCert)
     .delete(validateIds, tutorController.deleteCert);
+
+    // Tutor work experience
+
+    app.route('/tutors/:tutorId/workexperiences')
+    .get(validateIds, tutorController.getAllWorkExps)
+    .post(validateIds, validateWorkExp, tutorController.insertWorkExp);
+
+    app.route('/tutors/:tutorId/workexperiences/:workexperienceId')
+    .get(validateIds, tutorController.getWorkExp)
+    .put(validateIds, validateWorkExp, tutorController.updateWorkExp)
+    .delete(validateIds, tutorController.deleteWorkExp);
 
     // Topics routes
     app.route('/topics')

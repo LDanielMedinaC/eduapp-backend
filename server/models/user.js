@@ -60,8 +60,12 @@ const userSchema = new mongoose.Schema({
                     endDate: {
                         type: Date,
                         required: true
+                    },
+                    stillWorking: {
+                        type: Boolean,
+                        required: true,
+                        default: false
                     }
-
                 }]
             },
             studies: {

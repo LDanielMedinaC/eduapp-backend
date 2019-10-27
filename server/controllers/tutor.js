@@ -410,4 +410,31 @@ module.exports = {
         });
     },
 
+    /*
+    ##########################
+    #### WORK EXPERIENCE #####
+    ##########################
+    
+    */
+
+    async getWorkExp(req, res) {
+
+    },
+
+    async getAllWorkExps(req, res) {
+
+    },
+
+    async insertWorkExp(req, res) {
+
+    },
+
+    async updateWorkExp(req, res) {
+
+    },
+
+    async deleteWorkExp(req, res) {
+
+    },
+
 };
