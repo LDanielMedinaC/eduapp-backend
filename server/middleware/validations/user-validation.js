@@ -7,7 +7,7 @@ const validateUser = (req, res, next) => {
 
     let user = req.body;
 
-    let number_comprobation = user.phone.toString();
+    let numberComprobation = user.phone.toString();
                 
     //Invalid user name
 
@@ -23,17 +23,17 @@ const validateUser = (req, res, next) => {
 
     let nameRegex = /^[A-Za-zÑñÁáÉéÍíÓóÚuÜü ]+$/g;
     if(!user.name.match(nameRegex)) {
-        let error = ErrorFactory.buildError(Errors.INVALID_FORMAT, user.name, user);
+        let error = ErrorFactory.buildError(Errors.INVALID_CHARSET, user.name, user);
 
         return res.status(error.status).send({ error: error });
     }
 
 
     // Validate phone number
-    if(number_comprobation.length < 10) {
+    if(numberComprobation.length < 10) {
         let error = ErrorFactory.buildError(Errors.NUMBER_LOWER_BOUND, user.phone, 10);
         return res.status(error.status).send({ error: error });
-    }else if(number_comprobation.length > 10){
+    }else if(numberComprobation.length > 10){
         let error = ErrorFactory.buildError(Errors.NUMBER_UPPER_BOUND, user.phone, 10);
         return res.status(error.status).send({ error: error });
     }

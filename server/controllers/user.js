@@ -136,7 +136,7 @@ module.exports = {
         });
     },
 
-    // Method used to get an User by ID
+    // Method used to get a User by ID
 
     getDetails(req, res){
         let userID = req.params.userId;
@@ -154,17 +154,12 @@ module.exports = {
         })
         .catch( (err) => 
         {
-            res.status(500).send({
-                error: {
-                    status: 500,
-                    description: `Database error: ${err}`,
-                    code: 4
-                }
-            });
+            let error = ErrorFactory.buildError(err);
+            return res.status(error.status).send({ error: error });
         });
     },
 
-    //Method use to update an user
+    //Method used to update a user
 
     update(req, res){
         let user = req.body;
@@ -172,46 +167,36 @@ module.exports = {
         let userID = req.params.userId;
 
         User.findById(userID)
-        .then((user_found) => {
-            if (!user_found)
+        .then((userFound) => {
+            if (!userFound)
             {   
-                let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, userID, user_found);
+                let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, userID, userFound);
 
                 return res.status(error.status).send({ error: error });
 
             } else {
                 //User exists, update
-                user_found.name = user.name || user_found.name;
-                user_found.email = user.email || user_found.email;
-                user_found.phone = user.phone || user_found.phone;
-                user_found.country = user.country || user_found.country;
-                user_found.language = user.language || user_found.language;
+                userFound.name = user.name || userFound.name;
+                userFound.email = user.email || userFound.email;
+                userFound.phone = user.phone || userFound.phone;
+                userFound.country = user.country || userFound.country;
+                userFound.language = user.language || userFound.language;
 
                 //SAVE THE UPDATE
 
-                user_found.save()
+                userFound.save()
                 .then((updatedUser) => res.status(200).send(updatedUser))
                 .catch((err) => {
-                    res.status(500).send({
-                        error: {
-                            status: 500,
-                            description: `Database error: ${err.errmsg || err}`,
-                            code: 0
-                        }
-                    });
+                    let error = ErrorFactory.buildError(err);
+                    return res.status(error.status).send({ error: error });
                 });
 
 
             }
         })
         .catch((err) => {
-            res.status(500).send({
-                error: {
-                    status: 500,
-                    description: `Database error: ${err.errmsg}`,
-                    code: 2
-                }
-            });
+            let error = ErrorFactory.buildError(err);
+            return res.status(error.status).send({ error: error });
         });
     }
 }

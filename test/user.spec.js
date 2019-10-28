@@ -419,10 +419,10 @@ describe('GET /users/:id', () => {
 
     it('Given ID is not a user', (done) => {
        
-      let new_id = '5db48a252f3af03923defe7f';
+      let newId = '5db48a252f3af03923defe7f';
 
         chai.request(server)
-        .get('/users/'+new_id)
+        .get('/users/'+newId)
         .end((err, res) => {
             shouldBeNotFound(res, done);
         });
@@ -468,7 +468,7 @@ describe('PUT /users', () => {
 
   it('Should update', (done) => {
 
-    let update_user = {
+    let updateUser = {
         email: 'juancho_great@live.com.mx',
         name: 'Juan Ernesto',
         phone: '2223454590',
@@ -478,7 +478,7 @@ describe('PUT /users', () => {
 
     chai.request(server)
     .put('/users/'+id)
-    .send(update_user)
+    .send(updateUser)
     .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a('object');
@@ -493,9 +493,9 @@ describe('PUT /users', () => {
 
   it('Wrong id', (done) => {
 
-    let id = '5db48a252f3af03923defe7f';
+    let newId = '5db48a252f3af03923defe7f';
 
-    let update_user = {
+    let updateUser = {
         email: 'juancho_great@live.com.mx',
         name: 'Juan Ernesto',
         phone: '2223454590',
@@ -504,8 +504,8 @@ describe('PUT /users', () => {
     };
 
     chai.request(server)
-    .put('/users/' + id)
-    .send(update_user)
+    .put('/users/' + newId)
+    .send(updateUser)
     .end((err, res) => {
       shouldBeNotFound(res, done);
     });
@@ -514,7 +514,7 @@ describe('PUT /users', () => {
 
   it('User name too short', (done) => {
 
-    let update_user = {
+    let updateUser = {
       email: 'juancho_great@live.com.mx',
       name: 'U',
       phone: '2223454590',
@@ -523,7 +523,7 @@ describe('PUT /users', () => {
     };
     chai.request(server)
       .put('/users/'+id)
-      .send(update_user)
+      .send(updateUser)
       .end((err, res) => {
         shouldBeError(res, done, Errors.SHORT_STRING);
       });
@@ -531,7 +531,7 @@ describe('PUT /users', () => {
 
   it('User name too long', (done) => {
 
-    let update_user = {
+    let updateUser = {
       email: 'juancho_great@live.com.mx',
       name: 'abcdefghifabcdefghifabcdefghifabcdefghifabcdefghifabcdefghifabcdefghifabcdefghifabcdefghifabcdefghifabcdefghifabcdefghifangjolnb',
       phone: '2223454590',
@@ -540,7 +540,7 @@ describe('PUT /users', () => {
     };
     chai.request(server)
       .put('/users/'+id)
-      .send(update_user)
+      .send(updateUser)
       .end((err, res) => {
         shouldBeError(res, done, Errors.LONG_STRING);
       });
@@ -548,7 +548,7 @@ describe('PUT /users', () => {
 
   it('Non alphabetic chars in name', (done) => {
 
-    let update_user = {
+    let updateUser = {
       email: 'juancho_great@live.com.mx',
       name: 'Juan Ernesto 1',
       phone: '2223454590',
@@ -557,15 +557,15 @@ describe('PUT /users', () => {
     };
     chai.request(server)
       .put('/users/'+id)
-      .send(update_user)
+      .send(updateUser)
       .end((err, res) => {
-        shouldBeError(res, done, Errors.INVALID_FORMAT);
+        shouldBeError(res, done, Errors.INVALID_CHARSET);
       });
   });
 
   it('Phone too short', (done) => {
 
-    let update_user = {
+    let updateUser = {
       email: 'juancho_great@live.com.mx',
       name: 'Juan Ernesto',
       phone: '222345',
@@ -574,7 +574,7 @@ describe('PUT /users', () => {
     };
     chai.request(server)
       .put('/users/'+id)
-      .send(update_user)
+      .send(updateUser)
       .end((err, res) => {
         shouldBeError(res, done, Errors.NUMBER_LOWER_BOUND);
       });
@@ -582,7 +582,7 @@ describe('PUT /users', () => {
 
   it('Phone too long', (done) => {
 
-    let update_user = {
+    let updateUser = {
       email: 'juancho_great@live.com.mx',
       name: 'Juan Ernesto',
       phone: '2223454590234',
@@ -591,14 +591,14 @@ describe('PUT /users', () => {
     };
     chai.request(server)
       .put('/users/'+id)
-      .send(update_user)
+      .send(updateUser)
       .end((err, res) => {
         shouldBeError(res, done, Errors.NUMBER_UPPER_BOUND);
       });
   });
 
   it('Invalid phone', (done) => {
-    let update_user = {
+    let updateUser = {
       email: 'juancho_great@live.com.mx',
       name: 'Juan Ernesto',
       phone: '222345a459',
@@ -607,14 +607,14 @@ describe('PUT /users', () => {
     };
     chai.request(server)
       .put('/users/'+id)
-      .send(update_user)
+      .send(updateUser)
       .end((err, res) => {
         shouldBeError(res, done, Errors.INVALID_FORMAT);
       });
   });
 
   it('Too short email', (done) => {
-    let update_user = {
+    let updateUser = {
       email: 'a@',
       name: 'Juan Ernesto',
       phone: '2223454590',
@@ -623,7 +623,7 @@ describe('PUT /users', () => {
     };
     chai.request(server)
       .put('/users/'+id)
-      .send(update_user)
+      .send(updateUser)
       .end((err, res) => {
         shouldBeError(res, done, Errors.SHORT_STRING);
       });
@@ -631,7 +631,7 @@ describe('PUT /users', () => {
 
   it('Too long email', (done) => {
 
-      let update_user = {
+      let updateUser = {
         email: 'abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij@mail.com',
         name: 'Juan Ernesto',
         phone: '2223454590',
@@ -640,7 +640,7 @@ describe('PUT /users', () => {
       };
       chai.request(server)
         .put('/users/'+id)
-        .send(update_user)
+        .send(updateUser)
         .end((err, res) => {
           shouldBeError(res, done, Errors.LONG_STRING);
         });
@@ -648,7 +648,7 @@ describe('PUT /users', () => {
 
   it('@ at 0', (done) => {
 
-    let update_user = {
+    let updateUser = {
       email: '@live.com.mx',
       name: 'Juan Ernesto',
       phone: '2223454590',
@@ -657,7 +657,7 @@ describe('PUT /users', () => {
     };
     chai.request(server)
       .put('/users/'+id)
-      .send(update_user)
+      .send(updateUser)
       .end((err, res) => {
         shouldBeError(res, done, Errors.INVALID_FORMAT);
       });
@@ -665,7 +665,7 @@ describe('PUT /users', () => {
 
   it('@ at end', (done) => {
 
-    let update_user = {
+    let updateUser = {
       email: 'useremail.com@',
       name: 'Juan Ernesto',
       phone: '2223454590',
@@ -674,7 +674,7 @@ describe('PUT /users', () => {
     };
     chai.request(server)
       .put('/users/'+id)
-      .send(update_user)
+      .send(updateUser)
       .end((err, res) => {
         shouldBeError(res, done, Errors.INVALID_FORMAT);
     });
@@ -683,7 +683,7 @@ describe('PUT /users', () => {
 
   it('No @', (done) => {
 
-    let update_user = {
+    let updateUser = {
       email: 'useremaillive.com.mx',
       name: 'Juan Ernesto',
       phone: '2223454590',
@@ -692,7 +692,7 @@ describe('PUT /users', () => {
     };
     chai.request(server)
       .put('/users/'+id)
-      .send(update_user)
+      .send(updateUser)
       .end((err, res) => {
         shouldBeError(res, done, Errors.INVALID_FORMAT);
       });
