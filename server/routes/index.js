@@ -12,6 +12,7 @@ const validateStudy = require('../middleware/validations/study-validation');
 const validateCertification = require('../middleware/validations/certification-validation');
 const validateTutoring = require('../middleware/validations/tutoring-validation');
 const validateFeedback = require('../middleware/validations/feedback-validation');
+const validateUser = require('../middleware/validations/user-validation');
 
 module.exports = (app) => {
     // Test route
@@ -22,6 +23,10 @@ module.exports = (app) => {
     // User routes
     app.route('/users')
     .post(userController.create);
+    
+    app.route('/users/:userId')
+    .get(userController.getDetails)
+    .put(validateUser, userController.update);
 
     // Landing Page routes
     app.route('/landingpages')
