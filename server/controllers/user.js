@@ -154,7 +154,7 @@ module.exports = {
         })
         .catch( (err) => 
         {
-            let error = ErrorFactory.buildError(err);
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
             return res.status(error.status).send({ error: error });
         });
     },
@@ -195,7 +195,7 @@ module.exports = {
             }
         })
         .catch((err) => {
-            let error = ErrorFactory.buildError(err);
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
             return res.status(error.status).send({ error: error });
         });
     }

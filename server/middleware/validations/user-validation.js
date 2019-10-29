@@ -30,11 +30,8 @@ const validateUser = (req, res, next) => {
 
 
     // Validate phone number
-    if(numberComprobation.length < 10) {
-        let error = ErrorFactory.buildError(Errors.NUMBER_LOWER_BOUND, user.phone, 10);
-        return res.status(error.status).send({ error: error });
-    }else if(numberComprobation.length > 10){
-        let error = ErrorFactory.buildError(Errors.NUMBER_UPPER_BOUND, user.phone, 10);
+    if(numberComprobation.length < 10 || numberComprobation.length >10) {
+        let error = ErrorFactory.buildError(Errors.INVALID_LENGTH, user.phone, 10);
         return res.status(error.status).send({ error: error });
     }
 

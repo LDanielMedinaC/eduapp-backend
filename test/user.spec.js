@@ -576,7 +576,7 @@ describe('PUT /users', () => {
       .put('/users/'+id)
       .send(updateUser)
       .end((err, res) => {
-        shouldBeError(res, done, Errors.NUMBER_LOWER_BOUND);
+        shouldBeError(res, done, Errors.INVALID_LENGTH);
       });
   });
 
@@ -593,7 +593,7 @@ describe('PUT /users', () => {
       .put('/users/'+id)
       .send(updateUser)
       .end((err, res) => {
-        shouldBeError(res, done, Errors.NUMBER_UPPER_BOUND);
+        shouldBeError(res, done, Errors.INVALID_LENGTH);
       });
   });
 
