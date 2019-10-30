@@ -32,8 +32,7 @@ const userSchema = new mongoose.Schema({
             }],
             paymentAccounts: {
                 type: [{
-                    UUID: String,
-                    Method: String
+                    method: String
                 }]
             },
             skills: {
