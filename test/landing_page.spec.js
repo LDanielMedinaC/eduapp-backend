@@ -23,7 +23,7 @@ describe('PUT /landingpage', () => {
                     elements: [
                         {
                             iconImgURL: 'ftp::algo',
-                            ElementTitle: 'Title',
+                            elementTitle: 'Title',
                             description: 'Description'
                         }
                     ]
@@ -53,7 +53,7 @@ describe('PUT /landingpage', () => {
                     elements: [
                         {
                             iconImgURL: 'ftp::algo',
-                            ElementTitle: 'Title',
+                            elementTitle: 'Title',
                             description: 'Description'
                         }
                     ]
@@ -84,7 +84,7 @@ describe('PUT /landingpage', () => {
                     elements: [
                         {
                             iconImgURL: 'ftp::algo',
-                            ElementTitle: 'Title',
+                            elementTitle: 'Title',
                             description: 'Description'
                         }
                     ]
@@ -115,7 +115,7 @@ describe('PUT /landingpage', () => {
                     elements: [
                         {
                             iconImgURL: 'ftp::algo',
-                            ElementTitle: 'Title',
+                            elementTitle: 'Title',
                             description: 'Description'
                         }
                     ]
@@ -146,7 +146,7 @@ describe('PUT /landingpage', () => {
                     elements: [
                         {
                             iconImgURL: 'ftp::algo',
-                            ElementTitle: 'Title',
+                            elementTitle: 'Title',
                             description: 'Description'
                         }
                     ]
@@ -195,7 +195,7 @@ describe('PUT /landingpage', () => {
                     elements: [
                         {
                             iconImgURL: 'lol',
-                            ElementTitle: 'Title',
+                            elementTitle: 'Title',
                             description: 'Description'
                         }
                     ]
@@ -226,7 +226,7 @@ describe('PUT /landingpage', () => {
                     elements: [
                         {
                             iconImgURL: 'ftp::algo',
-                            ElementTitle: '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
+                            elementTitle: '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
                             description: 'Description'
                         }
                     ]
@@ -257,7 +257,7 @@ describe('PUT /landingpage', () => {
                     elements: [
                         {
                             iconImgURL: 'ftp::algo',
-                            ElementTitle: 'Title',
+                            elementTitle: 'Title',
                             description: 'Whatever'
                         }
                     ]
@@ -288,7 +288,7 @@ describe('PUT /landingpage', () => {
                     elements: [
                         {
                             iconImgURL: 'ftp::algo',
-                            ElementTitle: 'Title',
+                            elementTitle: 'Title',
                             description: 'Description'
                         }
                     ]

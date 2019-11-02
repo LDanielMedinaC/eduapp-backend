@@ -31,7 +31,7 @@ const landingPageSchema = new mongoose.Schema({
                     },
                     message: props => `${props.value} is not a valid URL`
                 }},
-                ElementTitle: {type: String, maxlength: [50, 'Element title must be less 50 characters']},
+                elementTitle: {type: String, maxlength: [50, 'Element title must be less 50 characters']},
                 ElementDescription: {type: String, maxlength: 200}
             }],
             backgroundImgURL: {
