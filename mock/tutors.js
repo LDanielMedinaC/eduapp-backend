@@ -5,6 +5,7 @@ const User = require('../server/models').User;
 
 const tutors = [
     new User({
+        _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe82'),
         uid: 'abcd123',
         email: 'danperro@tec.mx',
         name: 'Dan Pérez',

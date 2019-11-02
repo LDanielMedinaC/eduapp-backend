@@ -79,7 +79,10 @@ module.exports = (app) => {
     // Tutoring routes
     app.route('/tutorings')
     .get(tutoringController.list)    
-    .post(validateTutoring.validatePostTutoring, tutoringController.create)
+    .post(validateTutoring.validatePostTutoring, tutoringController.create);
+
+    app.route('/tutorings/:tutoringId')
+    .get(validateIds, tutoringController.getDetails);
 
     // Feedback routes
     app.route('/feedback')
