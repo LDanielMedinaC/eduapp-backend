@@ -112,7 +112,6 @@ const validateTutoring = async (tutoring, required, td, st, et) => {
 }
 
 const validatePostTutoring = async (req, res, next) => {
-
     let tutoring = req.body;
 
     let validatorError = await validateTutoring(tutoring, true, null, null, null);

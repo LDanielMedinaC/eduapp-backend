@@ -22,7 +22,7 @@ const create = (req, res) => {
             let user = await User.findById(postedTutoring.userID);
             let userEmail = user.email;
 
-            let tutor = await User.findById(postedTutoring.tutorID);
+            let tutor = await User.findById(postedTutoring.tutorId);
             let tutorEmail = tutor.email;
 
             let topic = await Topic.findById(postedTutoring.topicID);
@@ -74,7 +74,7 @@ const list = async (req, res) => {
     let tutorId = req.query.tutorId;
 
     if(!moongoose.Types.ObjectId.isValid(tutorId)){
-        let error = ErrorFactory.buildError(Errors.INVALID_ID, 'tutorID', tutorId);
+        let error = ErrorFactory.buildError(Errors.INVALID_ID, 'tutorId', tutorId);
         return res.status(error.status).send({ error: error })
     }
 

@@ -10,17 +10,18 @@ const shouldBeNotFound = require('./helpers').shouldBeNotFound;
 chai.use(chaiHttp);
 
 describe('POST /tutorings', () => {
-    let attributeNames = ['date', 'lat','long','locationType', 'locationName', 'topicID', 'tutorId', 'userID','startTime', 'endTime', 'notes', 'paymentMethod']; 
-    /*it('shouldCreate a tutoring', (done) => {
+    let attributeNames = ['date', 'lat','long','locationType', 'locationName', 'topicID', 'tutorId', 'userID','startTime', 'endTime', 'notes', 'paymentMethod'];
+
+    it('should create a tutoring', (done) => {
         let tutoringAux = {
           date: "10/11/2019",
           lat: 19.019635,
           long: -98.246918,
           locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
@@ -31,20 +32,20 @@ describe('POST /tutorings', () => {
         .post('/tutorings')
         .send(tutoringAux)
         .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            attributeNames.forEach(function(attributeName){
-                res.body.should.have.property(attributeName);
-            });
-            res.body.lat.should.be.eql(19.019635);
-            res.body.long.should.be.eql(-98.246918);
-            res.body.locationType.should.be.eql('Tutor place');
-            res.body.locationName.should.be.eql('Tutor\'s place');
-            res.body.notes.should.be.eql('It\'s not the best student'); 
-            res.body.paymentMethod.should.be.eql('cash'); 
-            done();
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          attributeNames.forEach(function(attributeName){
+              res.body.should.have.property(attributeName);
+          });
+          res.body.lat.should.be.eql(19.019635);
+          res.body.long.should.be.eql(-98.246918);
+          res.body.locationType.should.be.eql('Tutor place');
+          res.body.locationName.should.be.eql('Tutor\'s place');
+          res.body.notes.should.be.eql('It\'s not the best student'); 
+          res.body.paymentMethod.should.be.eql('cash'); 
+          done();
         });
-    });*/
+    });
 
     it('No date was provided.', (done) => {
         let tutoringAux = {
@@ -52,9 +53,9 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
@@ -81,9 +82,9 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
@@ -110,9 +111,9 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
@@ -138,9 +139,9 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           endTime: "23:00",
           notes: 'It\'s not the best student',
           paymentMethod: 'cash',
@@ -165,9 +166,9 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "122:020",
           endTime: "23:00",
           notes: 'It\'s not the best student',
@@ -193,9 +194,9 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "12:00",
           endTime: "11:00",
           notes: 'It\'s not the best student',
@@ -220,9 +221,9 @@ describe('POST /tutorings', () => {
           lat: 19.019635,
           long: -98.246918,
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
@@ -248,9 +249,9 @@ describe('POST /tutorings', () => {
           long: -981.246918,
           locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
@@ -276,9 +277,9 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'No idea',
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
@@ -304,9 +305,9 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'Tutor place',
           locationName: 'Tu',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
@@ -332,9 +333,9 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "12:00",
           endTime: "23:00",
           paymentMethod: 'cash',
@@ -359,9 +360,9 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "12:00",
           endTime: "23:00",
           notes: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
@@ -387,9 +388,9 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student'
@@ -413,9 +414,9 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
@@ -441,8 +442,8 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
-          tutorId: '5d8d49a96ee837016abcd2b1',
-          userID: '5d8d49a56ee837016abcd2aa',
+          tutorId: '5db48a252f3af03923defe82',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
@@ -468,8 +469,8 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          userID: '5d8d49a56ee837016abcd2aa',
+          topicID: '5db48a252f3af03923defe7a',
+          userID: '5db48a252f3af03923defe7c',
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
@@ -495,8 +496,8 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
-          topicID: '5d8d49a56ee837016abcd2a7',
-          tutorId: '5d8d49a96ee837016abcd2b1',
+          topicID: '5db48a252f3af03923defe7a',
+          tutorId: '5db48a252f3af03923defe82',
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
