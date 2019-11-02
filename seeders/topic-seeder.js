@@ -7,21 +7,21 @@ const topics = [
     new Topic({
         _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe78'),
         name: 'Álgebra Lineal',
-        Field: 'Matemáticas'
+        field: 'Matemáticas'
     }),
     new Topic({
         _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe79'),
         name: 'Cálculo Vectorial',
-        Field: 'Matemáticas'
+        field: 'Matemáticas'
     }),
     new Topic({
         _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe7a'),
         name: 'Ecuaciones Diferenciales',
-        Field: 'Matemáticas'
+        field: 'Matemáticas'
     }),
     new Topic({
         name: 'Smash Avanzado',
-        Field: 'Ciencias Sociales'
+        field: 'Ciencias Sociales'
     })
 ];
 

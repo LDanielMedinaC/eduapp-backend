@@ -12,7 +12,7 @@ describe('POST /topics', () => {
     it('Should create topic', (done) => {
         let topic = {
             name: 'Topic name',
-            Field: 'Topic field'
+            field: 'Topic field'
         };
         chai.request(server)
         .post('/topics')
@@ -21,16 +21,16 @@ describe('POST /topics', () => {
             res.should.have.status(200);
             res.body.should.be.a('object');
             res.body.should.have.property('name');
-            res.body.should.have.property('Field');
+            res.body.should.have.property('field');
             res.body.name.should.be.eql('Topic name');
-            res.body.Field.should.be.eql('Topic field');
+            res.body.field.should.be.eql('Topic field');
             done();
         });
     });
 
     it('No name', (done) => {
         let topic = {
-            Field: 'Topic field'
+            field: 'Topic field'
         }
         chai.request(server)
         .post('/topics')
@@ -48,7 +48,7 @@ describe('POST /topics', () => {
     it('Name too long', (done) => {
         let topic = {
             name: 'abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk',
-            Field: 'Topic field'
+            field: 'Topic field'
         }
         chai.request(server)
         .post('/topics')

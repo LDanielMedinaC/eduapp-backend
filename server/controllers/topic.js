@@ -15,7 +15,7 @@ function validateTopic(topic) {
             code: 2
         };
     }
-    if(!topic.Field){
+    if(!topic.field){
         return {
             status: 400,
             description: 'A topic must have a field.',
