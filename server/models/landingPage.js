@@ -16,7 +16,7 @@ const landingPageSchema = new mongoose.Schema({
         },
         message: props => `${props.value} contains an invalid URL`
     }}],
-    Sections: {
+    sections: {
         type: [{
             title: {
                 type: String,

@@ -49,7 +49,7 @@ module.exports = {
                 page.LogoImgURL = landingPage.LogoImgURL || page.LogoImgURL;
                 page.ShowcasedTopicsIDs = landingPage.ShowcasedTopicsIDs || page.ShowcasedTopicsIDs;
                 page.Carrousel = landingPage.Carrousel || page.Carrousel;
-                page.Sections = landingPage.Sections || page.Sections || [];
+                page.sections = landingPage.sections || page.sections || [];
 
                 //run validators on fields, return if error occurs
                 var err = page.validateSync();

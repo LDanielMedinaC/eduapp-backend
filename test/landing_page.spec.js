@@ -15,7 +15,7 @@ chai.use(chaiHttp);
 describe('PUT /landingpage', () => {
     it('Should update', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
                     title: 'Titulo',
                     description: 'Description',
@@ -37,7 +37,7 @@ describe('PUT /landingpage', () => {
         .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
-            res.body.should.have.property('Sections');
+            res.body.should.have.property('sections');
             res.body.should.have.property('LogoImgURL');
             done();
         });
@@ -45,7 +45,7 @@ describe('PUT /landingpage', () => {
 
     it('Title too short', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
                     title: '',
                     description: 'Description',
@@ -76,7 +76,7 @@ describe('PUT /landingpage', () => {
 
     it('Title too LONG', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
                     title: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
                     description: 'Description',
@@ -107,7 +107,7 @@ describe('PUT /landingpage', () => {
 
     it('Description too long', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
                     title: 'Title',
                     description: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
@@ -138,7 +138,7 @@ describe('PUT /landingpage', () => {
 
     it('Invalid image url', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
                     title: 'Title',
                     description: 'Description',
@@ -169,7 +169,7 @@ describe('PUT /landingpage', () => {
 
     it('No sections', (done) => {
         let update_lp = {
-            Sections: [],
+            sections: [],
             LogoImgURL: 'http::algo'
         };
         chai.request(server)
@@ -187,7 +187,7 @@ describe('PUT /landingpage', () => {
 
     it('Invalid URL', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
                     title: 'Title',
                     description: 'Description',
@@ -218,7 +218,7 @@ describe('PUT /landingpage', () => {
 
     it('Title too long', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
                     title: 'Title',
                     description: 'Description',
@@ -249,7 +249,7 @@ describe('PUT /landingpage', () => {
 
     it('Description too long', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
                     title: 'Title',
                     description: 'This description is too long for the mongoose validation to pass, so it should be rejected and produce a bad response when sent as a payload in the post request for landingpages. If this landing page section description is validated and saved then something is wrong.',
@@ -280,7 +280,7 @@ describe('PUT /landingpage', () => {
 
     it('Invalid URL', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
                     title: 'Title',
                     description: 'Description',
