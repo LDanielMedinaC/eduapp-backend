@@ -417,7 +417,7 @@ describe('GET /users/:id', () => {
 
     });
 
-    it('Given ID is not a user', (done) => {
+    it('Given Id is not a user', (done) => {
        
       let newId = '5db48a252f3af03923defe7f';
 

@@ -98,7 +98,7 @@ describe('Tutor Certification POST', () => {
 
     });
 
-    it('Invalid tutor ID', (done) => {
+    it('Invalid tutor Id', (done) => {
 
         chai.request(server)
         .post(`/tutors/qwerty/certifications`)
@@ -267,7 +267,7 @@ describe ('Tutor Certification GET/:id', () => {
 
     });
 
-    it('Invalid tutor ID', (done) => {
+    it('Invalid tutor Id', (done) => {
 
         chai.request(server)
         .get(`/tutors/qwerty/certifications/${existingCert._id}`)
@@ -288,7 +288,7 @@ describe ('Tutor Certification GET/:id', () => {
 
     });
 
-    it('Invalid certification ID', (done) => {
+    it('Invalid certification Id', (done) => {
 
         chai.request(server)
         .get(`/tutors/${dbTutor._id}/certifications/qwerty`)
@@ -356,7 +356,7 @@ describe ('Tutor Certification GET', () => {
 
     });
 
-    it('Invalid tutor ID', (done) => {
+    it('Invalid tutor Id', (done) => {
 
         chai.request(server)
         .get(`/tutors/qwerty/certifications`)
@@ -517,7 +517,7 @@ describe('Tutor Certification PUT', () => {
 
     });
 
-    it('Invalid tutor ID', (done) => {
+    it('Invalid tutor Id', (done) => {
 
         chai.request(server)
         .put(`/tutors/qwerty/certifications/${updateCert._id}`)
@@ -540,7 +540,7 @@ describe('Tutor Certification PUT', () => {
 
     });
 
-    it('Invalid certification ID', (done) => {
+    it('Invalid certification Id', (done) => {
 
         chai.request(server)
         .put(`/tutors/${dbTutor._id}/certifications/qwerty`)
@@ -710,7 +710,7 @@ describe ('Tutor Certification DELETE', () => {
     });
 
 
-    it('Invalid tutor ID', (done) => {
+    it('Invalid tutor Id', (done) => {
 
         chai.request(server)
         .delete(`/tutors/qwerty/certifications/${existingCert._id}`)
@@ -731,7 +731,7 @@ describe ('Tutor Certification DELETE', () => {
 
     });
 
-    it('Invalid certification ID', (done) => {
+    it('Invalid certification Id', (done) => {
 
         chai.request(server)
         .delete(`/tutors/${dbTutor._id}/certifications/qwerty`)

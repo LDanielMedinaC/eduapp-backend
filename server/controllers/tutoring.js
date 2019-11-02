@@ -19,13 +19,13 @@ const create = (req, res) => {
 
         // Send email notifying student and tutor
         try {
-            let user = await User.findById(postedTutoring.userID);
+            let user = await User.findById(postedTutoring.userId);
             let userEmail = user.email;
 
             let tutor = await User.findById(postedTutoring.tutorId);
             let tutorEmail = tutor.email;
 
-            let topic = await Topic.findById(postedTutoring.topicID);
+            let topic = await Topic.findById(postedTutoring.topicId);
 
             let transporter = nodeMailer.createTransport({
                 host: mailConfig.host,

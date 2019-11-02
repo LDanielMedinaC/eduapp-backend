@@ -19,11 +19,11 @@ const validateTutoring = async (tutoring, required, td, st, et) => {
         return ErrorFactory.buildError(Errors.MISSING_FIELD, 'notes', null);
     if(!tutoring.paymentMethod && required)
         return ErrorFactory.buildError(Errors.MISSING_FIELD, 'payment method', null);
-    if(!tutoring.topicID && required)
+    if(!tutoring.topicId && required)
         return ErrorFactory.buildError(Errors.MISSING_FIELD, 'topic id', null);
     if(!tutoring.tutorId && required)
         return ErrorFactory.buildError(Errors.MISSING_FIELD, 'tutor id', null);
-    if(!tutoring.userID && required)
+    if(!tutoring.userId && required)
         return ErrorFactory.buildError(Errors.MISSING_FIELD, 'user id', null);
     if(tutoring.date){
         if(tutoring.date.length != 10)
@@ -87,19 +87,19 @@ const validateTutoring = async (tutoring, required, td, st, et) => {
     }
     if(tutoring.paymentMethod && paymentMethods.indexOf(tutoring.paymentMethod) == -1)
         return ErrorFactory.buildError(Errors.INVALID_FIELD, 'payment method', 'paymentMethods');
-    if(tutoring.topicID && !ObjectId.isValid(tutoring.topicID))
-        return ErrorFactory.buildError(Errors.INVALID_ID, 'topicID', tutoring.topicID);
-    if(tutoring.userID && !ObjectId.isValid(tutoring.userID))
-        return ErrorFactory.buildError(Errors.INVALID_ID, 'userID', tutoring.userID);
+    if(tutoring.topicId && !ObjectId.isValid(tutoring.topicId))
+        return ErrorFactory.buildError(Errors.INVALID_ID, 'topicId', tutoring.topicId);
+    if(tutoring.userId && !ObjectId.isValid(tutoring.userId))
+        return ErrorFactory.buildError(Errors.INVALID_ID, 'userId', tutoring.userId);
     if(tutoring.tutorId && !ObjectId.isValid(tutoring.tutorId))
-        return ErrorFactory.buildError(Errors.INVALID_ID, 'tutorId', tutoring.tutorId);
-    if(tutoring.topicID){
-        let topic = await Topic.findById(tutoring.topicID);
+        return ErrorFactory.buildError(Errors.INVALId_ID, 'tutorId', tutoring.tutorId);
+    if(tutoring.topicId){
+        let topic = await Topic.findById(tutoring.topicId);
         if(!topic)
             return ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'topic', null);
     }
-    if(tutoring.userID){
-        let user = await User.findById(tutoring.userID);
+    if(tutoring.userId){
+        let user = await User.findById(tutoring.userId);
         if(!user)
             return ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'user', null);
     }

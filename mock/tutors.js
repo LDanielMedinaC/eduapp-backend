@@ -13,7 +13,7 @@ const tutors = [
         country: 'Mexico',
         language: 'es',
         tutorDetails: {
-            taughtTopicsIDs: [],
+            taughtTopicsIds: [],
             paymentAccounts: [],
             skills: [],
             workExperiences: [{
@@ -53,7 +53,7 @@ const tutors = [
         country: 'Mexico',
         language: 'es',
         tutorDetails: {
-            taughtTopicsIDs: [],
+            taughtTopicsIds: [],
             paymentAccounts: [],
             skills: [],
             workExperiences: [],
@@ -69,7 +69,7 @@ const tutors = [
         country: 'Mexico',
         language: 'es',
         tutorDetails: {
-            taughtTopicsIDs: [],
+            taughtTopicsIds: [],
             paymentAccounts: [],
             skills: [],
             workExperiences: [{

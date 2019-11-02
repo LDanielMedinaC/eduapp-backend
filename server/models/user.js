@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     },
     tutorDetails: {
         type: {
-            taughtTopicsIDs: [{
+            taughtTopicsIds: [{
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Topic'
             }],

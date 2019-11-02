@@ -138,7 +138,7 @@ describe('WorkExp POST', () => {
 
     });
 
-    it('Invalid tutor ID', (done) => {
+    it('Invalid tutor Id', (done) => {
 
         chai.request(server)
         .post(`/tutors/qwerty/workexperiences`)
@@ -421,7 +421,7 @@ describe ('WorkExp GET/:id', () => {
 
     });
 
-    it('Invalid tutor ID', (done) => {
+    it('Invalid tutor Id', (done) => {
 
         chai.request(server)
         .get(`/tutors/qwerty/workexperiences/${existingWE._id}`)
@@ -442,7 +442,7 @@ describe ('WorkExp GET/:id', () => {
 
     });
 
-    it('Invalid workExp ID', (done) => {
+    it('Invalid workExp Id', (done) => {
 
         chai.request(server)
         .get(`/tutors/${dbTutor._id}/workexperiences/qwerty`)
@@ -508,7 +508,7 @@ describe ('WorkExp GET', () => {
 
     });
 
-    it('Invalid tutor ID', (done) => {
+    it('Invalid tutor Id', (done) => {
 
         chai.request(server)
         .get(`/tutors/qwerty/workexperiences`)
@@ -706,7 +706,7 @@ describe('WorkExp PUT', () => {
 
     });
 
-    it('Invalid tutor ID', (done) => {
+    it('Invalid tutor Id', (done) => {
 
         chai.request(server)
         .put(`/tutors/qwerty/workexperiences/${updateWE._id}`)
@@ -728,7 +728,7 @@ describe('WorkExp PUT', () => {
 
     });
 
-    it('Invalid WorkExp ID', (done) => {
+    it('Invalid WorkExp Id', (done) => {
 
         chai.request(server)
         .put(`/tutors/${dbTutor._id}/workexperiences/qwerty`)
@@ -1012,7 +1012,7 @@ describe ('WorkExp DELETE', () => {
     });
 
 
-    it('Invalid tutor ID', (done) => {
+    it('Invalid tutor Id', (done) => {
 
         chai.request(server)
         .delete(`/tutors/qwerty/workexperiences/${existingWE._id}`)
@@ -1033,7 +1033,7 @@ describe ('WorkExp DELETE', () => {
 
     });
 
-    it('Invalid certification ID', (done) => {
+    it('Invalid certification Id', (done) => {
 
         chai.request(server)
         .delete(`/tutors/${dbTutor._id}/workexperiences/qwerty`)

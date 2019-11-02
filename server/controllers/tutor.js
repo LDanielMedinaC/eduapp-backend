@@ -235,7 +235,7 @@ module.exports = {
                 return res.status(200).json([]);
 
             let tutors = await User.where('tutorDetails').ne(null)
-            .where('tutorDetails.taughtTopicsIDs').equals(topicId)
+            .where('tutorDetails.taughtTopicsIds').equals(topicId)
             .exec();
             
             return res.status(200).send(tutors);
@@ -257,7 +257,7 @@ module.exports = {
 
     async getCert(req, res) {
         let tutorId = req.params.tutorId;
-        let certID = req.params.certificationId;
+        let certId = req.params.certificationId;
 
          // Validate tutor exists
          let tutor = await User.findById(tutorId).exec();
@@ -271,7 +271,7 @@ module.exports = {
  
          let martchingCert;
          for(let cert of certifications) {
-             if(cert._id == certID)
+             if(cert._id == certId)
                 martchingCert = cert;
          }
  
@@ -419,7 +419,7 @@ module.exports = {
 
     async getWorkExp(req, res) {
         let tutorId = req.params.tutorId;
-        let workExpID = req.params.workexperienceId;
+        let workExpId = req.params.workexperienceId;
 
          // Validate tutor exists
          let tutor = await User.findById(tutorId).exec();
@@ -433,7 +433,7 @@ module.exports = {
  
          let matchingWorkExp;
          for(let workExp of workExpObjs) {
-             if(workExp._id == workExpID)
+             if(workExp._id == workExpId)
                 matchingWorkExp = workExp;
          }
  

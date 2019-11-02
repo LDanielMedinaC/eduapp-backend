@@ -18,13 +18,13 @@ let seed = () => {
         let idTopic3 = topic._id;
 
         if(tutors[0]) {
-            let topicIds = tutors[0].tutorDetails.taughtTopicsIDs;
+            let topicIds = tutors[0].tutorDetails.taughtTopicsIds;
             topicIds.push(idTopic1);
             topicIds.push(idTopic3);
         }
 
         if(tutors[1]) {
-            let topicIds = tutors[1].tutorDetails.taughtTopicsIDs;
+            let topicIds = tutors[1].tutorDetails.taughtTopicsIds;
             topicIds.push(idTopic1);
         }
 

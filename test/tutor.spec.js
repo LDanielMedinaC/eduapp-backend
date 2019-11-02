@@ -99,7 +99,7 @@ describe('GET /tutors?topic=<topic>', () => {
 
 describe('GET /tutors/:id', () => {
 
-    it('Invalid ID', (done) => {
+    it('Invalid Id', (done) => {
        
         let id = '000';
  
@@ -112,7 +112,7 @@ describe('GET /tutors/:id', () => {
          });
      });
 
-    it('Given ID is not a tutor', (done) => {
+    it('Given Id is not a tutor', (done) => {
        
        let id = '555555555555551d35198a31';
 
