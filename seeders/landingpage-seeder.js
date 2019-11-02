@@ -11,7 +11,7 @@ const lp = new LandingPage({
         {
             title: 'La vida de los dioses griegos',
             elements: [{
-                IconImgURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Zeus_arte.jpg/220px-Zeus_arte.jpg',
+                iconImgURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Zeus_arte.jpg/220px-Zeus_arte.jpg',
                 ElementTitle: 'El primer dios griego, Zeus',
                 ElementDescription: 'Una mirada a uno de los grandes dioses griegos'
             }],
