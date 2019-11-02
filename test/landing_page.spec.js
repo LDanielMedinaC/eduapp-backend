@@ -309,9 +309,9 @@ describe('PUT /landingpage', () => {
         });
     });
 
-    it('Valid Carrousel URL', (done) => {
+    it('Valid carrousel URL', (done) => {
         let update_lp = {
-            Carrousel: ['https::myimageurl']
+            carrousel: ['https::myimageurl']
         };
         chai.request(server)
         .put('/landingpages')
@@ -323,9 +323,9 @@ describe('PUT /landingpage', () => {
         });
     });
 
-    it('Invalid Carrousel URL', (done) => {
+    it('Invalid carrousel URL', (done) => {
         let update_lp = {
-            Carrousel: 'Htt:invalid'
+            carrousel: 'Htt:invalid'
         };
         chai.request(server)
         .put('/landingpages')
@@ -341,9 +341,9 @@ describe('PUT /landingpage', () => {
         });
     });
 
-    it('No Carrousel updated, remains the same after', (done) => {
+    it('No carrousel updated, remains the same after', (done) => {
         let update_lp = {
-            Carrousel: 'http::url'
+            carrousel: 'http::url'
         };
         chai.request(server)
         .put('/landingpages')
@@ -353,7 +353,7 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             
             let newLP = {
-                Carrousel: []
+                carrousel: []
             };
 
             chai.request(server)
@@ -363,8 +363,8 @@ describe('PUT /landingpage', () => {
 
                 res.should.have.status(200);
                 res.body.should.be.a('object');
-                res.body.should.have.property('Carrousel');
-                res.body.Carrousel.should.be.eql(['http::url']);
+                res.body.should.have.property('carrousel');
+                res.body.carrousel.should.be.eql(['http::url']);
 
                 done();
             });
