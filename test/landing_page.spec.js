@@ -18,13 +18,13 @@ describe('PUT /landingpage', () => {
             Sections: [
                 {
                     Title: 'Titulo',
-                    Description: 'Description',
+                    description: 'Description',
                     BackgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
-                            Description: 'Description'
+                            description: 'Description'
                         }
                     ]
                 }
@@ -48,13 +48,13 @@ describe('PUT /landingpage', () => {
             Sections: [
                 {
                     Title: '',
-                    Description: 'Description',
+                    description: 'Description',
                     BackgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
-                            Description: 'Description'
+                            description: 'Description'
                         }
                     ]
                 }
@@ -79,13 +79,13 @@ describe('PUT /landingpage', () => {
             Sections: [
                 {
                     Title: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
-                    Description: 'Description',
+                    description: 'Description',
                     BackgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
-                            Description: 'Description'
+                            description: 'Description'
                         }
                     ]
                 }
@@ -110,13 +110,13 @@ describe('PUT /landingpage', () => {
             Sections: [
                 {
                     Title: 'Title',
-                    Description: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
+                    description: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
                     BackgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
-                            Description: 'Description'
+                            description: 'Description'
                         }
                     ]
                 }
@@ -141,13 +141,13 @@ describe('PUT /landingpage', () => {
             Sections: [
                 {
                     Title: 'Title',
-                    Description: 'Description',
+                    description: 'Description',
                     BackgroundImgURL: 'Lol',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
-                            Description: 'Description'
+                            description: 'Description'
                         }
                     ]
                 }
@@ -190,13 +190,13 @@ describe('PUT /landingpage', () => {
             Sections: [
                 {
                     Title: 'Title',
-                    Description: 'Description',
+                    description: 'Description',
                     BackgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'lol',
                             ElementTitle: 'Title',
-                            Description: 'Description'
+                            description: 'Description'
                         }
                     ]
                 }
@@ -221,13 +221,13 @@ describe('PUT /landingpage', () => {
             Sections: [
                 {
                     Title: 'Title',
-                    Description: 'Description',
+                    description: 'Description',
                     BackgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
-                            Description: 'Description'
+                            description: 'Description'
                         }
                     ]
                 }
@@ -252,13 +252,13 @@ describe('PUT /landingpage', () => {
             Sections: [
                 {
                     Title: 'Title',
-                    Description: 'This description is too long for the mongoose validation to pass, so it should be rejected and produce a bad response when sent as a payload in the post request for landingpages. If this landing page section description is validated and saved then something is wrong.',
+                    description: 'This description is too long for the mongoose validation to pass, so it should be rejected and produce a bad response when sent as a payload in the post request for landingpages. If this landing page section description is validated and saved then something is wrong.',
                     BackgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
-                            Description: 'Whatever'
+                            description: 'Whatever'
                         }
                     ]
                 }
@@ -283,13 +283,13 @@ describe('PUT /landingpage', () => {
             Sections: [
                 {
                     Title: 'Title',
-                    Description: 'Description',
+                    description: 'Description',
                     BackgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
-                            Description: 'Description'
+                            description: 'Description'
                         }
                     ]
                 }

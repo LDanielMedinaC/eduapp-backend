@@ -43,7 +43,7 @@ const landingPageSchema = new mongoose.Schema({
                     message: props => `${props.value} is not a valid URL`
                 }
             },
-            Description: {
+            description: {
                 type: String,
                 maxlength: [200, 'Section description must be less than 200 characters']
             }

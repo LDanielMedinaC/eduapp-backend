@@ -16,7 +16,7 @@ const lp = new LandingPage({
                 ElementDescription: 'Una mirada a uno de los grandes dioses griegos'
             }],
             BackgroundImgURL: 'https://st2.ning.com/topology/rest/1.0/file/get/3001370672?profile=RESIZE_1024x1024',
-            Description: 'Conozcamos más acerca de los dioses'
+            description: 'Conozcamos más acerca de los dioses'
         }
     ]
 });
