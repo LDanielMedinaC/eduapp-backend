@@ -6,13 +6,14 @@
     Date = date of the tutoring. Type = Date
     lat = Latitud of the tutoring. Type = Number
     long = Longitud of the tutoring. Type = Number
-    Loc = Location of the Tutoring. Type = ['Espacio publico', 'Casa del tutor', 'Casa del alumno', 'Online']
+    Loc = Location of the Tutoring. Type = ['Public space', 'Tutor place', 'Student place', 'Online']
     LocationName = Location's name of the tutoring. Type = string
     Note: lat, long and loc refer to the location of the tutoring 
     Tutor = 
 */
 
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const locationTypes = require('../resources').locationTypes;
 const Schema = mongoose.Schema;
 
 const tutoringSchema = new mongoose.Schema({
@@ -28,7 +29,7 @@ const tutoringSchema = new mongoose.Schema({
     },
     locationType: {
         type: String,
-        enum: ['Espacio publico', 'Casa del tutor', 'Casa del alumno', 'Online'],
+        enum: locationTypes,
         required: true
     },
     locationName: {

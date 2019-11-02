@@ -16,7 +16,7 @@ describe('POST /tutorings', () => {
           date: "10/11/2019",
           lat: 19.019635,
           long: -98.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
           tutorId: '5d8d49a96ee837016abcd2b1',
@@ -38,7 +38,7 @@ describe('POST /tutorings', () => {
             });
             res.body.lat.should.be.eql(19.019635);
             res.body.long.should.be.eql(-98.246918);
-            res.body.locationType.should.be.eql('Casa del tutor');
+            res.body.locationType.should.be.eql('Tutor place');
             res.body.locationName.should.be.eql('Tutor\'s place');
             res.body.notes.should.be.eql('It\'s not the best student'); 
             res.body.paymentMethod.should.be.eql('cash'); 
@@ -50,7 +50,7 @@ describe('POST /tutorings', () => {
         let tutoringAux = {
           lat: 19.019635,
           long: -98.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
           tutorId: '5d8d49a96ee837016abcd2b1',
@@ -79,7 +79,7 @@ describe('POST /tutorings', () => {
           date: "1/1/19",
           lat: 19.019635,
           long: -98.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
           tutorId: '5d8d49a96ee837016abcd2b1',
@@ -108,7 +108,7 @@ describe('POST /tutorings', () => {
           date: "10/11/1999",
           lat: 19.019635,
           long: -98.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
           tutorId: '5d8d49a96ee837016abcd2b1',
@@ -136,7 +136,7 @@ describe('POST /tutorings', () => {
           date: "10/11/2019",
           lat: 19.019635,
           long: -98.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
           tutorId: '5d8d49a96ee837016abcd2b1',
@@ -163,7 +163,7 @@ describe('POST /tutorings', () => {
           date: "10/11/2019",
           lat: 19.019635,
           long: -98.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
           tutorId: '5d8d49a96ee837016abcd2b1',
@@ -191,7 +191,7 @@ describe('POST /tutorings', () => {
           date: "10/11/2019",
           lat: 19.019635,
           long: -98.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
           tutorId: '5d8d49a96ee837016abcd2b1',
@@ -246,7 +246,7 @@ describe('POST /tutorings', () => {
           date: "10/11/2019",
           lat: 19.019635,
           long: -981.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
           tutorId: '5d8d49a96ee837016abcd2b1',
@@ -302,7 +302,7 @@ describe('POST /tutorings', () => {
           date: "10/11/2019",
           lat: 19.019635,
           long: -98.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tu',
           topicID: '5d8d49a56ee837016abcd2a7',
           tutorId: '5d8d49a96ee837016abcd2b1',
@@ -330,7 +330,7 @@ describe('POST /tutorings', () => {
           date: "10/11/2019",
           lat: 19.019635,
           long: -98.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
           tutorId: '5d8d49a96ee837016abcd2b1',
@@ -357,7 +357,7 @@ describe('POST /tutorings', () => {
           date: "10/11/2019",
           lat: 19.019635,
           long: -98.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
           tutorId: '5d8d49a96ee837016abcd2b1',
@@ -385,7 +385,7 @@ describe('POST /tutorings', () => {
           date: "10/11/2019",
           lat: 19.019635,
           long: -98.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
           tutorId: '5d8d49a96ee837016abcd2b1',
@@ -411,7 +411,7 @@ describe('POST /tutorings', () => {
           date: "10/11/2019",
           lat: 19.019635,
           long: -98.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
           tutorId: '5d8d49a96ee837016abcd2b1',
@@ -439,7 +439,7 @@ describe('POST /tutorings', () => {
           date: "10/11/2019",
           lat: 19.019635,
           long: -98.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
           tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
@@ -466,7 +466,7 @@ describe('POST /tutorings', () => {
           date: "10/11/2019",
           lat: 19.019635,
           long: -98.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
           userID: '5d8d49a56ee837016abcd2aa',
@@ -493,7 +493,7 @@ describe('POST /tutorings', () => {
           date: "10/11/2019",
           lat: 19.019635,
           long: -98.246918,
-          locationType: 'Casa del tutor',
+          locationType: 'Tutor place',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
           tutorId: '5d8d49a96ee837016abcd2b1',
@@ -532,7 +532,7 @@ describe('GET /tutorings', () => {
         });
         res2.body[0].lat.should.be.eql(19.019635);
         res2.body[0].long.should.be.eql(-98.246918);
-        res2.body[0].locationType.should.be.eql('Casa del tutor');
+        res2.body[0].locationType.should.be.eql('Tutor place');
         res2.body[0].locationName.should.be.eql('Tutor\'s place');
         res2.body[0].tutorId.should.be.eql(id);  
         res2.body[0].notes.should.be.eql('It\'s not the best student'); 

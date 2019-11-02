@@ -9,7 +9,7 @@ const tutorings = [
         date: new Date("2020-10-12 00:00:00 (CT)"),
         lat: 19.019635,
         long: -98.246918,
-        locationType: 'Casa del tutor',
+        locationType: 'Tutor place',
         locationName: 'Tutor\'s place',
         topicID: '5db48a252f3af03923defe7a',
         tutorId: '5db48a252f3af03923defe82',
