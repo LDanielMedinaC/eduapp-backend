@@ -24,7 +24,7 @@ const landingPageSchema = new mongoose.Schema({
                 maxlength: [150, 'Section title must be less than 150 characters'],
                 minlength: [2, 'Section title must be at least 2 characters']
             },
-            Elements: [{
+            elements: [{
                 IconImgURL: {type: String, validate: {
                     validator: function (v) {
                         return /(^$)|((http|https|ftp)::*)/.test(v);

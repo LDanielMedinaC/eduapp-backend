@@ -20,7 +20,7 @@ describe('PUT /landingpage', () => {
                     Title: 'Titulo',
                     description: 'Description',
                     backgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
@@ -50,7 +50,7 @@ describe('PUT /landingpage', () => {
                     Title: '',
                     description: 'Description',
                     backgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
@@ -81,7 +81,7 @@ describe('PUT /landingpage', () => {
                     Title: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
                     description: 'Description',
                     backgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
@@ -112,7 +112,7 @@ describe('PUT /landingpage', () => {
                     Title: 'Title',
                     description: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
                     backgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
@@ -143,7 +143,7 @@ describe('PUT /landingpage', () => {
                     Title: 'Title',
                     description: 'Description',
                     backgroundImgURL: 'Lol',
-                    Elements: [
+                    elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
@@ -192,7 +192,7 @@ describe('PUT /landingpage', () => {
                     Title: 'Title',
                     description: 'Description',
                     backgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    elements: [
                         {
                             IconImgURL: 'lol',
                             ElementTitle: 'Title',
@@ -223,7 +223,7 @@ describe('PUT /landingpage', () => {
                     Title: 'Title',
                     description: 'Description',
                     backgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
@@ -254,7 +254,7 @@ describe('PUT /landingpage', () => {
                     Title: 'Title',
                     description: 'This description is too long for the mongoose validation to pass, so it should be rejected and produce a bad response when sent as a payload in the post request for landingpages. If this landing page section description is validated and saved then something is wrong.',
                     backgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
@@ -285,7 +285,7 @@ describe('PUT /landingpage', () => {
                     Title: 'Title',
                     description: 'Description',
                     backgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    elements: [
                         {
                             IconImgURL: 'ftp::algo',
                             ElementTitle: 'Title',
