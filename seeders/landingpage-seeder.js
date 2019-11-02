@@ -9,7 +9,7 @@ const lp = new LandingPage({
     Carrousel: ['https://smiletutor.sg/wp-content/uploads/2018/10/6-advantages-of-online-tutoring.jpeg', 'https://images.ctfassets.net/p0qf7j048i0q/599C41259E6A4444BB7E1CBB24D1BB81/cd75bc40999bf5a1dca2fae66cc8c144/i609086966.jpg?w=1000&fm=webp'],
     Sections: [
         {
-            Title: 'La vida de los dioses griegos',
+            title: 'La vida de los dioses griegos',
             elements: [{
                 IconImgURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Zeus_arte.jpg/220px-Zeus_arte.jpg',
                 ElementTitle: 'El primer dios griego, Zeus',

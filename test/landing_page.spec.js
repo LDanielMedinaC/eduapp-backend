@@ -17,7 +17,7 @@ describe('PUT /landingpage', () => {
         let update_lp = {
             Sections: [
                 {
-                    Title: 'Titulo',
+                    title: 'Titulo',
                     description: 'Description',
                     backgroundImgURL: 'ftp::algo',
                     elements: [
@@ -47,7 +47,7 @@ describe('PUT /landingpage', () => {
         let update_lp = {
             Sections: [
                 {
-                    Title: '',
+                    title: '',
                     description: 'Description',
                     backgroundImgURL: 'ftp::algo',
                     elements: [
@@ -78,7 +78,7 @@ describe('PUT /landingpage', () => {
         let update_lp = {
             Sections: [
                 {
-                    Title: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
+                    title: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
                     description: 'Description',
                     backgroundImgURL: 'ftp::algo',
                     elements: [
@@ -109,7 +109,7 @@ describe('PUT /landingpage', () => {
         let update_lp = {
             Sections: [
                 {
-                    Title: 'Title',
+                    title: 'Title',
                     description: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
                     backgroundImgURL: 'ftp::algo',
                     elements: [
@@ -140,7 +140,7 @@ describe('PUT /landingpage', () => {
         let update_lp = {
             Sections: [
                 {
-                    Title: 'Title',
+                    title: 'Title',
                     description: 'Description',
                     backgroundImgURL: 'Lol',
                     elements: [
@@ -189,7 +189,7 @@ describe('PUT /landingpage', () => {
         let update_lp = {
             Sections: [
                 {
-                    Title: 'Title',
+                    title: 'Title',
                     description: 'Description',
                     backgroundImgURL: 'ftp::algo',
                     elements: [
@@ -220,7 +220,7 @@ describe('PUT /landingpage', () => {
         let update_lp = {
             Sections: [
                 {
-                    Title: 'Title',
+                    title: 'Title',
                     description: 'Description',
                     backgroundImgURL: 'ftp::algo',
                     elements: [
@@ -251,7 +251,7 @@ describe('PUT /landingpage', () => {
         let update_lp = {
             Sections: [
                 {
-                    Title: 'Title',
+                    title: 'Title',
                     description: 'This description is too long for the mongoose validation to pass, so it should be rejected and produce a bad response when sent as a payload in the post request for landingpages. If this landing page section description is validated and saved then something is wrong.',
                     backgroundImgURL: 'ftp::algo',
                     elements: [
@@ -282,7 +282,7 @@ describe('PUT /landingpage', () => {
         let update_lp = {
             Sections: [
                 {
-                    Title: 'Title',
+                    title: 'Title',
                     description: 'Description',
                     backgroundImgURL: 'ftp::algo',
                     elements: [

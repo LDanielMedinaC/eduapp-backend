@@ -18,7 +18,7 @@ const landingPageSchema = new mongoose.Schema({
     }}],
     Sections: {
         type: [{
-            Title: {
+            title: {
                 type: String,
                 trim: true,
                 maxlength: [150, 'Section title must be less than 150 characters'],
