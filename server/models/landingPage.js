@@ -34,7 +34,7 @@ const landingPageSchema = new mongoose.Schema({
                 ElementTitle: {type: String, maxlength: [50, 'Element title must be less 50 characters']},
                 ElementDescription: {type: String, maxlength: 200}
             }],
-            BackgroundImgURL: {
+            backgroundImgURL: {
                 type: String,
                 validate: {
                     validator: function (v) {

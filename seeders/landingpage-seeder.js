@@ -15,7 +15,7 @@ const lp = new LandingPage({
                 ElementTitle: 'El primer dios griego, Zeus',
                 ElementDescription: 'Una mirada a uno de los grandes dioses griegos'
             }],
-            BackgroundImgURL: 'https://st2.ning.com/topology/rest/1.0/file/get/3001370672?profile=RESIZE_1024x1024',
+            backgroundImgURL: 'https://st2.ning.com/topology/rest/1.0/file/get/3001370672?profile=RESIZE_1024x1024',
             description: 'Conozcamos más acerca de los dioses'
         }
     ]

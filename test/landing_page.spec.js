@@ -19,7 +19,7 @@ describe('PUT /landingpage', () => {
                 {
                     Title: 'Titulo',
                     description: 'Description',
-                    BackgroundImgURL: 'ftp::algo',
+                    backgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
@@ -49,7 +49,7 @@ describe('PUT /landingpage', () => {
                 {
                     Title: '',
                     description: 'Description',
-                    BackgroundImgURL: 'ftp::algo',
+                    backgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
@@ -80,7 +80,7 @@ describe('PUT /landingpage', () => {
                 {
                     Title: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
                     description: 'Description',
-                    BackgroundImgURL: 'ftp::algo',
+                    backgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
@@ -111,7 +111,7 @@ describe('PUT /landingpage', () => {
                 {
                     Title: 'Title',
                     description: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
-                    BackgroundImgURL: 'ftp::algo',
+                    backgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
@@ -142,7 +142,7 @@ describe('PUT /landingpage', () => {
                 {
                     Title: 'Title',
                     description: 'Description',
-                    BackgroundImgURL: 'Lol',
+                    backgroundImgURL: 'Lol',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
@@ -191,7 +191,7 @@ describe('PUT /landingpage', () => {
                 {
                     Title: 'Title',
                     description: 'Description',
-                    BackgroundImgURL: 'ftp::algo',
+                    backgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'lol',
@@ -222,7 +222,7 @@ describe('PUT /landingpage', () => {
                 {
                     Title: 'Title',
                     description: 'Description',
-                    BackgroundImgURL: 'ftp::algo',
+                    backgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
@@ -253,7 +253,7 @@ describe('PUT /landingpage', () => {
                 {
                     Title: 'Title',
                     description: 'This description is too long for the mongoose validation to pass, so it should be rejected and produce a bad response when sent as a payload in the post request for landingpages. If this landing page section description is validated and saved then something is wrong.',
-                    BackgroundImgURL: 'ftp::algo',
+                    backgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
@@ -284,7 +284,7 @@ describe('PUT /landingpage', () => {
                 {
                     Title: 'Title',
                     description: 'Description',
-                    BackgroundImgURL: 'ftp::algo',
+                    backgroundImgURL: 'ftp::algo',
                     Elements: [
                         {
                             IconImgURL: 'ftp::algo',
