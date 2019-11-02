@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 
 const landingPageSchema = new mongoose.Schema({
-    LogoImgURL: {type: String, validate: {
+    logoImgURL: {type: String, validate: {
         validator: function (v)
         {
             return /(^$)|((http|https|ftp)::*)/.test(v);

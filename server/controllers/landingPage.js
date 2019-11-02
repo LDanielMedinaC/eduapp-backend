@@ -46,7 +46,7 @@ module.exports = {
                 });
             } else {
                 // Landing page exists, update
-                page.LogoImgURL = landingPage.LogoImgURL || page.LogoImgURL;
+                page.logoImgURL = landingPage.logoImgURL || page.logoImgURL;
                 page.showcasedTopicsIds = landingPage.showcasedTopicsIds || page.showcasedTopicsIds;
                 page.Carrousel = landingPage.Carrousel || page.Carrousel;
                 page.sections = landingPage.sections || page.sections || [];

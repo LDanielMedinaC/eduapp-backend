@@ -29,7 +29,7 @@ describe('PUT /landingpage', () => {
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -38,7 +38,7 @@ describe('PUT /landingpage', () => {
             res.should.have.status(200);
             res.body.should.be.a('object');
             res.body.should.have.property('sections');
-            res.body.should.have.property('LogoImgURL');
+            res.body.should.have.property('logoImgURL');
             done();
         });
     });
@@ -59,7 +59,7 @@ describe('PUT /landingpage', () => {
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -90,7 +90,7 @@ describe('PUT /landingpage', () => {
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -121,7 +121,7 @@ describe('PUT /landingpage', () => {
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -152,7 +152,7 @@ describe('PUT /landingpage', () => {
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -170,7 +170,7 @@ describe('PUT /landingpage', () => {
     it('No sections', (done) => {
         let update_lp = {
             sections: [],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -201,7 +201,7 @@ describe('PUT /landingpage', () => {
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -232,7 +232,7 @@ describe('PUT /landingpage', () => {
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -263,7 +263,7 @@ describe('PUT /landingpage', () => {
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -294,7 +294,7 @@ describe('PUT /landingpage', () => {
                     ]
                 }
             ],
-            LogoImgURL: 'lol'
+            logoImgURL: 'lol'
         };
         chai.request(server)
         .put('/landingpages')
