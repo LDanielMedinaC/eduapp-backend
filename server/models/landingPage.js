@@ -9,7 +9,7 @@ const landingPageSchema = new mongoose.Schema({
         },
         message: props => `${props.value} is not a valid URL`
     }},
-    ShowcasedTopicsIDs: [{type: mongoose.Schema.Types.ObjectId, ref: 'Topic'}],
+    showcasedTopicsIds: [{type: mongoose.Schema.Types.ObjectId, ref: 'Topic'}],
     Carrousel: [{type: String, validate: {
         validator: function (v) {
             return /(^$)|((http|https|ftp)::*)/.test(v);

@@ -36,7 +36,7 @@ let seed = () => {
         topic = await Topic.findOne({'Name': 'Ecuaciones Diferenciales'}).exec();
         let idTopic3 = topic._id;
 
-        lp.ShowcasedTopicsIDs = [idTopic1, idTopic2, idTopic3];
+        lp.showcasedTopicsIds = [idTopic1, idTopic2, idTopic3];
 
         let seedingLPs = [new Promise((resolve, reject) => {
             lp.save()

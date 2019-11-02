@@ -10,7 +10,7 @@ module.exports = {
     show(req, res){
         
         LandingPage.findOne()
-            .populate('ShowcasedTopicsIDs')
+            .populate('showcasedTopicsIds')
             .exec((err, lp) => {
             
                 if (err)
@@ -47,7 +47,7 @@ module.exports = {
             } else {
                 // Landing page exists, update
                 page.LogoImgURL = landingPage.LogoImgURL || page.LogoImgURL;
-                page.ShowcasedTopicsIDs = landingPage.ShowcasedTopicsIDs || page.ShowcasedTopicsIDs;
+                page.showcasedTopicsIds = landingPage.showcasedTopicsIds || page.showcasedTopicsIds;
                 page.Carrousel = landingPage.Carrousel || page.Carrousel;
                 page.sections = landingPage.sections || page.sections || [];
 
