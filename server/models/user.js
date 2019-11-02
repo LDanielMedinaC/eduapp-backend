@@ -42,10 +42,28 @@ const userSchema = new mongoose.Schema({
                     }
                 }]
             },
-            workExperience: {
+            workExperiences: {
                 type: [{
-                    placeHolder: {
-                        type: String
+                    institution: {
+                        type: String,
+                        required: true
+                    },
+                    department: {
+                        type: String,
+                        required: true
+                    },
+                    beginDate: {
+                        type: Date,
+                        required: true
+                    },
+                    endDate: {
+                        type: Date,
+                        required: true
+                    },
+                    stillWorking: {
+                        type: Boolean,
+                        required: true,
+                        default: false
                     }
                 }]
             },
