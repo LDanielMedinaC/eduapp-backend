@@ -228,7 +228,7 @@ module.exports = {
             }
 
             // Look for topic id
-            let topicId = await Topic.findOne({'Name': topic}).exec();
+            let topicId = await Topic.findOne({'name': topic}).exec();
             topicId = topicId ? topicId._id : null;
 
             if(!topicId)

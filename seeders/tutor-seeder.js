@@ -8,13 +8,13 @@ let seed = () => {
 
     console.log('>>> Seeding tutors');
     return new Promise(async (resolve) => {
-        let topic = await Topic.findOne({'Name': 'Álgebra Lineal'}).exec();
+        let topic = await Topic.findOne({'name': 'Álgebra Lineal'}).exec();
         let idTopic1 = topic._id;
 
-        topic = await Topic.findOne({'Name': 'Cálculo Vectorial'}).exec();
+        topic = await Topic.findOne({'name': 'Cálculo Vectorial'}).exec();
         let idTopic2 = topic._id;
 
-        topic = await Topic.findOne({'Name': 'Ecuaciones Diferenciales'}).exec();
+        topic = await Topic.findOne({'name': 'Ecuaciones Diferenciales'}).exec();
         let idTopic3 = topic._id;
 
         if(tutors[0]) {
