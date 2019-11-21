@@ -11,7 +11,6 @@ const validatePaymentAccount = (req, res, next) => {
         'method'
     ];
     
-    // Should have study
     if(Object.keys(payment).length === 0) {
         let error = ErrorFactory.buildError(Errors.MISSING_FIELD, 'payment (object)');
         return res.status(error.status).send({ error: error });

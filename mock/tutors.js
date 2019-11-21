@@ -14,7 +14,9 @@ const tutors = [
         language: 'es',
         tutorDetails: {
             taughtTopicsIDs: [],
-            paymentAccounts: [],
+            paymentAccounts: [{
+                method: 'cash'
+            }],
             skills: [],
             workExperiences: [{
                 _id: new mongoose.mongo.ObjectId('aaaa91bdc3464f14678934ca'),
@@ -70,7 +72,9 @@ const tutors = [
         language: 'es',
         tutorDetails: {
             taughtTopicsIDs: [],
-            paymentAccounts: [],
+            paymentAccounts: [{
+                method: 'paypal'
+            }],
             skills: [],
             workExperiences: [{
                 _id: new mongoose.mongo.ObjectId('bcad91bdc3464f14678934ca'),
