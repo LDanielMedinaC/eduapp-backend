@@ -10,9 +10,12 @@ const paymentAccountController = require('../controllers').paymentAccount;
 
 const validateIds = require('../middleware/validations/ids-validation');
 const validateStudy = require('../middleware/validations/study-validation');
+const validateCertification = require('../middleware/validations/certification-validation');
+const validateWorkExp = require('../middleware/validations/workexperience-validation');
 const validateTutoring = require('../middleware/validations/tutoring-validation');
 const validateFeedback = require('../middleware/validations/feedback-validation');
 const validatePaymentAccount = require('../middleware/validations/paymentAccount-validation');
+const validateUser = require('../middleware/validations/user-validation');
 
 module.exports = (app) => {
     // Test route
@@ -23,6 +26,10 @@ module.exports = (app) => {
     // User routes
     app.route('/users')
     .post(userController.create);
+    
+    app.route('/users/:userId')
+    .get(userController.getDetails)
+    .put(validateUser, userController.update);
 
     // Landing Page routes
     app.route('/landingpages')
@@ -45,6 +52,7 @@ module.exports = (app) => {
     .patch(validateIds, validateStudy, tutorController.updateStudy)
     .delete(validateIds, tutorController.deleteStudy);
 
+    //Tutor Payment Accounts
     app.route('/tutors/:tutorId/paymentAccounts')
     .get(validateIds, paymentAccountController.list)
     .post(validateIds, validatePaymentAccount, paymentAccountController.create);
@@ -54,15 +62,39 @@ module.exports = (app) => {
     .put(validateIds, validatePaymentAccount, paymentAccountController.update)
     .delete(validateIds, paymentAccountController.delete);
 
+    // Tutor certifications
+    app.route('/tutors/:tutorId/certifications')
+    .get(validateIds, tutorController.getAllCerts)
+    .post(validateIds, validateCertification, tutorController.insertCert);
+
+    app.route('/tutors/:tutorId/certifications/:certificationId')
+    .get(validateIds, tutorController.getCert)
+    .put(validateIds, validateCertification, tutorController.updateCert)
+    .delete(validateIds, tutorController.deleteCert);
+
+    // Tutor work experience
+
+    app.route('/tutors/:tutorId/workexperiences')
+    .get(validateIds, tutorController.getAllWorkExps)
+    .post(validateIds, validateWorkExp, tutorController.insertWorkExp);
+
+    app.route('/tutors/:tutorId/workexperiences/:workexperienceId')
+    .get(validateIds, tutorController.getWorkExp)
+    .put(validateIds, validateWorkExp, tutorController.updateWorkExp)
+    .delete(validateIds, tutorController.deleteWorkExp);
+
     // Topics routes
     app.route('/topics')
     .get(topicController.list)
     .post(topicController.create);
 
-    //Tutoring routes
+    // Tutoring routes
     app.route('/tutorings')
     .get(tutoringController.list)    
-    .post(validateTutoring.validatePostTutoring, tutoringController.create)
+    .post(validateTutoring.validatePostTutoring, tutoringController.create);
+
+    app.route('/tutorings/:tutoringId')
+    .get(validateIds, tutoringController.getDetails);
 
     // Feedback routes
     app.route('/feedback')

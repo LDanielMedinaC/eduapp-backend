@@ -5,6 +5,7 @@ const User = require('../server/models').User;
 
 const tutors = [
     new User({
+        _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe82'),
         uid: 'abcd123',
         email: 'danperro@tec.mx',
         name: 'Dan Pérez',
@@ -15,7 +16,13 @@ const tutors = [
             taughtTopicsIDs: [],
             paymentAccounts: [],
             skills: [],
-            workExperience: [],
+            workExperiences: [{
+                _id: new mongoose.mongo.ObjectId('aaaa91bdc3464f14678934ca'),
+                institution: 'Macrosoft',
+                department: 'Bing',
+                beginDate: new Date('2019-05-28').toISOString(),
+                endDate: new Date('2019-08-17').toISOString(),
+            }],
             studies: [{
                 _id: new mongoose.mongo.ObjectId('56cb91bdc3464f14678934ca'),
                 institution: 'Alguna Universidad',
@@ -27,7 +34,15 @@ const tutors = [
                 proofDocURL: 'https://storage.provider.com/items/asd123dfg456',
                 validationDate: new Date('2019-01-01').toISOString()
             }],
-            awards: []
+            certifications: [
+                {
+                    _id: new mongoose.mongo.ObjectId('56cb91bdc3464f14678934aa'),
+                    institution: 'ITESM',
+                    title: 'SCRUM',
+                    date: new Date('2016-11-02').toISOString(),
+                    diplomaURL: 'http::gcloud/bucket/12454545bcd/item/a4555d121'
+                }
+            ]
         }
     }),
     new User({
@@ -41,9 +56,38 @@ const tutors = [
             taughtTopicsIDs: [],
             paymentAccounts: [],
             skills: [],
-            workExperience: [],
+            workExperiences: [],
             studies: [],
-            awards: []
+            certifications: []
+        }
+    }),
+    new User({
+        uid: 'abff123456',
+        email: 'mkleo@smash.mx',
+        name: 'Mak Leonidas',
+        phone: '2223335555',
+        country: 'Mexico',
+        language: 'es',
+        tutorDetails: {
+            taughtTopicsIDs: [],
+            paymentAccounts: [],
+            skills: [],
+            workExperiences: [{
+                _id: new mongoose.mongo.ObjectId('bcad91bdc3464f14678934ca'),
+                institution: 'ITESM',
+                department: 'Ingeniería y Ciencias',
+                beginDate: new Date('2012-01-01').toISOString(),
+                endDate: new Date('2019-01-01').toISOString(),
+                stillWorking: false
+            }],
+            studies: [],
+            certifications: [{
+                _id: new mongoose.mongo.ObjectId('56cb91bdc3464f14678934bb'),
+                institution: 'SSBU Montreal',
+                title: 'Neutral JS Básico',
+                date: new Date('2018-12-07').toISOString(),
+                diplomaURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS4yr_4GeloD1ou0E2acZ-ept3QcunQet9qbu0N-dgvRXyPA9qB'
+            }]
         }
     })
 ];
