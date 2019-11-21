@@ -42,7 +42,7 @@ let invalidPayAccount4 = {
 }
 
 
-describe('POST', () => {
+describe('PaymentAccount POST', () => {
 
     let tutor;
     before(done => {
@@ -201,7 +201,7 @@ describe('POST', () => {
 
 });
 
-describe('GET:id', () => {
+describe('PaymentAccount GET:id', () => {
 
     let tutor;
     let paymentAcc;
@@ -211,6 +211,8 @@ describe('GET:id', () => {
 
             tutor = await User.findOne({ 'email': tutors[0].email }).exec();
             paymentAcc = tutor.tutorDetails.paymentAccounts[0];
+
+            paymentAcc._id = paymentAcc._id.toString('hex');
 
             db.disconnectDB()
 
@@ -273,7 +275,94 @@ describe('GET:id', () => {
             res.body.should.be.an('object');
             res.body.should.have.property('method');
 
-            _.isEqual(res.body, paymentAcc);
+            _.isEqual(res.body, paymentAcc).should.be.eql(true);
+            
+            done();
+        });
+
+    });
+
+});
+
+describe('PaymentAccount GET', () => {
+
+    let tutor;
+    let noPATutor;
+    let paymentAccs;
+    before(done => {
+        db.connectDB()
+        .then(async () => {
+
+            tutor = await User.findOne({ 'email': tutors[0].email }).exec();
+            paymentAccs = tutor.tutorDetails.paymentAccounts;
+
+            console.log(paymentAccs);
+
+            for (let pa of paymentAccs)
+            {
+                pa._id = pa._id.toString('hex');
+            }
+
+            noPATutor = await User.findOne({ 'email': tutors[1].email }).exec();
+
+            db.disconnectDB()
+
+            done();
+        })
+        .catch(err => {
+            done(new Error(err));
+        });
+
+    });
+
+    it('Invalid tutor ID', (done) => {
+
+        chai.request(server)
+        .get(`/tutors/qwerty/paymentAccounts`)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_ID);
+        });
+
+    });
+
+    it('Tutor not found', (done) => {
+
+
+        chai.request(server)
+        .get(`/tutors/ffffffffffffff0123456789/paymentAccounts`)
+        .end((err, res) => {
+            shouldBeNotFound(res, done);
+        });
+
+    });
+
+
+    it('Correct get of all payment Accounts', (done) => {
+
+        chai.request(server)
+        .get(`/tutors/${tutor._id}/paymentAccounts`)
+        .end((err, res) => {
+
+            res.should.have.status(200);
+            res.body.should.be.an('array').that.is.not.empty;
+            
+            _.isEqual(res.body, paymentAccs).should.be.eql(true);
+            
+            done();
+        });
+
+    });
+
+    it('Correct get of no payment accounts', (done) => {
+
+        chai.request(server)
+        .get(`/tutors/${noPATutor._id}/paymentAccounts`)
+        .end((err, res) => {
+
+            res.should.have.status(200);
+            res.body.should.be.an('array').that.is.empty;
+            
+            _.isEqual(res.body, []).should.be.eql(true);
             
             done();
         });
