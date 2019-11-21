@@ -2,6 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const should = chai.should();
 const expect = chai.expect;
+const _ = require("lodash");
 
 const server = 'localhost:8000';
 const db = require('../server/models');
@@ -194,6 +195,87 @@ describe('POST', () => {
         .send(validPayAccount1)
         .end((err, res) => {
             shouldBeNotFound(res, done);
+        });
+
+    });
+
+});
+
+describe('GET:id', () => {
+
+    let tutor;
+    let paymentAcc;
+    before(done => {
+        db.connectDB()
+        .then(async () => {
+
+            tutor = await User.findOne({ 'email': tutors[0].email }).exec();
+            paymentAcc = tutor.tutorDetails.paymentAccounts[0];
+
+            db.disconnectDB()
+
+            done();
+        })
+        .catch(err => {
+            done(new Error(err));
+        });
+
+    });
+
+    it('Invalid tutor ID', (done) => {
+
+        chai.request(server)
+        .get(`/tutors/qwerty/paymentAccounts/${paymentAcc._id}`)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_ID);
+        });
+
+    });
+
+    it('Tutor not found', (done) => {
+
+
+        chai.request(server)
+        .get(`/tutors/ffffffffffffff0123456789/paymentAccounts/${paymentAcc._id}`)
+        .end((err, res) => {
+            shouldBeNotFound(res, done);
+        });
+
+    });
+
+    it('Invalid paymentAccount ID', (done) => {
+
+        chai.request(server)
+        .get(`/tutors/${tutor._id}/paymentAccounts/qwerty`)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_ID);
+        });
+
+    });
+
+    it('paymentAccount not found', (done) => {
+
+        chai.request(server)
+        .get(`/tutors/${tutor._id}/paymentAccounts/ffffffffffffff0123456789`)
+        .end((err, res) => {
+            shouldBeNotFound(res, done);
+        });
+
+    });
+
+    it('Valid and correct get', (done) => {
+
+        chai.request(server)
+        .get(`/tutors/${tutor._id}/paymentAccounts/${paymentAcc._id}`)
+        .end((err, res) => {
+
+            res.should.have.status(200);
+            res.body.should.be.an('object');
+            res.body.should.have.property('method');
+
+            _.isEqual(res.body, paymentAcc);
+            
+            done();
         });
 
     });
