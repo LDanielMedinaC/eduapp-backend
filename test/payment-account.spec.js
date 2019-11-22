@@ -464,3 +464,137 @@ describe('PaymentAccount DELETE', () => {
     });
 
 });
+
+describe('PaymentAccount PUT', () => {
+
+    let tutor;
+    let paToUpdate;
+    before(done => {
+        db.connectDB()
+        .then(async () => {
+
+            tutor = await User.findOne({ 'email': tutors[0].email }).exec();
+
+            paToUpdate = tutor.tutorDetails.paymentAccounts[0];
+
+            paToUpdate._id = paToUpdate._id.toString('hex');
+
+            db.disconnectDB()
+
+            done();
+        })
+        .catch(err => {
+            done(new Error(err));
+        });
+
+    });
+
+    it('Valid PUT', (done) => {
+
+        let newPA = {
+            method: 'paypal'
+        }
+
+        chai.request(server)
+        .put(`/tutors/${tutor._id}/paymentAccounts/${paToUpdate._id}`)
+        .send(newPA)
+        .end((err, res) => {
+
+            res.should.have.status(200);
+            res.body.should.be.an('object');
+
+            _.isEqual(res.body, paToUpdate).should.be.eql(false);
+
+            chai.request(server)
+            .get(`/tutors/${tutor._id}/paymentAccounts/${paToUpdate._id}`)
+            .end((err2, res2) => {
+
+                res2.should.have.status(200);
+                res2.body.should.be.an('object');
+
+                newPA._id = res2.body._id;
+
+                _.isEqual(res2.body, newPA).should.be.eql(true);
+
+                done();
+            });
+        });
+
+    });
+
+    it('Invalid PUT', (done) => {
+
+        let newPA = {
+            method: 'cash%6'
+        }
+
+        chai.request(server)
+        .put(`/tutors/${tutor._id}/paymentAccounts/${paToUpdate._id}`)
+        .send(newPA)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_FIELD);
+        });
+
+    });
+
+    it('Invalid PUT - Empty object', (done) => {
+
+        chai.request(server)
+        .put(`/tutors/${tutor._id}/paymentAccounts/${paToUpdate._id}`)
+        .send({})
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.MISSING_FIELD);
+        });
+
+    });
+
+    it('Invalid tutor ID', (done) => {
+
+        chai.request(server)
+        .put(`/tutors/qwerty/paymentAccounts/${paToUpdate._id}`)
+        .send(validPayAccount1)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_ID);
+        });
+
+    });
+
+    it('Tutor not found', (done) => {
+
+        chai.request(server)
+        .put(`/tutors/ffffffffffffff0123456789/paymentAccounts/${paToUpdate._id}`)
+        .send(validPayAccount1)
+        .end((err, res) => {
+            shouldBeNotFound(res, done);
+        });
+
+    });
+
+    it('Invalid paymentAccount ID', (done) => {
+
+        chai.request(server)
+        .put(`/tutors/${tutor._id}/paymentAccounts/qwerty`)
+        .send(validPayAccount1)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_ID);
+        });
+    
+    });
+    
+    it('PaymentAccount not found', (done) => {
+    
+        chai.request(server)
+        .put(`/tutors/${tutor._id}/paymentAccounts/ffffffffffffff0123456789`)
+        .send(validPayAccount1)
+        .end((err, res) => {
+
+            console.log(res.body);
+
+            shouldBeNotFound(res, done);
+        });
+    
+    });
+
+});
+
+

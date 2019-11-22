@@ -18,7 +18,7 @@ const validatePaymentAccount = (req, res, next) => {
 
     // Required fields
     for(let field of requiredFields) {
-        if(req.method == 'POST' && !payment[field]) {
+        if(!payment[field]) {
             let error = ErrorFactory.buildError(Errors.MISSING_FIELD, field);
             return res.status(error.status).send({ error: error });
         }
