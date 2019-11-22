@@ -296,8 +296,6 @@ describe('PaymentAccount GET', () => {
             tutor = await User.findOne({ 'email': tutors[0].email }).exec();
             paymentAccs = tutor.tutorDetails.paymentAccounts;
 
-            console.log(paymentAccs);
-
             for (let pa of paymentAccs)
             {
                 pa._id = pa._id.toString('hex');
@@ -365,6 +363,102 @@ describe('PaymentAccount GET', () => {
             _.isEqual(res.body, []).should.be.eql(true);
             
             done();
+        });
+
+    });
+
+});
+
+describe('PaymentAccount DELETE', () => {
+
+    let tutor;
+    let paymentAccs;
+    before(done => {
+        db.connectDB()
+        .then(async () => {
+
+            tutor = await User.findOne({ 'email': tutors[0].email }).exec();
+            paymentAccs = tutor.tutorDetails.paymentAccounts;
+
+            for (let pa of paymentAccs)
+            {
+                pa._id = pa._id.toString('hex');
+            }
+
+            db.disconnectDB();
+
+            done();
+        })
+        .catch(err => {
+            done(new Error(err));
+        });
+
+    });
+
+    it('Invalid tutor ID', (done) => {
+
+        chai.request(server)
+        .delete(`/tutors/qwerty/paymentAccounts/${paymentAccs[0]._id}`)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_ID);
+        });
+
+    });
+
+    it('Tutor not found', (done) => {
+
+
+        chai.request(server)
+        .delete(`/tutors/ffffffffffffff0123456789/paymentAccounts/${paymentAccs[0]._id}`)
+        .end((err, res) => {
+            shouldBeNotFound(res, done);
+        });
+
+    });
+
+    it('Invalid paymentAccount ID', (done) => {
+
+        chai.request(server)
+        .delete(`/tutors/${tutor._id}/paymentAccounts/qwerty`)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_ID);
+        });
+
+    });
+
+    it('paymentAccount not found', (done) => {
+
+        chai.request(server)
+        .delete(`/tutors/${tutor._id}/paymentAccounts/ffffffffffffff0123456789`)
+        .end((err, res) => {
+            shouldBeNotFound(res, done);
+        });
+
+    });
+
+    it('Valid delete of a paymentAccount', (done) => {
+
+        let deleteIndex = paymentAccs.length - 1;
+
+        chai.request(server)
+        .delete(`/tutors/${tutor._id}/paymentAccounts/${paymentAccs[deleteIndex]._id}`)
+        .end((err, res) => {
+
+            res.should.have.status(200);
+
+            chai.request(server)
+            .get(`/tutors/${tutor._id}/paymentAccounts`)
+            .end((err, res) => {
+
+                res.should.have.status(200);
+                res.body.should.be.an('array').that.is.not.empty;
+
+                paymentAccs.pop();
+                
+                _.isEqual(paymentAccs, res.body).should.be.eql(true);
+                
+                done();
+            });
         });
 
     });
