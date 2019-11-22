@@ -4,12 +4,13 @@ const chaiHttp = require('chai-http');
 const server = 'localhost:8000';
 const should = chai.should();
 
+const shouldBeError = require('./helpers').shouldBeError;
+const shouldBeNotFound = require('./helpers').shouldBeNotFound;
+
 chai.use(chaiHttp);
 
-
-
 describe('POST /tutorings', () => {
-    let attributeNames = ['date', 'lat','long','locationType', 'locationName', 'topicID', 'tutorID', 'userID','startTime', 'endTime', 'notes', 'paymentMethod']; 
+    let attributeNames = ['date', 'lat','long','locationType', 'locationName', 'topicID', 'tutorId', 'userID','startTime', 'endTime', 'notes', 'paymentMethod']; 
     /*it('shouldCreate a tutoring', (done) => {
         let tutoringAux = {
           date: "10/11/2019",
@@ -18,7 +19,7 @@ describe('POST /tutorings', () => {
           locationType: 'Casa del tutor',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "12:00",
           endTime: "23:00",
@@ -52,7 +53,7 @@ describe('POST /tutorings', () => {
           locationType: 'Casa del tutor',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "12:00",
           endTime: "23:00",
@@ -81,7 +82,7 @@ describe('POST /tutorings', () => {
           locationType: 'Casa del tutor',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "12:00",
           endTime: "23:00",
@@ -110,7 +111,7 @@ describe('POST /tutorings', () => {
           locationType: 'Casa del tutor',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "12:00",
           endTime: "23:00",
@@ -138,7 +139,7 @@ describe('POST /tutorings', () => {
           locationType: 'Casa del tutor',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           endTime: "23:00",
           notes: 'It\'s not the best student',
@@ -165,7 +166,7 @@ describe('POST /tutorings', () => {
           locationType: 'Casa del tutor',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "122:020",
           endTime: "23:00",
@@ -193,7 +194,7 @@ describe('POST /tutorings', () => {
           locationType: 'Casa del tutor',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "12:00",
           endTime: "11:00",
@@ -220,7 +221,7 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "12:00",
           endTime: "23:00",
@@ -248,7 +249,7 @@ describe('POST /tutorings', () => {
           locationType: 'Casa del tutor',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "12:00",
           endTime: "23:00",
@@ -276,7 +277,7 @@ describe('POST /tutorings', () => {
           locationType: 'No idea',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "12:00",
           endTime: "23:00",
@@ -304,7 +305,7 @@ describe('POST /tutorings', () => {
           locationType: 'Casa del tutor',
           locationName: 'Tu',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "12:00",
           endTime: "23:00",
@@ -332,7 +333,7 @@ describe('POST /tutorings', () => {
           locationType: 'Casa del tutor',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "12:00",
           endTime: "23:00",
@@ -359,7 +360,7 @@ describe('POST /tutorings', () => {
           locationType: 'Casa del tutor',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "12:00",
           endTime: "23:00",
@@ -387,7 +388,7 @@ describe('POST /tutorings', () => {
           locationType: 'Casa del tutor',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "12:00",
           endTime: "23:00",
@@ -413,7 +414,7 @@ describe('POST /tutorings', () => {
           locationType: 'Casa del tutor',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "12:00",
           endTime: "23:00",
@@ -440,7 +441,7 @@ describe('POST /tutorings', () => {
           long: -98.246918,
           locationType: 'Casa del tutor',
           locationName: 'Tutor\'s place',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           userID: '5d8d49a56ee837016abcd2aa',
           startTime: "12:00",
           endTime: "23:00",
@@ -495,7 +496,7 @@ describe('POST /tutorings', () => {
           locationType: 'Casa del tutor',
           locationName: 'Tutor\'s place',
           topicID: '5d8d49a56ee837016abcd2a7',
-          tutorID: '5d8d49a96ee837016abcd2b1',
+          tutorId: '5d8d49a96ee837016abcd2b1',
           startTime: "12:00",
           endTime: "23:00",
           notes: 'It\'s not the best student',
@@ -517,42 +518,39 @@ describe('POST /tutorings', () => {
 });
 
 describe('GET /tutorings', () => {
-  let attributeNames = ['date', 'lat','long','locationType', 'locationName', 'topicID', 'tutorID', 'userID','startTime', 'endTime', 'notes', 'paymentMethod'];
-  it('should retrieve a tutoring', (done) => {
-      chai.request(server)
-      .get('/tutors')
-      .end((err, res) => {
-        let id = res.body[0]._id;
-        chai.request(server)
-        .get(`/tutorings?tutorID=${id}`)
-        .end((err2, res2) => {
-            res2.should.have.status(200);
-            res2.body.should.be.an('array');
-            attributeNames.forEach(function(attributeName){
-                res2.body[0].should.have.property(attributeName);
-            });
-            res2.body[0].lat.should.be.eql(19.019635);
-            res2.body[0].long.should.be.eql(-98.246918);
-            res2.body[0].locationType.should.be.eql('Casa del tutor');
-            res2.body[0].locationName.should.be.eql('Tutor\'s place');
-            res2.body[0].tutorID.should.be.eql(id);  
-            res2.body[0].notes.should.be.eql('It\'s not the best student'); 
-            res2.body[0].paymentMethod.should.be.eql('cash'); 
-            done();
+  let attributeNames = ['date', 'lat','long','locationType', 'locationName', 'topicID', 'tutorId', 'userID','startTime', 'endTime', 'notes', 'paymentMethod'];
+  it('should retrieve tutorings', (done) => {
+    let id = '5db48a252f3af03923defe82';
+
+    chai.request(server)
+    .get(`/tutorings?tutorId=${id}`)
+    .end((err2, res2) => {
+        res2.should.have.status(200);
+        res2.body.should.be.an('array');
+        attributeNames.forEach(function(attributeName){
+            res2.body[0].should.have.property(attributeName);
         });
-      });
+        res2.body[0].lat.should.be.eql(19.019635);
+        res2.body[0].long.should.be.eql(-98.246918);
+        res2.body[0].locationType.should.be.eql('Casa del tutor');
+        res2.body[0].locationName.should.be.eql('Tutor\'s place');
+        res2.body[0].tutorId.should.be.eql(id);  
+        res2.body[0].notes.should.be.eql('It\'s not the best student'); 
+        res2.body[0].paymentMethod.should.be.eql('cash'); 
+        done();
+    });
   });
 
   it('Invalid tutor ID', (done) => {
     let id = 'notvalid';
     chai.request(server)
-    .get(`/tutorings?tutorID=${id}`)
+    .get(`/tutorings?tutorId=${id}`)
     .end((err, res) => {
       res.should.have.status(400);
       res.body.should.be.a('object');
       res.body.should.have.property('error');
       res.body.error.should.have.property('code');
-      res.body.error.code.should.be.eql(18); 
+      res.body.error.code.should.be.eql(Errors.INVALID_ID); 
       done();
     });
   });
@@ -560,13 +558,13 @@ describe('GET /tutorings', () => {
   it('Invalid tutor ID', (done) => {
     let id = 'notvalid';
     chai.request(server)
-    .get(`/tutorings?tutorID=${id}`)
+    .get(`/tutorings?tutorId=${id}`)
     .end((err, res) => {
       res.should.have.status(400);
       res.body.should.be.a('object');
       res.body.should.have.property('error');
       res.body.error.should.have.property('code');
-      res.body.error.code.should.be.eql(18); 
+      res.body.error.code.should.be.eql(Errors.INVALID_ID); 
       done();
     });
   });
@@ -575,7 +573,7 @@ describe('GET /tutorings', () => {
   it('Unexistant tutor (flaky)', (done) => {
     let id = '6d9255549c70c5183fb91028';
     chai.request(server)
-    .get(`/tutorings?tutorID=${id}`)
+    .get(`/tutorings?tutorId=${id}`)
     .end((err, res) => {
       res.should.have.status(400);
       res.body.should.be.a('object');
@@ -585,4 +583,57 @@ describe('GET /tutorings', () => {
       done();
     });
   });
+});
+
+describe('GET /tutorings/:tutoringId', () => {
+  // Should be calling /tutorings
+  it('No id', (done) => {
+    let tutoringId = '';
+
+    chai.request(server)
+    .get(`/tutorings/${tutoringId}`)
+    .end((err, res) => {
+      shouldBeError(res, done, Errors.INVALID_ID);
+    });
+  });
+
+  // Invalid id
+  it('Invalid id', (done) => {
+    let tutoringId = 'asd';
+
+    chai.request(server)
+    .get(`/tutorings/${tutoringId}`)
+    .end((err, res) => {
+      shouldBeError(res, done, Errors.INVALID_ID);
+    });
+  });
+
+  // Tutoring not found
+  it('Tutoring not found', (done) => {
+    // Topic id
+    let tutoringId = '5db48a252f3af03923defe7a';
+
+    chai.request(server)
+    .get(`/tutorings/${tutoringId}`)
+    .end((err, res) => {
+      shouldBeNotFound(res, done);
+    });
+  });
+
+  // Get details
+  it('Should get tutoring details', (done) => {
+    // Id is constant from seeder
+    let tutoringId = '5db4a9ef345e6d3f22a54f68';
+
+    chai.request(server)
+    .get(`/tutorings/${tutoringId}`)
+    .end((err, res) => {
+      res.should.have.status(200);
+      res.body.should.be.an('object');
+      res.body.should.have.property('_id');
+      res.body._id.should.be.eql('5db4a9ef345e6d3f22a54f68');
+      done();
+    });
+  });
+
 });

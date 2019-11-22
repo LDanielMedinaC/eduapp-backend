@@ -16,8 +16,10 @@ const Errors = {
     INVALID_FIELD: 14,
     INVALID_ENCODING: 15,
     NOT_AUTHORIZED: 16,
+    INVALID_URL: 17,
     INVALID_CHARSET: 18,
-    ROUTE_ERROR: 19
+    DATE_IN_FUTURE: 19,
+    ROUTE_ERROR: 20
 }
 
 module.exports = {
