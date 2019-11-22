@@ -18,7 +18,8 @@ const shouldBeError = (res, done, code) => {
 
         done();
     } catch(err) {
-        console.log(res.body);
+        err.message += '\n';
+        err.message += JSON.stringify(res.body, null, 4);
         throw err;
     }
 };

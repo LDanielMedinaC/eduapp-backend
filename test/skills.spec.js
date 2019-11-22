@@ -32,8 +32,9 @@ const validateIds = (method, routePattern, validIds) => {
         // Test with id removed
         let model = modelRegex.exec(id)[1];
         let route = routePattern.replace(id, '');
+
         for(let key in validIds)
-            route.replace(key, validIds[key]);
+            route = route.replace(`:${key}`, validIds[`${key}`]);
 
         it(`No ${model} id [${route}]`, (done) => {
             if(idRegex.test(route))
