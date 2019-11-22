@@ -14,6 +14,8 @@ const validateTutoring = require('../middleware/validations/tutoring-validation'
 const validateFeedback = require('../middleware/validations/feedback-validation');
 const validateSkill = require('../middleware/validations/skill-validation');
 
+const Errors = require('../resources').Errors;
+
 module.exports = (app) => {
     // Test route
     app.get('/', (req, res) => res.status(200).send({
@@ -73,7 +75,7 @@ module.exports = (app) => {
         error: {
             status: 400,
             description: 'Bad request. No matching route.',
-            code: 0
+            code: Errors.ROUTE_ERROR
         }
     }));
 }

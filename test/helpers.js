@@ -9,13 +9,18 @@ const randomCharCode = () => {
 };
 
 const shouldBeError = (res, done, code) => {
-    res.should.have.status(400);
-    res.body.should.be.an('object');
-    res.body.should.have.property('error');
-    res.body.error.should.have.property('code');
-    res.body.error.code.should.be.eql(code);
+    try {
+        res.should.have.status(400);
+        res.body.should.be.an('object');
+        res.body.should.have.property('error');
+        res.body.error.should.have.property('code');
+        res.body.error.code.should.be.eql(code);
 
-    done();
+        done();
+    } catch(err) {
+        console.log(res.body);
+        throw err;
+    }
 };
 
 const shouldBeNotFound = (res, done) => {
