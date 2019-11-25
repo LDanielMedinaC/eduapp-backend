@@ -24,6 +24,9 @@ const validateIds = (method, routePattern, validIds) => {
     const idRegexGlobal = /(?:\:)(\w+Id)/g;
     const modelRegex = /(\w+)(?:Id)/;
 
+    const chaiMethod = method.toLowerCase();
+    const invalidId = 'abc';
+
     // Parse id parameter names, populate array
     let ids = [];
     let newIdMatch;
@@ -35,12 +38,12 @@ const validateIds = (method, routePattern, validIds) => {
     //      - replace for non-ObjectID
     //      - use not-found id
     for(let id of ids) {
-        // Test with id removed
         let model = modelRegex.exec(id)[1];
-        let route = routePattern.replace(`:${id}`, '');
 
         // Test with id removed only if 'canBeMissing' is not enabled
         if(validIds[id] && !validIds[id].canBeMissing) {
+            let route = routePattern.replace(`:${id}`, '');
+            
             for(let key in validIds)
                 route = route.replace(`:${key}`, validIds[key].id || validIds[key]);
 
@@ -48,7 +51,6 @@ const validateIds = (method, routePattern, validIds) => {
                 if(idParamRegex.test(route))
                     throw new Error(`Provided ids do not match route pattern: ${route}`);
 
-                let chaiMethod = method.toLowerCase();
                 chai.request(server)
                 [chaiMethod](route) // If this line fails you are using a not allowed HTTP method
                 .end((err, res) => {
@@ -56,6 +58,16 @@ const validateIds = (method, routePattern, validIds) => {
                 });
             });
         }
+
+        // Test with non-ObjectID
+        let route = routePattern.replace(`:${id}`, invalidId);
+        it(`Invalid ${model} id [${route}]`, (done) => {
+            chai.request(server)
+            [chaiMethod](route) // If this line fails you are using a not allowed HTTP method
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_ID);
+            });
+        });
     }
 };
 
