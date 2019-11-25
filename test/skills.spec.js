@@ -19,13 +19,22 @@ chai.use(chaiHttp);
     Requires specifying which method is to be used. Values allowed: 'GET',
     'POST', 'PUT', 'DELETE'.
 */
-const validateIds = (method, routePattern, validIds) => {
+const validateIds = (method, routePattern, validIds, payload = {}) => {
     const idParamRegex = /(:\w+Id)/;
     const idRegexGlobal = /(?:\:)(\w+Id)/g;
     const modelRegex = /(\w+)(?:Id)/;
 
     const chaiMethod = method.toLowerCase();
     const invalidId = 'abc';
+    const mockId = '5ddb3f46a99603a30c89509e'; // GUID - Should not be generated twice
+
+    const buildRoute = (id, idValue) => {
+        let route = routePattern.replace(`:${id}`, idValue);
+        for(let key in validIds)
+            route = route.replace(`:${key}`, validIds[key].id || validIds[key]);
+
+        return route;
+    };
 
     // Parse id parameter names, populate array
     let ids = [];
@@ -42,10 +51,7 @@ const validateIds = (method, routePattern, validIds) => {
 
         // Test with id removed only if 'canBeMissing' is not enabled
         if(validIds[id] && !validIds[id].canBeMissing) {
-            let route = routePattern.replace(`:${id}`, '');
-            
-            for(let key in validIds)
-                route = route.replace(`:${key}`, validIds[key].id || validIds[key]);
+            let route = buildRoute(id, '');
 
             it(`No ${model} id [${route}]`, (done) => {
                 if(idParamRegex.test(route))
@@ -60,14 +66,31 @@ const validateIds = (method, routePattern, validIds) => {
         }
 
         // Test with non-ObjectID
-        let route = routePattern.replace(`:${id}`, invalidId);
-        it(`Invalid ${model} id [${route}]`, (done) => {
-            chai.request(server)
-            [chaiMethod](route) // If this line fails you are using a not allowed HTTP method
-            .end((err, res) => {
-                shouldBeError(res, done, Errors.INVALID_ID);
+        {
+            let route = buildRoute(id, invalidId);
+
+            it(`Invalid ${model} id [${route}]`, (done) => {
+                chai.request(server)
+                [chaiMethod](route) // If this line fails you are using a not allowed HTTP method
+                .end((err, res) => {
+                    shouldBeError(res, done, Errors.INVALID_ID);
+                });
             });
-        });
+        }
+
+        // Test with not-found id
+        {
+            let route = buildRoute(id, mockId);
+
+            it(`Non-existent ${model} id [${route}]`, (done) => {
+                chai.request(server)
+                [chaiMethod](route) // If this line fails you are using a not allowed HTTP method
+                .send(payload)
+                .end((err, res) => {
+                    shouldBeNotFound(res, done, Errors.OBJECT_NOT_FOUND);
+                });
+            });
+        }
     }
 };
 
@@ -99,5 +122,22 @@ describe('SKILLS', () => {
                 canBeMissing: true
             }
         });
+    });
+
+    /*
+    * Test create skill
+    * POST /tutors/:tutorId/skills
+    * Create skill for tutor
+    */
+    describe(`POST ${listPattern}`, () => {
+        let validSkill = {
+            name: 'Ecuaciones Diferenciales',
+            field: 'Matemáticas',
+            experience: 5
+        };
+
+        validateIds('POST', listPattern, {
+            tutorId: '5db48a252f3af03923defe82'
+        }, validSkill);
     });
 });

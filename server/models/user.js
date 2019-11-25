@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
                         ref: 'Topic',
                         required: true
                     },
-                    exeprience:{
+                    exeperience:{
                         type: Number,
                         required: true
                     }

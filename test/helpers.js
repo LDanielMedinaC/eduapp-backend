@@ -25,13 +25,19 @@ const shouldBeError = (res, done, code) => {
 };
 
 const shouldBeNotFound = (res, done) => {
-    res.should.have.status(404);
-    res.body.should.be.an('object');
-    res.body.should.have.property('error');
-    res.body.error.should.have.property('code');
-    res.body.error.code.should.be.eql(Errors.OBJECT_NOT_FOUND);
+    try {
+        res.should.have.status(404);
+        res.body.should.be.an('object');
+        res.body.should.have.property('error');
+        res.body.error.should.have.property('code');
+        res.body.error.code.should.be.eql(Errors.OBJECT_NOT_FOUND);
 
-    done();
+        done();
+    } catch(err) {
+        err.message += '\n';
+        err.message += JSON.stringify(res.body, null, 4);
+        throw err;
+    }
 };
 
 const randomString = (length) => {
