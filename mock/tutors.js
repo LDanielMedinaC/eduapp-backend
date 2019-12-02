@@ -19,13 +19,7 @@ const tutors = [
                 method: 'cash'
             }],
             skills: [],
-            workExperiences: [{
-                _id: new mongoose.mongo.ObjectId('aaaa91bdc3464f14678934ca'),
-                institution: 'Macrosoft',
-                department: 'Bing',
-                beginDate: new Date('2019-05-28').toISOString(),
-                endDate: new Date('2019-08-17').toISOString(),
-            }],
+            workExperience: [],
             studies: [{
                 _id: new mongoose.mongo.ObjectId('56cb91bdc3464f14678934ca'),
                 institution: 'Alguna Universidad',
@@ -59,7 +53,7 @@ const tutors = [
             taughtTopicsIDs: [],
             paymentAccounts: [],
             skills: [],
-            workExperiences: [],
+            workExperience: [],
             studies: [],
             certifications: []
         }
@@ -78,14 +72,7 @@ const tutors = [
                 method: 'paypal'
             }],
             skills: [],
-            workExperiences: [{
-                _id: new mongoose.mongo.ObjectId('bcad91bdc3464f14678934ca'),
-                institution: 'ITESM',
-                department: 'Ingeniería y Ciencias',
-                beginDate: new Date('2012-01-01').toISOString(),
-                endDate: new Date('2019-01-01').toISOString(),
-                stillWorking: false
-            }],
+            workExperience: [],
             studies: [],
             certifications: [{
                 _id: new mongoose.mongo.ObjectId('56cb91bdc3464f14678934bb'),
