@@ -4,6 +4,7 @@ const tutor = require('./tutor');
 const topic = require('./topic');
 const tutoring = require('./tutoring');
 const feedback = require('./feedback');
+const paymentAccount = require('./paymentAccount');
 
 module.exports = {
     user,
@@ -11,5 +12,6 @@ module.exports = {
     tutor,
     topic,
     tutoring,
-    feedback
+    feedback,
+    paymentAccount
 }

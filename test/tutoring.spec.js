@@ -160,7 +160,7 @@ describe('POST /tutorings', () => {
     });
     it('wrong time format.', (done) => {
         let tutoringAux = {
-          date: "10/11/2019",
+          date: "10/11/2099",
           lat: 19.019635,
           long: -98.246918,
           locationType: 'Casa del tutor',
@@ -178,6 +178,7 @@ describe('POST /tutorings', () => {
           .post('/tutorings')
           .send(tutoringAux)
           .end((err, res) => {
+
             res.should.have.status(400);
             res.body.should.be.a('object');
             res.body.should.have.property('error');
@@ -188,7 +189,7 @@ describe('POST /tutorings', () => {
     });
     it('Start time should be before end time.', (done) => {
         let tutoringAux = {
-          date: "10/11/2019",
+          date: "10/11/2099",
           lat: 19.019635,
           long: -98.246918,
           locationType: 'Casa del tutor',
@@ -243,7 +244,7 @@ describe('POST /tutorings', () => {
     });
     it('Invalid coordinates.', (done) => {
         let tutoringAux = {
-          date: "10/11/2019",
+          date: "10/11/2099",
           lat: 19.019635,
           long: -981.246918,
           locationType: 'Casa del tutor',
@@ -271,7 +272,7 @@ describe('POST /tutorings', () => {
     });
     it('Invalid location type.', (done) => {
         let tutoringAux = {
-          date: "10/11/2019",
+          date: "10/11/2099",
           lat: 19.019635,
           long: -98.246918,
           locationType: 'No idea',
@@ -299,7 +300,7 @@ describe('POST /tutorings', () => {
     });
     it('Location name should have more than 3 and less than 51 chars.', (done) => {
         let tutoringAux = {
-          date: "10/11/2019",
+          date: "10/11/2099",
           lat: 19.019635,
           long: -98.246918,
           locationType: 'Casa del tutor',
@@ -327,7 +328,7 @@ describe('POST /tutorings', () => {
     });
     it('No notes were provided', (done) => {
         let tutoringAux = {
-          date: "10/11/2019",
+          date: "10/11/2099",
           lat: 19.019635,
           long: -98.246918,
           locationType: 'Casa del tutor',
@@ -354,7 +355,7 @@ describe('POST /tutorings', () => {
     });
     it('Notes should have more than 0 and less than 500 chars.', (done) => {
         let tutoringAux = {
-          date: "10/11/2019",
+          date: "10/11/2099",
           lat: 19.019635,
           long: -98.246918,
           locationType: 'Casa del tutor',
@@ -382,7 +383,7 @@ describe('POST /tutorings', () => {
     });
     it('No payment method was provided.', (done) => {
         let tutoringAux = {
-          date: "10/11/2019",
+          date: "10/11/2099",
           lat: 19.019635,
           long: -98.246918,
           locationType: 'Casa del tutor',
@@ -408,7 +409,7 @@ describe('POST /tutorings', () => {
     });
     it('Invalid payment method.', (done) => {
         let tutoringAux = {
-          date: "10/11/2019",
+          date: "10/11/2099",
           lat: 19.019635,
           long: -98.246918,
           locationType: 'Casa del tutor',
@@ -436,7 +437,7 @@ describe('POST /tutorings', () => {
     });
     it('No topic provided', (done) => {
         let tutoringAux = {
-          date: "10/11/2019",
+          date: "10/11/2099",
           lat: 19.019635,
           long: -98.246918,
           locationType: 'Casa del tutor',
@@ -463,7 +464,7 @@ describe('POST /tutorings', () => {
     });
     it('No tutor provided', (done) => {
         let tutoringAux = {
-          date: "10/11/2019",
+          date: "10/11/2099",
           lat: 19.019635,
           long: -98.246918,
           locationType: 'Casa del tutor',
@@ -490,7 +491,7 @@ describe('POST /tutorings', () => {
     });
     it('No user provided', (done) => {
         let tutoringAux = {
-          date: "10/11/2019",
+          date: "10/11/2099",
           lat: 19.019635,
           long: -98.246918,
           locationType: 'Casa del tutor',
