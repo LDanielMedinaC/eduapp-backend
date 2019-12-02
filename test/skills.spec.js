@@ -101,7 +101,7 @@ describe('SKILLS', () => {
     * GET /tutors/:tutorId/skills
     * Retrieve all skills for a tutor
     */
-   const listPattern = '/tutors/:tutorId/skills';
+    const listPattern = '/tutors/:tutorId/skills';
     describe(`GET ${listPattern}`, () => {
         validateIds('GET', listPattern, {
             tutorId: '5db48a252f3af03923defe82'
@@ -139,5 +139,41 @@ describe('SKILLS', () => {
         validateIds('POST', listPattern, {
             tutorId: '5db48a252f3af03923defe82'
         }, validSkill);
+    });
+
+    /*
+    * Test update skill
+    * PUT /tutors/:tutorId/skills/:skillId
+    * Updates provided fields for skill with id in parameter
+    */
+    describe(`PUT ${getPattern}`, () => {
+        let validSkill = {
+            name: 'Ecuaciones Diferenciales',
+            field: 'Matemáticas',
+            experience: 5
+        };
+
+        validateIds('PUT', getPattern, {
+            tutorId: '5db48a252f3af03923defe82',
+            skillId: {
+                id: '5db88a888f8af88888defe88',
+                canBeMissing: true
+            }
+        }, validSkill);
+    });
+
+    /*
+    * Test update skill
+    * PUT /tutors/:tutorId/skills/:skillId
+    * Updates provided fields for skill with id in parameter
+    */
+    describe(`DELETE ${getPattern}`, () => {
+        validateIds('DELETE', getPattern, {
+            tutorId: '5db48a252f3af03923defe82',
+            skillId: {
+                id: '5db88a888f8af88888defe88',
+                canBeMissing: true
+            }
+        });
     });
 });
