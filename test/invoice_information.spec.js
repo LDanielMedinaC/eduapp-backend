@@ -15,19 +15,19 @@ const shouldBeNotFound = require('./helpers').shouldBeNotFound;
 
 chai.use(chaiHttp);
 
-// let validInvoice = {
-//     rfc: 'SUSH991111AAA',
-//     invoiceType: invoiceTypes[1],
-//     stret: 'Calle 1',
-//     extNum: 90,
-//     intNum: 2,
-//     colony: 'Colonia x',
-//     country: 'Mexico',
-//     state: 'Puebla',
-//     city: 'Puebla',
-//     municipality: 'Puebla',
-//     pc: '72535'
-// }
+let validInvoice = {
+    rfc: 'SUSH991111AAA',
+    invoiceType: invoiceTypes[1],
+    stret: 'Calle 1',
+    extNum: 90,
+    intNum: 2,
+    colony: 'Colonia x',
+    country: 'Mexico',
+    state: 'Puebla',
+    city: 'Puebla',
+    municipality: 'Puebla',
+    pc: '72535'
+}
 
 // let missingRFC = {
 //     invoiceType: invoiceTypes[1],
