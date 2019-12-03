@@ -32,6 +32,16 @@ module.exports = (app) => {
     .get(userController.getDetails)
     .put(validateUser, userController.update);
 
+    //User invoices
+    app.route('/users/:userId/invoices')
+    .get(validateIds, invoiceController.list)
+    .post(validateIds, validateInvoice, invoiceController.create);
+
+    app.route('/users/:userId/invoices/:invoiceId')
+    .get(validateIds, invoiceController.get)
+    .put(validateIds, validateInvoice, invoiceController.update)
+    .delete(validateIds, invoiceController.delete);
+
     // Landing Page routes
     app.route('/landingpages')
     .get(landingPageController.show)
@@ -72,16 +82,6 @@ module.exports = (app) => {
     .get(validateIds, tutorController.getCert)
     .put(validateIds, validateCertification, tutorController.updateCert)
     .delete(validateIds, tutorController.deleteCert);
-
-    //Tutor invoices
-    app.route('/tutors/:tutorId/invoices')
-    .get(validateIds, invoiceController.list)
-    .post(validateIds, validateInvoice, invoiceController.create);
-
-    app.route('/tutors/:tutorId/invoices/:invoiceId')
-    .get(validateIds, invoiceController.get)
-    .put(validateIds, validateInvoice, invoiceController.update)
-    .delete(validateIds, invoiceController.delete);
 
     // Topics routes
     app.route('/topics')

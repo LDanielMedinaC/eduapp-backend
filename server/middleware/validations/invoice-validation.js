@@ -12,7 +12,6 @@ const validateInvoice = (req, res, next) => {
         'invoiceType',
         'street',
         'extNum',
-        'intNum',
         'colony',
         'country',
         'state',
@@ -20,7 +19,7 @@ const validateInvoice = (req, res, next) => {
         'pc'
     ];
     
-    // Should have study
+    // Should have invoice data
     if(Object.keys(invoice).length === 0) {
         let error = ErrorFactory.buildError(Errors.MISSING_FIELD, 'invoice (object)');
         return res.status(error.status).send({ error: error });

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('../server/models').User;
+const invoiceTypes = require('../server/resources/index').invoiceTypes;
 
 const users = [
     new User({
@@ -11,7 +12,20 @@ const users = [
         phone: 2223454546,
         password: 'password1',
         country: 'Mexico',
-        language: 'Español'
+        language: 'Español',
+        invoiceInformation: {
+            _id: new mongoose.mongo.ObjectId('5db48a251f3af03783defe7c'),
+            rfc: 'SUSH991111AAA',
+            invoiceType: invoiceTypes[1],
+            stret: 'Calle 1',
+            extNum: 90,
+            intNum: 2,
+            colony: 'Colonia x',
+            country: 'Mexico',
+            state: 'Puebla',
+            municipality: 'Puebla',
+            pc: '72535'
+        }
     }),
     new User({
         uid: 'usuario2',
