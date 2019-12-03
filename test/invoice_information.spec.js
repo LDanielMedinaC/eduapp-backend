@@ -384,190 +384,199 @@ let invalidPC = {
 }
 
 
-describe('PaymentAccount POST', () => {
+// describe('PaymentAccount POST', () => {
 
-    let user;
-    before(done => {
-        db.connectDB()
-        .then(async () => {
+//     let user;
+//     before(done => {
+//         db.connectDB()
+//         .then(async () => {
 
-            user = await User.findOne({ 'email': tutors[0].email }).exec();
+//             user = await User.findOne({ 'email': tutors[0].email }).exec();
 
-            db.disconnectDB()
+//             db.disconnectDB()
 
-            done();
-        })
-        .catch(err => {
-            done(new Error(err));
-        });
+//             done();
+//         })
+//         .catch(err => {
+//             done(new Error(err));
+//         });
 
-    });
+//     });
 
-    it('Valid invoice info', (done) => {
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(validInvoice)
-        .end((err, res) => {
+//     it('Valid invoice info', (done) => {
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(validInvoice)
+//         .end((err, res) => {
 
-            res.should.have.status(201);
-            res.body.should.be.an('object');
+//             res.should.have.status(201);
+//             res.body.should.be.an('object');
 
-            done();
-        });
+//             done();
+//         });
 
-    });
+//     });
 
-    it('Missing RFC', (done) => {
+//     it('Missing RFC', (done) => {
 
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(missingRFC)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.MISSING_FIELD);
-        });
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(missingRFC)
+//         .end((err, res) => {
+//             shouldBeError(res, done, Errors.MISSING_FIELD);
+//         });
 
-    });
+//     });
 
-    it('Missing RFC', (done) => {
+//     it('Missing RFC', (done) => {
 
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(missingRFC)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.MISSING_FIELD);
-        });
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(missingRFC)
+//         .end((err, res) => {
+//             shouldBeError(res, done, Errors.MISSING_FIELD);
+//         });
 
-    });
+//     });
 
-    it('Missing Invoice Type', (done) => {
+//     it('Missing Invoice Type', (done) => {
 
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(missingInvoiceType)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.MISSING_FIELD);
-        });
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(missingInvoiceType)
+//         .end((err, res) => {
+//             shouldBeError(res, done, Errors.MISSING_FIELD);
+//         });
 
-    });
+//     });
 
-    it('Missing Street', (done) => {
+//     it('Missing Street', (done) => {
 
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(missingStreet)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.MISSING_FIELD);
-        });
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(missingStreet)
+//         .end((err, res) => {
+//             shouldBeError(res, done, Errors.MISSING_FIELD);
+//         });
 
-    });
-    it('Missing Exterior Number', (done) => {
+//     });
+//     it('Missing Exterior Number', (done) => {
 
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(missingExtNum)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.MISSING_FIELD);
-        });
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(missingExtNum)
+//         .end((err, res) => {
+//             shouldBeError(res, done, Errors.MISSING_FIELD);
+//         });
 
-    });
-    it('Missing Interior Number', (done) => {
+//     });
+//     it('Missing Interior Number', (done) => {
 
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(missingIntNum)
-        .end((err, res) => {
-            res.should.have.status(201);
-            res.body.should.be.an('object');
-            done();
-        });
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(missingIntNum)
+//         .end((err, res) => {
+//             res.should.have.status(201);
+//             res.body.should.be.an('object');
+//             done();
+//         });
 
-    });
+//     });
 
-    it('Missing Colony', (done) => {
+//     it('Missing Colony', (done) => {
 
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(missingColony)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.MISSING_FIELD);
-        });
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(missingColony)
+//         .end((err, res) => {
+//             shouldBeError(res, done, Errors.MISSING_FIELD);
+//         });
 
-    });    
-    it('Missing Country', (done) => {
+//     });    
+//     it('Missing Country', (done) => {
 
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(missingCountry)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.MISSING_FIELD);
-        });
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(missingCountry)
+//         .end((err, res) => {
+//             shouldBeError(res, done, Errors.MISSING_FIELD);
+//         });
 
-    });
-    it('Missing State', (done) => {
+//     });
+//     it('Missing State', (done) => {
 
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(missingState)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.MISSING_FIELD);
-        });
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(missingState)
+//         .end((err, res) => {
+//             shouldBeError(res, done, Errors.MISSING_FIELD);
+//         });
 
-    });
+//     });
 
-    it('Missing City', (done) => {
+//     it('Missing City', (done) => {
 
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(missingCity)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.MISSING_FIELD);
-        });
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(missingCity)
+//         .end((err, res) => {
+//             shouldBeError(res, done, Errors.MISSING_FIELD);
+//         });
 
-    });
-    it('Missing Municipality', (done) => {
+//     });
+//     it('Missing Municipality', (done) => {
 
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(missingMunicipality)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.MISSING_FIELD);
-        });
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(missingMunicipality)
+//         .end((err, res) => {
+//             shouldBeError(res, done, Errors.MISSING_FIELD);
+//         });
 
-    });
+//     });
 
-    it('Missing Postal Code', (done) => {
+//     it('Missing Postal Code', (done) => {
 
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(missingPC)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.MISSING_FIELD);
-        });
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(missingPC)
+//         .end((err, res) => {
+//             shouldBeError(res, done, Errors.MISSING_FIELD);
+//         });
 
-    });
-    it('Invalid RFC Too long', (done) => {
+//     });
+//     it('Invalid RFC Too long', (done) => {
 
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(invalidRFC1)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.LONG_STRING);
-        });
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(invalidRFC1)
+//         .end((err, res) => {
+//             shouldBeError(res, done, Errors.LONG_STRING);
+//         });
 
-    });
-    it('Invalid RFC Too short', (done) => {
+//     });
+//     it('Invalid RFC Too short', (done) => {
 
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(invalidRFC2)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.LONG_STRING);
-        });
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(invalidRFC2)
+//         .end((err, res) => {
+//             shouldBeError(res, done, Errors.LONG_STRING);
+//         });
 
-    });
+//     });
+//     it('Invalid Invoice Type', (done) => {
 
+//         chai.request(server)
+//         .post(`/users/${user._id}/invoices`)
+//         .send(invalidInvoiceType)
+//         .end((err, res) => {
+//             shouldBeError(res, done, Errors.LONG_STRING);
+//         });
 
-});
+//     });
+
+// });
 
 /*describe('PaymentAccount GET:id', () => {
 
