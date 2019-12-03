@@ -17,7 +17,7 @@ const users = [
             _id: new mongoose.mongo.ObjectId('5db48a251f3af03783defe7c'),
             rfc: 'SUSH991111AAA',
             invoiceType: invoiceTypes[1],
-            stret: 'Calle 1',
+            street: 'Calle 1',
             extNum: 90,
             intNum: 2,
             colony: 'Colonia x',

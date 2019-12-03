@@ -2,7 +2,7 @@
 # Please note this script will run in the default working directory for npm.
 
 # Drop and seed DB
-npm run db:reset
+#npm run db:reset
 
 # Start server
 echo ''
