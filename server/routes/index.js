@@ -52,11 +52,11 @@ module.exports = (app) => {
     .delete(validateIds, tutorController.deleteStudy);
 
     //Tutor Payment Accounts
-    app.route('/tutors/:tutorId/paymentAccounts')
+    app.route('/tutors/:tutorId/paymentaccounts')
     .get(validateIds, paymentAccountController.list)
     .post(validateIds, validatePaymentAccount, paymentAccountController.create);
 
-    app.route('/tutors/:tutorId/paymentAccounts/:accountId')
+    app.route('/tutors/:tutorId/paymentaccounts/:accountId')
     .get(validateIds, paymentAccountController.get)
     .put(validateIds, validatePaymentAccount, paymentAccountController.update)
     .delete(validateIds, paymentAccountController.delete);

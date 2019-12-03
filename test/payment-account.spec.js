@@ -64,7 +64,7 @@ describe('PaymentAccount POST', () => {
     it('Valid POST 1', (done) => {
 
         chai.request(server)
-        .post(`/tutors/${tutor._id}/paymentAccounts`)
+        .post(`/tutors/${tutor._id}/paymentaccounts`)
         .send(validPayAccount1)
         .end((err, res) => {
 
@@ -79,7 +79,7 @@ describe('PaymentAccount POST', () => {
     it('Valid POST 2', (done) => {
 
         chai.request(server)
-        .post(`/tutors/${tutor._id}/paymentAccounts`)
+        .post(`/tutors/${tutor._id}/paymentaccounts`)
         .send(validPayAccount2)
         .end((err, res) => {
 
@@ -94,7 +94,7 @@ describe('PaymentAccount POST', () => {
     it('Valid POST 3', (done) => {
 
         chai.request(server)
-        .post(`/tutors/${tutor._id}/paymentAccounts`)
+        .post(`/tutors/${tutor._id}/paymentaccounts`)
         .send(validPayAccount3)
         .end((err, res) => {
 
@@ -110,7 +110,7 @@ describe('PaymentAccount POST', () => {
     it('Valid POST 4', (done) => {
 
         chai.request(server)
-        .post(`/tutors/${tutor._id}/paymentAccounts`)
+        .post(`/tutors/${tutor._id}/paymentaccounts`)
         .send(validPayAccount4)
         .end((err, res) => {
 
@@ -125,7 +125,7 @@ describe('PaymentAccount POST', () => {
     it('Invalid POST 1', (done) => {
 
         chai.request(server)
-        .post(`/tutors/${tutor._id}/paymentAccounts`)
+        .post(`/tutors/${tutor._id}/paymentaccounts`)
         .send(invalidPayAccount1)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_FIELD);
@@ -136,7 +136,7 @@ describe('PaymentAccount POST', () => {
     it('Invalid POST 2', (done) => {
 
         chai.request(server)
-        .post(`/tutors/${tutor._id}/paymentAccounts`)
+        .post(`/tutors/${tutor._id}/paymentaccounts`)
         .send(invalidPayAccount2)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_FIELD);
@@ -147,7 +147,7 @@ describe('PaymentAccount POST', () => {
     it('Invalid POST 3', (done) => {
 
         chai.request(server)
-        .post(`/tutors/${tutor._id}/paymentAccounts`)
+        .post(`/tutors/${tutor._id}/paymentaccounts`)
         .send(invalidPayAccount3)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_FIELD);
@@ -158,7 +158,7 @@ describe('PaymentAccount POST', () => {
     it('Invalid POST 4', (done) => {
 
         chai.request(server)
-        .post(`/tutors/${tutor._id}/paymentAccounts`)
+        .post(`/tutors/${tutor._id}/paymentaccounts`)
         .send(invalidPayAccount4)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_FIELD);
@@ -169,7 +169,7 @@ describe('PaymentAccount POST', () => {
     it('Invalid POST - Empty object', (done) => {
 
         chai.request(server)
-        .post(`/tutors/${tutor._id}/paymentAccounts`)
+        .post(`/tutors/${tutor._id}/paymentaccounts`)
         .send({})
         .end((err, res) => {
             shouldBeError(res, done, Errors.MISSING_FIELD);
@@ -180,7 +180,7 @@ describe('PaymentAccount POST', () => {
     it('Invalid tutor ID', (done) => {
 
         chai.request(server)
-        .post(`/tutors/qwerty/paymentAccounts`)
+        .post(`/tutors/qwerty/paymentaccounts`)
         .send(validPayAccount1)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
@@ -191,7 +191,7 @@ describe('PaymentAccount POST', () => {
     it('Tutor not found', (done) => {
 
         chai.request(server)
-        .post(`/tutors/ffffffffffffff0123456789/paymentAccounts`)
+        .post(`/tutors/ffffffffffffff0123456789/paymentaccounts`)
         .send(validPayAccount1)
         .end((err, res) => {
             shouldBeNotFound(res, done);
@@ -227,7 +227,7 @@ describe('PaymentAccount GET:id', () => {
     it('Invalid tutor ID', (done) => {
 
         chai.request(server)
-        .get(`/tutors/qwerty/paymentAccounts/${paymentAcc._id}`)
+        .get(`/tutors/qwerty/paymentaccounts/${paymentAcc._id}`)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
         });
@@ -238,7 +238,7 @@ describe('PaymentAccount GET:id', () => {
 
 
         chai.request(server)
-        .get(`/tutors/ffffffffffffff0123456789/paymentAccounts/${paymentAcc._id}`)
+        .get(`/tutors/ffffffffffffff0123456789/paymentaccounts/${paymentAcc._id}`)
         .end((err, res) => {
             shouldBeNotFound(res, done);
         });
@@ -248,7 +248,7 @@ describe('PaymentAccount GET:id', () => {
     it('Invalid paymentAccount ID', (done) => {
 
         chai.request(server)
-        .get(`/tutors/${tutor._id}/paymentAccounts/qwerty`)
+        .get(`/tutors/${tutor._id}/paymentaccounts/qwerty`)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
         });
@@ -258,7 +258,7 @@ describe('PaymentAccount GET:id', () => {
     it('paymentAccount not found', (done) => {
 
         chai.request(server)
-        .get(`/tutors/${tutor._id}/paymentAccounts/ffffffffffffff0123456789`)
+        .get(`/tutors/${tutor._id}/paymentaccounts/ffffffffffffff0123456789`)
         .end((err, res) => {
             shouldBeNotFound(res, done);
         });
@@ -268,7 +268,7 @@ describe('PaymentAccount GET:id', () => {
     it('Valid and correct get', (done) => {
 
         chai.request(server)
-        .get(`/tutors/${tutor._id}/paymentAccounts/${paymentAcc._id}`)
+        .get(`/tutors/${tutor._id}/paymentaccounts/${paymentAcc._id}`)
         .end((err, res) => {
 
             res.should.have.status(200);
@@ -316,7 +316,7 @@ describe('PaymentAccount GET', () => {
     it('Invalid tutor ID', (done) => {
 
         chai.request(server)
-        .get(`/tutors/qwerty/paymentAccounts`)
+        .get(`/tutors/qwerty/paymentaccounts`)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
         });
@@ -327,7 +327,7 @@ describe('PaymentAccount GET', () => {
 
 
         chai.request(server)
-        .get(`/tutors/ffffffffffffff0123456789/paymentAccounts`)
+        .get(`/tutors/ffffffffffffff0123456789/paymentaccounts`)
         .end((err, res) => {
             shouldBeNotFound(res, done);
         });
@@ -338,7 +338,7 @@ describe('PaymentAccount GET', () => {
     it('Correct get of all payment Accounts', (done) => {
 
         chai.request(server)
-        .get(`/tutors/${tutor._id}/paymentAccounts`)
+        .get(`/tutors/${tutor._id}/paymentaccounts`)
         .end((err, res) => {
 
             res.should.have.status(200);
@@ -354,7 +354,7 @@ describe('PaymentAccount GET', () => {
     it('Correct get of no payment accounts', (done) => {
 
         chai.request(server)
-        .get(`/tutors/${noPATutor._id}/paymentAccounts`)
+        .get(`/tutors/${noPATutor._id}/paymentaccounts`)
         .end((err, res) => {
 
             res.should.have.status(200);
@@ -398,7 +398,7 @@ describe('PaymentAccount DELETE', () => {
     it('Invalid tutor ID', (done) => {
 
         chai.request(server)
-        .delete(`/tutors/qwerty/paymentAccounts/${paymentAccs[0]._id}`)
+        .delete(`/tutors/qwerty/paymentaccounts/${paymentAccs[0]._id}`)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
         });
@@ -409,7 +409,7 @@ describe('PaymentAccount DELETE', () => {
 
 
         chai.request(server)
-        .delete(`/tutors/ffffffffffffff0123456789/paymentAccounts/${paymentAccs[0]._id}`)
+        .delete(`/tutors/ffffffffffffff0123456789/paymentaccounts/${paymentAccs[0]._id}`)
         .end((err, res) => {
             shouldBeNotFound(res, done);
         });
@@ -419,7 +419,7 @@ describe('PaymentAccount DELETE', () => {
     it('Invalid paymentAccount ID', (done) => {
 
         chai.request(server)
-        .delete(`/tutors/${tutor._id}/paymentAccounts/qwerty`)
+        .delete(`/tutors/${tutor._id}/paymentaccounts/qwerty`)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
         });
@@ -429,7 +429,7 @@ describe('PaymentAccount DELETE', () => {
     it('paymentAccount not found', (done) => {
 
         chai.request(server)
-        .delete(`/tutors/${tutor._id}/paymentAccounts/ffffffffffffff0123456789`)
+        .delete(`/tutors/${tutor._id}/paymentaccounts/ffffffffffffff0123456789`)
         .end((err, res) => {
             shouldBeNotFound(res, done);
         });
@@ -441,13 +441,13 @@ describe('PaymentAccount DELETE', () => {
         let deleteIndex = paymentAccs.length - 1;
 
         chai.request(server)
-        .delete(`/tutors/${tutor._id}/paymentAccounts/${paymentAccs[deleteIndex]._id}`)
+        .delete(`/tutors/${tutor._id}/paymentaccounts/${paymentAccs[deleteIndex]._id}`)
         .end((err, res) => {
 
             res.should.have.status(200);
 
             chai.request(server)
-            .get(`/tutors/${tutor._id}/paymentAccounts`)
+            .get(`/tutors/${tutor._id}/paymentaccounts`)
             .end((err, res) => {
 
                 res.should.have.status(200);
@@ -496,7 +496,7 @@ describe('PaymentAccount PUT', () => {
         }
 
         chai.request(server)
-        .put(`/tutors/${tutor._id}/paymentAccounts/${paToUpdate._id}`)
+        .put(`/tutors/${tutor._id}/paymentaccounts/${paToUpdate._id}`)
         .send(newPA)
         .end((err, res) => {
 
@@ -506,7 +506,7 @@ describe('PaymentAccount PUT', () => {
             _.isEqual(res.body, paToUpdate).should.be.eql(false);
 
             chai.request(server)
-            .get(`/tutors/${tutor._id}/paymentAccounts/${paToUpdate._id}`)
+            .get(`/tutors/${tutor._id}/paymentaccounts/${paToUpdate._id}`)
             .end((err2, res2) => {
 
                 res2.should.have.status(200);
@@ -529,7 +529,7 @@ describe('PaymentAccount PUT', () => {
         }
 
         chai.request(server)
-        .put(`/tutors/${tutor._id}/paymentAccounts/${paToUpdate._id}`)
+        .put(`/tutors/${tutor._id}/paymentaccounts/${paToUpdate._id}`)
         .send(newPA)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_FIELD);
@@ -540,7 +540,7 @@ describe('PaymentAccount PUT', () => {
     it('Invalid PUT - Empty object', (done) => {
 
         chai.request(server)
-        .put(`/tutors/${tutor._id}/paymentAccounts/${paToUpdate._id}`)
+        .put(`/tutors/${tutor._id}/paymentaccounts/${paToUpdate._id}`)
         .send({})
         .end((err, res) => {
             shouldBeError(res, done, Errors.MISSING_FIELD);
@@ -551,7 +551,7 @@ describe('PaymentAccount PUT', () => {
     it('Invalid tutor ID', (done) => {
 
         chai.request(server)
-        .put(`/tutors/qwerty/paymentAccounts/${paToUpdate._id}`)
+        .put(`/tutors/qwerty/paymentaccounts/${paToUpdate._id}`)
         .send(validPayAccount1)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
@@ -562,7 +562,7 @@ describe('PaymentAccount PUT', () => {
     it('Tutor not found', (done) => {
 
         chai.request(server)
-        .put(`/tutors/ffffffffffffff0123456789/paymentAccounts/${paToUpdate._id}`)
+        .put(`/tutors/ffffffffffffff0123456789/paymentaccounts/${paToUpdate._id}`)
         .send(validPayAccount1)
         .end((err, res) => {
             shouldBeNotFound(res, done);
@@ -573,7 +573,7 @@ describe('PaymentAccount PUT', () => {
     it('Invalid paymentAccount ID', (done) => {
 
         chai.request(server)
-        .put(`/tutors/${tutor._id}/paymentAccounts/qwerty`)
+        .put(`/tutors/${tutor._id}/paymentaccounts/qwerty`)
         .send(validPayAccount1)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
@@ -584,7 +584,7 @@ describe('PaymentAccount PUT', () => {
     it('PaymentAccount not found', (done) => {
     
         chai.request(server)
-        .put(`/tutors/${tutor._id}/paymentAccounts/ffffffffffffff0123456789`)
+        .put(`/tutors/${tutor._id}/paymentaccounts/ffffffffffffff0123456789`)
         .send(validPayAccount1)
         .end((err, res) => {
 
