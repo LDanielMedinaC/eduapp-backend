@@ -28,25 +28,25 @@ const validateSkill = (req, res, next) => {
     }
 
     // Name min length 2 characters
-    if(skill.name && skill.name <= 1) {
+    if(skill.name && skill.name.length <= 1) {
         let error = ErrorFactory.buildError(Errors.SHORT_STRING, 'name', '1');
         return res.status(error.status).send({ error: error });
     }
 
-    // Name min length 2 characters
+    // Invalid field
     if(skill.field && topicFields.indexOf(skill.field) == -1) {
         let error = ErrorFactory.buildError(Errors.INVALID_FIELD, 'field', topicFields);
         return res.status(error.status).send({ error: error });
     }
 
-    //Experience lower bound
-    if(skill.experience && skill.experience < 0){
+    // Experience lower bound
+    if(skill.experience && skill.experience < 0) {
         let error = ErrorFactory.buildError(Errors.NUMBER_LOWER_BOUND, 'experience', '0');
         return res.status(error.status).send({ error: error });
     }
 
-    //Experience upper bound
-    if(skill.experience && skill >= 100){
+    // Experience upper bound
+    if(skill.experience && skill.experience >= 100) {
         let error = ErrorFactory.buildError(Errors.NUMBER_UPPER_BOUND, 'experience', '99');
         return res.status(error.status).send({ error: error });
     }

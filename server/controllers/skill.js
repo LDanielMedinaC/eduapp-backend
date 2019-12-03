@@ -55,15 +55,20 @@ module.exports = {
         let nSkill = req.body;
 
         let session = await mongoose.startSession();
-
         await session.startTransaction();
 
-        let relatedTopic = await Topic.findOne({'Name': nSkill.name, 'Field': nSkill.Field}).exec();
-
-        //console.log(relatedTopic);
+        let relatedTopic = await Topic.findOne({'Name': nSkill.name, 'Field': nSkill.field}).exec();
         let skillId = new mongoose.mongo.ObjectId();
 
-        if(relatedTopic){            
+        if(relatedTopic) {
+            // Validate tutor does not already have the skill
+            for(let skill of tutor.tutorDetails.skills) {
+                if(`${skill.topic}` === `${relatedTopic._id}`) {
+                    let error = ErrorFactory.buildError(Errors.CLIENT_ERROR, 'Skill already defined for this tutor.');
+                    return res.status(error.status).send({error: error});
+                }
+            }
+
             tutor.tutorDetails.skills.push({
                 topic: relatedTopic._id,
                 experience: nSkill.experience,
@@ -74,9 +79,6 @@ module.exports = {
                 relatedTopic.Tutors = [];
 
             relatedTopic.Tutors.push(tutorId);
-
-            console.log(tutor);
-
             tutor.markModified('tutorDetails.skills');
 
             tutor.save()
@@ -121,8 +123,6 @@ module.exports = {
                     experience: nSkill.experience,
                     _id: skillId
                 });
-                
-                console.log(tutor);
 
                 tutor.save()
                 .then(async (updatedTuror) => {
@@ -221,7 +221,6 @@ module.exports = {
                 tutor.markModified('tutorDetails.skills');
                 tutor.save()
                 .then(async (updatedTutor) => {
-                    console.log("0");
                     await session.commitTransaction();
                     return res.status(200).send({
                         name: topic.Name,
@@ -255,7 +254,6 @@ module.exports = {
                     tutor.markModified('tutorDetails.skills');
                     tutor.save()
                     .then(async (updatedTutor) => {
-                        console.log("1");
                         await session.commitTransaction();
                         return res.status(200).send(nSkill);
                     })
@@ -279,7 +277,6 @@ module.exports = {
                             .then(() => {
                                 relatedTopic.save()
                                 .then(async (updatedTopic) => {
-                                    console.log("2");
                                     await session.commitTransaction();
                                     return res.status(200).send({
                                         name: updatedTopic.Name,
@@ -308,7 +305,6 @@ module.exports = {
                                 skill.topic = nTopic._id;
                                 tutor.save()
                                 .then(async (updatedTutor) => {
-                                    console.log("3");
                                     await session.commitTransaction();
                                     return res.status(200).send({
                                         name: nTopic.Name,

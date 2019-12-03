@@ -1,4 +1,5 @@
 require('dotenv').config();
+const mongoose = require('mongoose');
 
 const Topic = require('../server/models').Topic;
 const db = require('../server/models');
@@ -21,6 +22,13 @@ let seed = () => {
             let topicIds = tutors[0].tutorDetails.taughtTopicsIDs;
             topicIds.push(idTopic1);
             topicIds.push(idTopic3);
+
+            let skills = tutors[0].tutorDetails.skills;
+            skills.push({
+                _id: new mongoose.mongo.ObjectId('5de553854d21e64b51fcedee'),
+                topic: new mongoose.mongo.ObjectId(idTopic1),
+                experience: 10
+            });
         }
 
         if(tutors[1]) {
