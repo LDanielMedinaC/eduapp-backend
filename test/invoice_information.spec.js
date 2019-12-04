@@ -6,15 +6,15 @@ const _ = require("lodash");
 
 const server = 'localhost:8000';
 const db = require('../server/models');
-const User = require('../server/models').User;
-const tutors = require('../mock/tutors');
+// const User = require('../server/models').User;
+// const tutors = require('../mock/tutors');
 
-const Errors = require('../server/resources').Errors;
-const shouldBeError = require('./helpers').shouldBeError;
-const shouldBeNotFound = require('./helpers').shouldBeNotFound;
+// const Errors = require('../server/resources').Errors;
+// const shouldBeError = require('./helpers').shouldBeError;
+// const shouldBeNotFound = require('./helpers').shouldBeNotFound;
 
-chai.use(chaiHttp);
-let invoiceTypes = require('../../resources').invoiceTypes;
+// chai.use(chaiHttp);
+let invoiceTypes = require('../server/resources').invoiceTypes;
 let validInvoice = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
