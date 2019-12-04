@@ -16,6 +16,7 @@ const validateInvoice = (req, res, next) => {
         'country',
         'state',
         'municipality',
+        'city',
         'pc'
     ];
     

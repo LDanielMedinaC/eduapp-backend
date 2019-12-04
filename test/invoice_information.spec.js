@@ -392,7 +392,6 @@ describe('POST /invoices', () => {
         .then(async () => {
 
             user = await User.findById('5db48a252f3af03923defe7c').exec();
-            console.log(user);
             db.disconnectDB()
 
             done();
@@ -406,7 +405,7 @@ describe('POST /invoices', () => {
     it('Valid invoice info', (done) => {
         console.log(user._id)
         chai.request(server)
-        .post(`/users/5db48a252f3af03923defe7c/invoices`)
+        .post(`/users/${user._id}/invoices`)
         .send(validInvoice)
         .end((err, res) => {
 
