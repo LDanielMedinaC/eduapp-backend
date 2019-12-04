@@ -575,307 +575,106 @@ describe('POST /invoices', () => {
         });
 
     });
-    // it('Invalid Outdoor Number', (done) => {
+    it('Invalid Outdoor Number, not number', (done) => {
 
-    //     chai.request(server)
-    //     .post(`/users/${user._id}/invoices`)
-    //     .send(invalidStreet)
-    //     .end((err, res) => {
-    //         shouldBeError(res, done, Errors.);
-    //     });
+        chai.request(server)
+        .post(`/users/${user._id}/invoices`)
+        .send(invalidExtNum1)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_DATA_TYPE);
+        });
 
-    // });
+    });
 
-});
+    it('Invalid Outdoor Number, too big', (done) => {
 
-/*describe('PaymentAccount GET:id', () => {
-    let tutor;
-    let paymentAcc;
-    before(done => {
-        db.connectDB()
-        .then(async () => {
-            tutor = await User.findOne({ 'email': tutors[0].email }).exec();
-            paymentAcc = tutor.tutorDetails.paymentAccounts[0];
-            paymentAcc._id = paymentAcc._id.toString('hex');
-            db.disconnectDB()
-            done();
-        })
-        .catch(err => {
-            done(new Error(err));
-        });
-    });
-    it('Invalid tutor ID', (done) => {
         chai.request(server)
-        .get(`/tutors/qwerty/paymentaccounts/${paymentAcc._id}`)
+        .post(`/users/${user._id}/invoices`)
+        .send(invalidExtNum2)
         .end((err, res) => {
-            shouldBeError(res, done, Errors.INVALID_ID);
+            shouldBeError(res, done, Errors.NUMBER_UPPER_BOUND);
         });
+
     });
-    it('Tutor not found', (done) => {
+    it('Invalid Indoor Number, not number', (done) => {
+
         chai.request(server)
-        .get(`/tutors/ffffffffffffff0123456789/paymentaccounts/${paymentAcc._id}`)
+        .post(`/users/${user._id}/invoices`)
+        .send(invalidIntNum1)
         .end((err, res) => {
-            shouldBeNotFound(res, done);
+            shouldBeError(res, done, Errors.INVALID_DATA_TYPE);
         });
+
     });
-    it('Invalid paymentAccount ID', (done) => {
+    it('Invalid Indoor Number, too big', (done) => {
+
         chai.request(server)
-        .get(`/tutors/${tutor._id}/paymentaccounts/qwerty`)
+        .post(`/users/${user._id}/invoices`)
+        .send(invalidIntNum2)
         .end((err, res) => {
-            shouldBeError(res, done, Errors.INVALID_ID);
+            shouldBeError(res, done, Errors.NUMBER_UPPER_BOUND);
         });
+
     });
-    it('paymentAccount not found', (done) => {
+
+    it('Too Long Colony', (done) => {
+
         chai.request(server)
-        .get(`/tutors/${tutor._id}/paymentaccounts/ffffffffffffff0123456789`)
+        .post(`/users/${user._id}/invoices`)
+        .send(invalidColony)
         .end((err, res) => {
-            shouldBeNotFound(res, done);
+            shouldBeError(res, done, Errors.LONG_STRING);
         });
+
     });
-    it('Valid and correct get', (done) => {
+    it('Too Long Country', (done) => {
+
         chai.request(server)
-        .get(`/tutors/${tutor._id}/paymentaccounts/${paymentAcc._id}`)
+        .post(`/users/${user._id}/invoices`)
+        .send(invalidCountry)
         .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.an('object');
-            res.body.should.have.property('method');
-            _.isEqual(res.body, paymentAcc).should.be.eql(true);
-            
-            done();
+            shouldBeError(res, done, Errors.LONG_STRING);
         });
+
     });
-});
-describe('PaymentAccount GET', () => {
-    let tutor;
-    let noPATutor;
-    let paymentAccs;
-    before(done => {
-        db.connectDB()
-        .then(async () => {
-            tutor = await User.findOne({ 'email': tutors[0].email }).exec();
-            paymentAccs = tutor.tutorDetails.paymentAccounts;
-            for (let pa of paymentAccs)
-            {
-                pa._id = pa._id.toString('hex');
-            }
-            noPATutor = await User.findOne({ 'email': tutors[1].email }).exec();
-            db.disconnectDB()
-            done();
-        })
-        .catch(err => {
-            done(new Error(err));
-        });
-    });
-    it('Invalid tutor ID', (done) => {
+    it('Too Long State', (done) => {
+
         chai.request(server)
-        .get(`/tutors/qwerty/paymentaccounts`)
+        .post(`/users/${user._id}/invoices`)
+        .send(invalidState)
         .end((err, res) => {
-            shouldBeError(res, done, Errors.INVALID_ID);
+            shouldBeError(res, done, Errors.LONG_STRING);
         });
+
     });
-    it('Tutor not found', (done) => {
+    it('Too Long City', (done) => {
+
         chai.request(server)
-        .get(`/tutors/ffffffffffffff0123456789/paymentaccounts`)
+        .post(`/users/${user._id}/invoices`)
+        .send(invalidCity)
         .end((err, res) => {
-            shouldBeNotFound(res, done);
+            shouldBeError(res, done, Errors.LONG_STRING);
         });
+
     });
-    it('Correct get of all payment Accounts', (done) => {
+    it('Too Long Municipality', (done) => {
+
         chai.request(server)
-        .get(`/tutors/${tutor._id}/paymentaccounts`)
+        .post(`/users/${user._id}/invoices`)
+        .send(invalidMunicipality)
         .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.an('array').that.is.not.empty;
-            
-            _.isEqual(res.body, paymentAccs).should.be.eql(true);
-            
-            done();
+            shouldBeError(res, done, Errors.LONG_STRING);
         });
+
     });
-    it('Correct get of no payment accounts', (done) => {
+    it('Too Long PC', (done) => {
+
         chai.request(server)
-        .get(`/tutors/${noPATutor._id}/paymentaccounts`)
+        .post(`/users/${user._id}/invoices`)
+        .send(invalidPC)
         .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.an('array').that.is.empty;
-            
-            _.isEqual(res.body, []).should.be.eql(true);
-            
-            done();
+            shouldBeError(res, done, Errors.LONG_STRING);
         });
+
     });
 });
-describe('PaymentAccount DELETE', () => {
-    let tutor;
-    let paymentAccs;
-    before(done => {
-        db.connectDB()
-        .then(async () => {
-            tutor = await User.findOne({ 'email': tutors[0].email }).exec();
-            paymentAccs = tutor.tutorDetails.paymentAccounts;
-            for (let pa of paymentAccs)
-            {
-                pa._id = pa._id.toString('hex');
-            }
-            db.disconnectDB();
-            done();
-        })
-        .catch(err => {
-            done(new Error(err));
-        });
-    });
-    it('Invalid tutor ID', (done) => {
-        chai.request(server)
-        .delete(`/tutors/qwerty/paymentaccounts/${paymentAccs[0]._id}`)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.INVALID_ID);
-        });
-    });
-    it('Tutor not found', (done) => {
-        chai.request(server)
-        .delete(`/tutors/ffffffffffffff0123456789/paymentaccounts/${paymentAccs[0]._id}`)
-        .end((err, res) => {
-            shouldBeNotFound(res, done);
-        });
-    });
-    it('Invalid paymentAccount ID', (done) => {
-        chai.request(server)
-        .delete(`/tutors/${tutor._id}/paymentaccounts/qwerty`)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.INVALID_ID);
-        });
-    });
-    it('paymentAccount not found', (done) => {
-        chai.request(server)
-        .delete(`/tutors/${tutor._id}/paymentaccounts/ffffffffffffff0123456789`)
-        .end((err, res) => {
-            shouldBeNotFound(res, done);
-        });
-    });
-    it('Valid delete of a paymentAccount', (done) => {
-        let deleteIndex = paymentAccs.length - 1;
-        chai.request(server)
-        .delete(`/tutors/${tutor._id}/paymentaccounts/${paymentAccs[deleteIndex]._id}`)
-        .end((err, res) => {
-            res.should.have.status(200);
-            chai.request(server)
-            .get(`/tutors/${tutor._id}/paymentaccounts`)
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.be.an('array').that.is.not.empty;
-                paymentAccs.pop();
-                
-                _.isEqual(paymentAccs, res.body).should.be.eql(true);
-                
-                done();
-            });
-        });
-    });
-});
-describe('PaymentAccount PUT', () => {
-    let tutor;
-    let paToUpdate;
-    before(done => {
-        db.connectDB()
-        .then(async () => {
-            tutor = await User.findOne({ 'email': tutors[0].email }).exec();
-            paToUpdate = tutor.tutorDetails.paymentAccounts[0];
-            paToUpdate._id = paToUpdate._id.toString('hex');
-            db.disconnectDB()
-            done();
-        })
-        .catch(err => {
-            done(new Error(err));
-        });
-    });
-    it('Valid PUT', (done) => {
-        let newPA = {
-            method: 'paypal'
-        }
-        chai.request(server)
-        .put(`/tutors/${tutor._id}/paymentaccounts/${paToUpdate._id}`)
-        .send(newPA)
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.an('object');
-            _.isEqual(res.body, paToUpdate).should.be.eql(false);
-            chai.request(server)
-            .get(`/tutors/${tutor._id}/paymentaccounts/${paToUpdate._id}`)
-            .end((err2, res2) => {
-                res2.should.have.status(200);
-                res2.body.should.be.an('object');
-                newPA._id = res2.body._id;
-                _.isEqual(res2.body, newPA).should.be.eql(true);
-                done();
-            });
-        });
-    });
-    it('Invalid PUT', (done) => {
-        let newPA = {
-            method: 'cash%6'
-        }
-        chai.request(server)
-        .put(`/tutors/${tutor._id}/paymentaccounts/${paToUpdate._id}`)
-        .send(newPA)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.INVALID_FIELD);
-        });
-    });
-    it('Invalid PUT - Empty object', (done) => {
-        chai.request(server)
-        .put(`/tutors/${tutor._id}/paymentaccounts/${paToUpdate._id}`)
-        .send({})
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.MISSING_FIELD);
-        });
-    });
-    it('Invalid tutor ID', (done) => {
-        chai.request(server)
-        .put(`/tutors/qwerty/paymentaccounts/${paToUpdate._id}`)
-        .send(validPayAccount1)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.INVALID_ID);
-        });
-    });
-    it('Tutor not found', (done) => {
-        chai.request(server)
-        .put(`/tutors/ffffffffffffff0123456789/paymentaccounts/${paToUpdate._id}`)
-        .send(validPayAccount1)
-        .end((err, res) => {
-            shouldBeNotFound(res, done);
-        });
-    });
-    it('Invalid paymentAccount ID', (done) => {
-        chai.request(server)
-        .put(`/tutors/${tutor._id}/paymentaccounts/qwerty`)
-        .send(validPayAccount1)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.INVALID_ID);
-        });
-    
-    });
-    
-    it('PaymentAccount not found', (done) => {
-    
-        chai.request(server)
-        .put(`/tutors/${tutor._id}/paymentaccounts/`)
-        .send(validPayAccount1)
-        .end((err, res) => {
-            console.log(res.body);
-            shouldBeNotFound(res, done);
-        });
-    });
-    // it('Missing RFC', (done) => {
-    //     chai.request(server)
-    //     .put(`/tutors/${tutor._id}/paymentaccounts/ffffffffffffff0123456789`)
-    //     .send(validPayAccount1)
-    //     .end((err, res) => {
-    //         console.log(res.body);
-    //         shouldBeNotFound(res, done);
-    //     });
-    // });
-});
-*/
-
-
-
