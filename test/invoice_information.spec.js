@@ -14,7 +14,7 @@ const shouldBeError = require('./helpers').shouldBeError;
 const shouldBeNotFound = require('./helpers').shouldBeNotFound;
 
 chai.use(chaiHttp);
-
+let invoiceTypes = require('../../resources').invoiceTypes;
 let validInvoice = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
