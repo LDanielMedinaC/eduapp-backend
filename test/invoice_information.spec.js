@@ -384,7 +384,7 @@ let invalidPC = {
 }
 
 
-describe('PaymentAccount POST', () => {
+describe('POST /PaymentAccount', () => {
 
     let user;
     before(done => {
