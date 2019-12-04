@@ -404,8 +404,9 @@ describe('POST /invoices', () => {
     });
 
     it('Valid invoice info', (done) => {
+        console.log(user._id)
         chai.request(server)
-        .post(`/users/${user._id}/invoices`)
+        .post(`/users/5db48a252f3af03923defe7c/invoices`)
         .send(validInvoice)
         .end((err, res) => {
 
@@ -569,7 +570,7 @@ describe('POST /invoices', () => {
 
         chai.request(server)
         .post(`/users/${user._id}/invoices`)
-        .send(invalidStree)
+        .send(invalidStreet)
         .end((err, res) => {
             shouldBeError(res, done, Errors.LONG_STRING);
         });
