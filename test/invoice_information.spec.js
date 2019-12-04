@@ -391,7 +391,7 @@ describe('POST /PaymentAccount', () => {
         db.connectDB()
         .then(async () => {
 
-            user = await User.findOne({ 'email': tutors[0].email }).exec();
+            user = await User.findById('5db48a252f3af03923defe7c').exec();
 
             db.disconnectDB()
 
