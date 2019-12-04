@@ -90,31 +90,31 @@ const validateInvoice = (req, res, next) => {
     }
 
     // Colony max length 255 characters
-    if(invoice.colony && invoice.colony > 255) {
+    if(invoice.colony && invoice.colony.length > 255) {
         let error = ErrorFactory.buildError(Errors.LONG_STRING, 'colony', '255');
         return res.status(error.status).send({ error: error });
     }
 
     // Country max length 255 characters
-    if(invoice.country && invoice.country > 255) {
+    if(invoice.country && invoice.country.length > 255) {
         let error = ErrorFactory.buildError(Errors.LONG_STRING, 'country', '255');
         return res.status(error.status).send({ error: error });
     }
 
     // State max length 255 characters
-    if(invoice.state && invoice.state > 255) {
+    if(invoice.state && invoice.state.length > 255) {
         let error = ErrorFactory.buildError(Errors.LONG_STRING, 'state', '255');
         return res.status(error.status).send({ error: error });
     }
 
     // City max length 255 characters
-    if(invoice.city && invoice.city > 255) {
+    if(invoice.city && invoice.city.length > 255) {
         let error = ErrorFactory.buildError(Errors.LONG_STRING, 'city', '255');
         return res.status(error.status).send({ error: error });
     }
 
     // Municipality max length 255 characters
-    if(invoice.municipality && invoice.municipality > 255) {
+    if(invoice.municipality && invoice.municipality.length > 255) {
         let error = ErrorFactory.buildError(Errors.LONG_STRING, 'municipality', '255');
         return res.status(error.status).send({ error: error });
     }
