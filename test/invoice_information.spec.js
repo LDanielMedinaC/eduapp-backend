@@ -20,13 +20,13 @@ let validInvoice = {
     invoiceType: invoiceTypes[1],
     street: 'Calle 1',
     extNum: 90,
-    intNum: 2,
     colony: 'Colonia x',
     country: 'Mexico',
     state: 'Puebla',
     city: 'Puebla',
     municipality: 'Puebla',
-    pc: '72535'
+    pc: '72535',
+    intNum: 2
 }
 
 let missingRFC = {
@@ -384,7 +384,7 @@ let invalidPC = {
 }
 
 
-describe('POST /PaymentAccount', () => {
+describe('POST /invoices', () => {
 
     let user;
     before(done => {
@@ -569,7 +569,7 @@ describe('POST /PaymentAccount', () => {
 
         chai.request(server)
         .post(`/users/${user._id}/invoices`)
-        .send(invalidInvoiceType)
+        .send(invalidStree)
         .end((err, res) => {
             shouldBeError(res, done, Errors.LONG_STRING);
         });
