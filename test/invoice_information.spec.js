@@ -18,7 +18,7 @@ let invoiceTypes = require('../server/resources').invoiceTypes;
 let validInvoice = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     colony: 'Colonia x',
@@ -31,7 +31,7 @@ let validInvoice = {
 
 let missingRFC = {
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     colony: 'Colonia x',
@@ -44,7 +44,7 @@ let missingRFC = {
 
 let missingInvoiceType = {
     rfc: 'SUSH991111AAA',
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     colony: 'Colonia x',
@@ -71,7 +71,7 @@ let missingStreet = {
 let missingExtNum = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     intNum: 2,
     colony: 'Colonia x',
     country: 'Mexico',
@@ -85,7 +85,7 @@ let missingExtNum = {
 let missingIntNum = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     colony: 'Colonia x',
     country: 'Mexico',
@@ -98,7 +98,7 @@ let missingIntNum = {
 let missingColony = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     country: 'Mexico',
@@ -111,7 +111,7 @@ let missingColony = {
 let missingCountry = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     colony: 'Colonia x',
@@ -124,7 +124,7 @@ let missingCountry = {
 let missingState = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     colony: 'Colonia x',
@@ -137,7 +137,7 @@ let missingState = {
 let missingCity = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     colony: 'Colonia x',
@@ -150,7 +150,7 @@ let missingCity = {
 let missingMunicipality = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     colony: 'Colonia x',
@@ -163,7 +163,7 @@ let missingMunicipality = {
 let missingPC = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     colony: 'Colonia x',
@@ -176,7 +176,7 @@ let missingPC = {
 let invalidRFC1 = {
     rfc: 'SUSH991111AAAA',//too long
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     colony: 'Colonia x',
@@ -190,7 +190,7 @@ let invalidRFC1 = {
 let invalidRFC2 = {
     rfc: 'SUSH99111',//too short
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     colony: 'Colonia x',
@@ -204,7 +204,7 @@ let invalidRFC2 = {
 /*let invalidRFC3 = {
     rfc: 'AAA9999A99AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     colony: 'Colonia x',
@@ -218,7 +218,7 @@ let invalidRFC2 = {
 let invalidInvoiceType = {
     rfc: 'SUSH991111AAA',
     invoiceType: 'not valid',
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     colony: 'Colonia x',
@@ -232,7 +232,7 @@ let invalidInvoiceType = {
 let invalidStreet = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: '012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789',
+    street: '012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789',
     extNum: 90,
     intNum: 2,
     colony: 'Colonia x',
@@ -246,7 +246,7 @@ let invalidStreet = {
 let invalidExtNum1 = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 'ahhh',
     intNum: 2,
     colony: 'Colonia x',
@@ -260,7 +260,7 @@ let invalidExtNum1 = {
 let invalidExtNum2 = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 9999999999,
     intNum: 2,
     colony: 'Colonia x',
@@ -274,7 +274,7 @@ let invalidExtNum2 = {
 let invalidIntNum1 = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 'ahh',
     colony: 'Colonia x',
@@ -288,7 +288,7 @@ let invalidIntNum1 = {
 let invalidIntNum2 = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 9999999999,
     colony: 'Colonia x',
@@ -302,7 +302,7 @@ let invalidIntNum2 = {
 let invalidColony = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     colony: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
@@ -316,7 +316,7 @@ let invalidColony = {
 let invalidCountry = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     country: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
@@ -330,7 +330,7 @@ let invalidCountry = {
 let invalidState = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     state: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
@@ -344,7 +344,7 @@ let invalidState = {
 let invalidCity = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     city: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
@@ -358,7 +358,7 @@ let invalidCity = {
 let invalidMunicipality = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     municipality: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
@@ -372,7 +372,7 @@ let invalidMunicipality = {
 let invalidPC = {
     rfc: 'SUSH991111AAA',
     invoiceType: invoiceTypes[1],
-    stret: 'Calle 1',
+    street: 'Calle 1',
     extNum: 90,
     intNum: 2,
     colony: 'Colonia x',
@@ -392,7 +392,7 @@ describe('POST /PaymentAccount', () => {
         .then(async () => {
 
             user = await User.findById('5db48a252f3af03923defe7c').exec();
-
+            console.log(user);
             db.disconnectDB()
 
             done();
@@ -413,17 +413,6 @@ describe('POST /PaymentAccount', () => {
             res.body.should.be.an('object');
 
             done();
-        });
-
-    });
-
-    it('Missing RFC', (done) => {
-
-        chai.request(server)
-        .post(`/users/${user._id}/invoices`)
-        .send(missingRFC)
-        .end((err, res) => {
-            shouldBeError(res, done, Errors.MISSING_FIELD);
         });
 
     });
@@ -460,6 +449,7 @@ describe('POST /PaymentAccount', () => {
         });
 
     });
+    
     it('Missing Exterior Number', (done) => {
 
         chai.request(server)
@@ -561,7 +551,7 @@ describe('POST /PaymentAccount', () => {
         .post(`/users/${user._id}/invoices`)
         .send(invalidRFC2)
         .end((err, res) => {
-            shouldBeError(res, done, Errors.LONG_STRING);
+            shouldBeError(res, done, Errors.SHORT_STRING);
         });
 
     });
