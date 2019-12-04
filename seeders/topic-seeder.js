@@ -7,7 +7,10 @@ const topics = [
     new Topic({
         _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe78'),
         Name: 'Álgebra Lineal',
-        Field: 'Matemáticas'
+        Field: 'Matemáticas',
+        Tutors: [
+            new mongoose.mongo.ObjectId('5db48a252f3af03923defe82')
+        ]
     }),
     new Topic({
         _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe79'),

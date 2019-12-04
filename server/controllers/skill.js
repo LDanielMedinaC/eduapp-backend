@@ -194,7 +194,6 @@ module.exports = {
         }
 
         let skills = tutor.tutorDetails.skills;
-
         let fSkill = skills.filter(skill => skill._id == skillId);
 
         if(!fSkill.length) {
@@ -205,18 +204,18 @@ module.exports = {
         let skill = fSkill[0];
 
         let session = await mongoose.startSession();
-
         await session.startTransaction();
         
+        // Topic related to current skill
         let topic = await Topic.findById(skill.topic);
-
-        if(!topic){
+        if(!topic) {
             await session.abortTransaction();
             let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'related topic');
             return res.status(error.status).send({ error: error });
         }
-        else{
-            if( ((nSkill.name && nSkill.name == topic.Name) || !nSkill.name) && ((nSkill.field && nSkill.field == topic.Field) || !nSkill.field)){
+        else {
+            // We're updating experience only
+            if( ((nSkill.name && nSkill.name == topic.Name) || !nSkill.name) && ((nSkill.field && nSkill.field == topic.Field) || !nSkill.field)) {
                 skill.experience = nSkill.experience || skill.experience;
                 tutor.markModified('tutorDetails.skills');
                 tutor.save()
@@ -234,8 +233,9 @@ module.exports = {
                     return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                 })
             }
-            else{
-                if(topic.Tutors.length == 1){
+            else {
+                // We're changing the related topic, update count
+                if(topic.Tutors.length == 1) {
                     topic.Name = nSkill.name || topic.Name;
                     topic.Field = nSkill.field || topic.Field;
                     skill.experience = nSkill.experience || skill.experience;
@@ -261,10 +261,10 @@ module.exports = {
                         await session.abortTransaction();
                         return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                     })
-                }
-                else{
+                } else {
                     let delTutor = topic.Tutors.filter(tutor => tutor != tutorId);
                     topic.Tutors = delTutor;
+                    
                     topic.save()
                     .then(async (updatedTopic) => {
                         skill.experience = nSkill.experience || skill.experience;

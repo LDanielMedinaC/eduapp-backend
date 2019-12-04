@@ -335,6 +335,122 @@ describe('SKILLS', () => {
                 canBeMissing: true
             }
         }, validSkill);
+
+        it('Missing skill object', (done) => {
+            chai.request(server)
+            .put(`/tutors/${mockTutorId}/skills/${mockSkillId}`)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.MISSING_FIELD);
+            });
+        });
+
+        it('Name too short', (done) => {
+            let payload = {...validSkill};
+            payload.name = 'a';
+            
+            chai.request(server)
+            .put(`/tutors/${mockTutorId}/skills/${mockSkillId}`)
+            .send(payload)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.SHORT_STRING);
+            });
+        });
+
+        it('Invalid topic field', (done) => {
+            let payload = {...validSkill};
+            payload.field = 'Gaming';
+            
+            chai.request(server)
+            .put(`/tutors/${mockTutorId}/skills/${mockSkillId}`)
+            .send(payload)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.INVALID_FIELD);
+            });
+        });
+
+        it('Negative experience', (done) => {
+            let payload = {...validSkill};
+            payload.experience = -5;
+            
+            chai.request(server)
+            .put(`/tutors/${mockTutorId}/skills/${mockSkillId}`)
+            .send(payload)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.NUMBER_LOWER_BOUND);
+            });
+        });
+
+        it('Experience upper bound', (done) => {
+            let payload = {...validSkill};
+            payload.experience = 110;
+            
+            chai.request(server)
+            .put(`/tutors/${mockTutorId}/skills/${mockSkillId}`)
+            .send(payload)
+            .end((err, res) => {
+                shouldBeError(res, done, Errors.NUMBER_UPPER_BOUND);
+            });
+        });
+
+        it('Update skill (unmodified)', (done) => {
+            let payload = {
+                name: 'Álgebra Lineal',
+                field: 'Matemáticas',
+                experience: 10
+            };
+
+            chai.request(server)
+            .put(`/tutors/${mockTutorId}/skills/${mockSkillId}`)
+            .send(payload)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.an('object');
+                res.body.should.have.property('_id');
+                res.body.should.have.property('name');
+                res.body.should.have.property('field');
+                res.body.should.have.property('experience');
+                res.body.name.should.be.eql(payload.name);
+                done();
+            });
+        });
+
+        it('Update skill (existing topic)', (done) => {
+            let payload = {...validSkill};
+            payload.name = 'Calculo Vectorial';
+
+            chai.request(server)
+            .put(`/tutors/${mockTutorId}/skills/${mockSkillId}`)
+            .send(payload)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.an('object');
+                res.body.should.have.property('_id');
+                res.body.should.have.property('name');
+                res.body.should.have.property('field');
+                res.body.should.have.property('experience');
+                res.body.name.should.be.eql(payload.name);
+                done();
+            });
+        });
+
+        it('Update skill (new topic)', (done) => {
+            let payload = {...validSkill};
+            payload.name = 'Matemáticas Computacionales';
+
+            chai.request(server)
+            .put(`/tutors/${mockTutorId}/skills/${mockSkillId}`)
+            .send(payload)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.an('object');
+                res.body.should.have.property('_id');
+                res.body.should.have.property('name');
+                res.body.should.have.property('field');
+                res.body.should.have.property('experience');
+                res.body.name.should.be.eql(payload.name);
+                done();
+            });
+        });
     });
 
     /*
