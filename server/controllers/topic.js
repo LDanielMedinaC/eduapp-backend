@@ -34,8 +34,9 @@ module.exports = {
 
         if(validatorError == null) {
             // Create app topic
-            return new Topic(topic)
-            .save()
+            let nTopic = new Topic(topic);
+            
+            nTopic.save()
             .then((postedTopic) => {
                 res.status(200).send(postedTopic);
             })
