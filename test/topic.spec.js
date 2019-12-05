@@ -23,7 +23,7 @@ describe('POST /topics', () => {
             res.body.should.have.property('Name');
             res.body.should.have.property('Field');
             res.body.Name.should.be.eql('Topic name');
-            res.body.Field.should.be.eql('Topic field');
+            res.body.Field.should.be.eql('Matemáticas');
             done();
         });
     });
