@@ -12,7 +12,7 @@ describe('POST /topics', () => {
     it('Should create topic', (done) => {
         let topic = {
             Name: 'Topic name',
-            Field: 'Topic field'
+            Field: 'Matemáticas'
         };
         chai.request(server)
         .post('/topics')
