@@ -728,3 +728,61 @@ describe('GET /users/:userId/invoices', () => {
 
 });
 
+describe('GET /users/:userId/invoices/:invoiceId', () => {
+    let userWithInvoice;
+    let userWithoutInvoice; 
+    let invoiceId;
+    before(done => {
+        db.connectDB()
+        .then(async () => {
+
+            userWithInvoice = await User.findById('5db48a252f3af03923defe7c').exec();
+            userWithoutInvoice = await User.findById('5db48a252f3af03983aaae7c').exec();
+            
+            invoiceId = userWithInvoice.invoiceInformation._id;
+            
+            db.disconnectDB()
+
+            done();
+        })
+        .catch(err => {
+            done(new Error(err));
+        });
+
+    });
+
+    it('Get correct ids', (done) => {
+
+        chai.request(server)
+        .get(`/users/${userWithInvoice._id}/invoices/${invoiceId}`)
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.an('object');
+            done();
+        });
+        
+    });
+
+    it('incorrect user id', (done) => {
+
+        chai.request(server)
+        .get(`/users/${userWithInvoice._id + '3'}/invoices/${invoiceId}`)
+        .end((err, res) => {
+            shouldBeNotFound(res, done);
+            done();
+        });
+        
+    });
+    it('incorrect id', (done) => {
+
+        chai.request(server)
+        .get(`/users/${userWithInvoice._id}/invoices/${invoiceId + '2'}`)
+        .end((err, res) => {
+            shouldBeNotFound(res, done);
+            done();
+        });
+        
+    });
+
+});
+
