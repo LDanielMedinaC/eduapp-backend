@@ -769,7 +769,6 @@ describe('GET /users/:userId/invoices/:invoiceId', () => {
         .get(`/users/ffffffffffffff0123456789/invoices/${invoiceId}`)
         .end((err, res) => {
             shouldBeNotFound(res, done);
-            done();
         });
         
     });
@@ -779,7 +778,6 @@ describe('GET /users/:userId/invoices/:invoiceId', () => {
         .get(`/users/${userWithInvoice._id}/invoices/ffffffffffffff0123456789`)
         .end((err, res) => {
             shouldBeNotFound(res, done);
-            done();
         });
         
     });
