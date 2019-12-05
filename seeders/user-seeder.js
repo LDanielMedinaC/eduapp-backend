@@ -28,6 +28,7 @@ const users = [
         }
     }),
     new User({
+        _id: new mongoose.mongo.ObjectId('5db48a252f3af03983aaae7c'),
         uid: 'usuario2',
         email: 'erika_great@itesm.mx',
         name: 'Erika Martinez',

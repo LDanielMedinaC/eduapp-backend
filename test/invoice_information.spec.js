@@ -305,7 +305,7 @@ let invalidColony = {
     street: 'Calle 1',
     extNum: 90,
     intNum: 2,
-    colony: '',
+    colony: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     country: 'Mexico',
     state: 'Puebla',
     city: 'Puebla',
@@ -678,7 +678,7 @@ describe('POST /invoices', () => {
 
     });
 });
-/*
+
 describe('GET /users/:userId/invoices', () => {
     let userWithInvoice;
     let userWithoutInvoice; 
@@ -687,7 +687,7 @@ describe('GET /users/:userId/invoices', () => {
         .then(async () => {
 
             userWithInvoice = await User.findById('5db48a252f3af03923defe7c').exec();
-            userWithoutInvoice = await User.findById('').exec();
+            userWithoutInvoice = await User.findById('5db48a252f3af03983aaae7c').exec();
             db.disconnectDB()
 
             done();
@@ -698,5 +698,33 @@ describe('GET /users/:userId/invoices', () => {
 
     });
 
+    it('Correct get of all invoices', (done) => {
+
+        chai.request(server)
+        .get(`/users/${userWithInvoice._id}/invoices`)
+        .end((err, res) => {
+
+            res.should.have.status(200);
+            res.body.should.be.an('array').that.is.not.empty;
+            
+            done();
+        });
+
+    });
+
+    it('Correct get of no invoices', (done) => {
+
+        chai.request(server)
+        .get(`/users/${userWithoutInvoice._id}/invoices`)
+        .end((err, res) => {
+
+            res.should.have.status(200);
+            res.body.should.be.an('array').that.is.empty;
+            
+            done();
+        });
+
+    });
+
 });
-*/
+
