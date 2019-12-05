@@ -21,7 +21,7 @@ describe('GET /tutors', () => {
 
 describe('GET /tutors?topic=<topic>', () => {
     it('Topic with existing tutors', (done) => {
-        let topic = encodeURIComponent('Ecuaciones Diferenciales');
+        let topic = encodeURIComponent('Cálculo Vectorial');
 
         chai.request(server)
         .get(`/tutors?topic=${topic}`)
