@@ -60,7 +60,7 @@ const validateInvoice = (req, res, next) => {
     }
 
     // Stree max length 255 characters
-    if(invoice.street && invoice.street > 255) {
+    if(invoice.street && invoice.street.length > 255) {
         let error = ErrorFactory.buildError(Errors.LONG_STRING, 'street', '255');
         return res.status(error.status).send({ error: error });
     }
