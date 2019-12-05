@@ -784,3 +784,61 @@ describe('GET /users/:userId/invoices/:invoiceId', () => {
 
 });
 
+describe('Delete /users/:userId/invoices/:invoiceId', () => {
+    let userWithInvoice;
+    let userWithoutInvoice; 
+    let invoiceId;
+    before(done => {
+        db.connectDB()
+        .then(async () => {
+
+            userWithInvoice = await User.findById('5db48a252f3af03923defe7c').exec();
+            userWithoutInvoice = await User.findById('5db48a252f3af03983aaae7c').exec();
+            
+            invoiceId = userWithInvoice.invoiceInformation[0]._id;
+            
+            db.disconnectDB()
+
+            done();
+        })
+        .catch(err => {
+            done(new Error(err));
+        });
+
+    });
+
+
+    it('incorrect user id', (done) => {
+
+        chai.request(server)
+        .delete(`/users/ffffffffffffff0123456789/invoices/${invoiceId}`)
+        .end((err, res) => {
+            shouldBeNotFound(res, done);
+        });
+        
+    });
+
+    it('incorrect invoice id', (done) => {
+
+        chai.request(server)
+        .delete(`/users/${userWithInvoice._id}/invoices/ffffffffffffff0123456789`)
+        .end((err, res) => {
+            shouldBeNotFound(res, done);
+        });
+        
+    });
+
+    it('Correct id', (done) => {
+
+        chai.request(server)
+        .delete(`/users/${userWithInvoice._id}/invoices/${invoiceId}`)
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.an('object');
+        });
+        
+    });
+
+});
+
+
