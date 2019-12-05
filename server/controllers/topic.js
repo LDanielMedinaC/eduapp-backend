@@ -1,21 +1,21 @@
 const Topic = require('../models').Topic;
 
 function validateTopic(topic) {
-    if(!topic.Name){
+    if(!topic.name){
         return {
             status: 400,
             description: 'No name was provided.',
             code: 1
         };
     }
-    if(topic.Name.length > 50){
+    if(topic.name.length > 50){
         return {
             status: 400,
             description: 'Topic length must be less than 50 characters.',
             code: 2
         };
     }
-    if(!topic.Field){
+    if(!topic.field){
         return {
             status: 400,
             description: 'A topic must have a field.',

@@ -31,8 +31,8 @@ module.exports = {
             }
 
             cSkill.push({
-                name: topic.Name,
-                field: topic.Field,
+                name: topic.name,
+                field: topic.field,
                 experience: skill.experience,
                 _id: skill._id
             })
@@ -57,7 +57,7 @@ module.exports = {
         let session = await mongoose.startSession();
         await session.startTransaction();
 
-        let relatedTopic = await Topic.findOne({'Name': nSkill.name, 'Field': nSkill.field}).exec();
+        let relatedTopic = await Topic.findOne({'name': nSkill.name, 'field': nSkill.field}).exec();
         let skillId = new mongoose.mongo.ObjectId();
 
         if(relatedTopic) {
@@ -75,10 +75,10 @@ module.exports = {
                 _id: skillId
             });
 
-            if(!relatedTopic.Tutors)
-                relatedTopic.Tutors = [];
+            if(!relatedTopic.tutors)
+                relatedTopic.tutors = [];
 
-            relatedTopic.Tutors.push(tutorId);
+            relatedTopic.tutors.push(tutorId);
             tutor.markModified('tutorDetails.skills');
 
             tutor.save()
@@ -105,9 +105,9 @@ module.exports = {
         }
         else{
             let newTopic = new Topic({
-                Name: nSkill.name,
-                Field: nSkill.field,
-                Tutors: [tutorId]
+                name: nSkill.name,
+                field: nSkill.field,
+                tutors: [tutorId]
             });
 
             let topicId = null;
@@ -168,8 +168,8 @@ module.exports = {
                 }
 
                 let rSkill = {
-                    name: topic.Name,
-                    field: topic.Field,
+                    name: topic.name,
+                    field: topic.field,
                     experience: skill.experience,
                     _id: skill._id
                 }
@@ -215,15 +215,15 @@ module.exports = {
         }
         else {
             // We're updating experience only
-            if( ((nSkill.name && nSkill.name == topic.Name) || !nSkill.name) && ((nSkill.field && nSkill.field == topic.Field) || !nSkill.field)) {
+            if( ((nSkill.name && nSkill.name == topic.name) || !nSkill.name) && ((nSkill.field && nSkill.field == topic.field) || !nSkill.field)) {
                 skill.experience = nSkill.experience || skill.experience;
                 tutor.markModified('tutorDetails.skills');
                 tutor.save()
                 .then(async (updatedTutor) => {
                     await session.commitTransaction();
                     return res.status(200).send({
-                        name: topic.Name,
-                        field: topic.Field,
+                        name: topic.name,
+                        field: topic.field,
                         experience: skill.experience,
                         _id: skillId
                     })
@@ -235,13 +235,13 @@ module.exports = {
             }
             else {
                 // We're changing the related topic, update count
-                if(topic.Tutors.length == 1) {
-                    topic.Name = nSkill.name || topic.Name;
-                    topic.Field = nSkill.field || topic.Field;
+                if(topic.tutors.length == 1) {
+                    topic.name = nSkill.name || topic.name;
+                    topic.field = nSkill.field || topic.field;
                     skill.experience = nSkill.experience || skill.experience;
 
-                    nSkill.name = topic.Name
-                    nSkill.Field = topic.Field;
+                    nSkill.name = topic.name
+                    nSkill.field = topic.field;
                     nSkill.experience = skill.experience;
                     nSkill._id = skill._id;
 
@@ -262,13 +262,13 @@ module.exports = {
                         return res.status(500).send({error: ErrorFactory.buildError(Errors.DATABASE_ERROR, err)});
                     })
                 } else {
-                    let delTutor = topic.Tutors.filter(tutor => tutor != tutorId);
-                    topic.Tutors = delTutor;
+                    let delTutor = topic.tutors.filter(tutor => tutor != tutorId);
+                    topic.tutors = delTutor;
                     
                     topic.save()
                     .then(async (updatedTopic) => {
                         skill.experience = nSkill.experience || skill.experience;
-                        let relatedTopic = await Topic.findOne({'Name': nSkill.name, 'Field': nSkill.Field}).exec();
+                        let relatedTopic = await Topic.findOne({'name': nSkill.name, 'field': nSkill.field}).exec();
 
                         if(relatedTopic){
                             skill.topic = relatedTopic._id;
@@ -279,8 +279,8 @@ module.exports = {
                                 .then(async (updatedTopic) => {
                                     await session.commitTransaction();
                                     return res.status(200).send({
-                                        name: updatedTopic.Name,
-                                        field: updatedTopic.Field,
+                                        name: updatedTopic.name,
+                                        field: updatedTopic.field,
                                         experience: skill.experience,
                                         _id: skill._id
                                     })
@@ -297,8 +297,8 @@ module.exports = {
                         }
                         else{
                             let newTopic = new Topic({
-                                Name: nSkill.name || topic.name,
-                                Field: nSkill.field || topic.skill
+                                name: nSkill.name || topic.name,
+                                field: nSkill.field || topic.skill
                             })
                             newTopic.save()
                             .then((nTopic) => {
@@ -307,8 +307,8 @@ module.exports = {
                                 .then(async (updatedTutor) => {
                                     await session.commitTransaction();
                                     return res.status(200).send({
-                                        name: nTopic.Name,
-                                        field: nTopic.Field,
+                                        name: nTopic.name,
+                                        field: nTopic.field,
                                         experience: skill.experience,
                                         _id: skill._id
                                     })
@@ -371,7 +371,7 @@ module.exports = {
                 return skill._id != skillId;
             });
 
-            if(topic.Tutors.length == 1){
+            if(topic.tutors.length == 1){
                 let flag = false;
                 try{
                     await Topic.findByIdAndDelete(topic._id).exec();
@@ -397,10 +397,10 @@ module.exports = {
                 }  
             }
             else{
-                let delTutors = topic.Tutors.filter((tutor) =>{
+                let delTutors = topic.tutors.filter((tutor) =>{
                     return tutor != tutorId;
                 });
-                topic.Tutors = delTutors;
+                topic.tutors = delTutors;
                 tutor.tutorDetails.skills = delSkill;
                 tutor.markModified('tutorDetails.skills');
                 topic.save()

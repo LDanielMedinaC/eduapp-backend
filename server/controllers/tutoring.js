@@ -34,7 +34,7 @@ const create = (req, res) => {
                 auth: mailConfig.auth
             });
 
-            let mailText = `Your ${topic.Name} tutoring has been scheduled with the following details:\n
+            let mailText = `Your ${topic.name} tutoring has been scheduled with the following details:\n
             Date: ${new Date(postedTutoring.date).toDateString()}
             Time: ${new Date(postedTutoring.startTime).toTimeString()}\n
             Location: ${postedTutoring.locationName}

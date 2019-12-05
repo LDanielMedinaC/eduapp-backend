@@ -6,25 +6,25 @@ const Topic = require('../server/models').Topic;
 const topics = [
     new Topic({
         _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe78'),
-        Name: 'Álgebra Lineal',
-        Field: 'Matemáticas',
-        Tutors: [
+        name: 'Álgebra Lineal',
+        field: 'Matemáticas',
+        tutors: [
             new mongoose.mongo.ObjectId('5db48a252f3af03923defe82')
         ]
     }),
     new Topic({
         _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe79'),
-        Name: 'Cálculo Vectorial',
-        Field: 'Matemáticas'
+        name: 'Cálculo Vectorial',
+        field: 'Matemáticas'
     }),
     new Topic({
         _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe7a'),
-        Name: 'Ecuaciones Diferenciales',
-        Field: 'Matemáticas'
+        name: 'Ecuaciones Diferenciales',
+        field: 'Matemáticas'
     }),
     new Topic({
-        Name: 'Smash Avanzado',
-        Field: 'Ciencias Sociales'
+        name: 'Smash Avanzado',
+        field: 'Ciencias Sociales'
     })
 ];
 

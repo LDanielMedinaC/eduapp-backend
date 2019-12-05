@@ -346,7 +346,7 @@ describe('STUDIES', () => {
             });
         });
 
-        it('Field too short', (done) => {
+        it('field too short', (done) => {
             let tutorId = id;
             let study = { ...validStudy };
 
@@ -620,7 +620,7 @@ describe('STUDIES', () => {
             });
         });
 
-        it('Field too short', (done) => {
+        it('field too short', (done) => {
             let tutorId = id;
             let studyId = mockStudyId;
             let study = { ...validStudy };

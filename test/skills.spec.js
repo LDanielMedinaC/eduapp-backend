@@ -210,7 +210,7 @@ describe('SKILLS', () => {
             });
         });
 
-        it('Name too short', (done) => {
+        it('name too short', (done) => {
             let payload = {...validSkill};
             payload.name = 'a';
             
@@ -344,7 +344,7 @@ describe('SKILLS', () => {
             });
         });
 
-        it('Name too short', (done) => {
+        it('name too short', (done) => {
             let payload = {...validSkill};
             payload.name = 'a';
             
