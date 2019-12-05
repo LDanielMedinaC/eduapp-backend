@@ -8,6 +8,7 @@ const tutoringController = require('../controllers').tutoring;
 const feedbackController = require('../controllers').feedback;
 const skillController = require('../controllers').skill;
 const paymentAccountController = require('../controllers').paymentAccount;
+const invoiceController = require('../controllers').invoice;
 
 const validateIds = require('../middleware/validations/ids-validation');
 const validateStudy = require('../middleware/validations/study-validation');
@@ -17,6 +18,7 @@ const validateFeedback = require('../middleware/validations/feedback-validation'
 const validatePaymentAccount = require('../middleware/validations/paymentAccount-validation');
 const validateUser = require('../middleware/validations/user-validation');
 const validateSkill = require('../middleware/validations/skill-validation');
+const validateInvoice = require('../middleware/validations/invoice-validation');
 
 const Errors = require('../resources').Errors;
 
@@ -33,6 +35,16 @@ module.exports = (app) => {
     app.route('/users/:userId')
     .get(userController.getDetails)
     .put(validateUser, userController.update);
+
+    //User invoices
+    app.route('/users/:userId/invoices')
+    .get(validateIds, invoiceController.list)
+    .post(validateIds, validateInvoice, invoiceController.create);
+
+    app.route('/users/:userId/invoices/:invoiceId')
+    .get(validateIds, invoiceController.get)
+    .put(validateIds, validateInvoice, invoiceController.update)
+    .delete(validateIds, invoiceController.delete);
 
     // Landing Page routes
     app.route('/landingpages')
