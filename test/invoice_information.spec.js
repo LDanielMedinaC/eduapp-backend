@@ -739,7 +739,7 @@ describe('GET /users/:userId/invoices/:invoiceId', () => {
             userWithInvoice = await User.findById('5db48a252f3af03923defe7c').exec();
             userWithoutInvoice = await User.findById('5db48a252f3af03983aaae7c').exec();
             
-            invoiceId = userWithInvoice.invoiceInformation._id;
+            invoiceId = userWithInvoice.invoiceInformation[0]._id;
             
             db.disconnectDB()
 
@@ -766,7 +766,7 @@ describe('GET /users/:userId/invoices/:invoiceId', () => {
     it('incorrect user id', (done) => {
 
         chai.request(server)
-        .get(`/users/${userWithInvoice._id + '3'}/invoices/${invoiceId}`)
+        .get(`/users/ffffffffffffff0123456789/invoices/${invoiceId}`)
         .end((err, res) => {
             shouldBeNotFound(res, done);
             done();
@@ -776,7 +776,7 @@ describe('GET /users/:userId/invoices/:invoiceId', () => {
     it('incorrect id', (done) => {
 
         chai.request(server)
-        .get(`/users/${userWithInvoice._id}/invoices/${invoiceId + '2'}`)
+        .get(`/users/${userWithInvoice._id}/invoices/ffffffffffffff0123456789`)
         .end((err, res) => {
             shouldBeNotFound(res, done);
             done();

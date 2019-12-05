@@ -13,7 +13,7 @@ const users = [
         password: 'password1',
         country: 'Mexico',
         language: 'Español',
-        invoiceInformation: {
+        invoiceInformation: [{
             _id: new mongoose.mongo.ObjectId('5db48a251f3af03783defe7c'),
             rfc: 'SUSH991111AAA',
             invoiceType: invoiceTypes[1],
@@ -25,7 +25,7 @@ const users = [
             state: 'Puebla',
             municipality: 'Puebla',
             pc: '72535'
-        }
+        }]
     }),
     new User({
         _id: new mongoose.mongo.ObjectId('5db48a252f3af03983aaae7c'),
