@@ -11,8 +11,8 @@ chai.use(chaiHttp);
 describe('POST /topics', () => {
     it('Should create topic', (done) => {
         let topic = {
-            Name: 'Topic name',
-            Field: 'Topic field'
+            Name: 'Historia Universal',
+            Field: 'Ciencias Sociales'
         };
         chai.request(server)
         .post('/topics')
@@ -22,8 +22,8 @@ describe('POST /topics', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('Name');
             res.body.should.have.property('Field');
-            res.body.Name.should.be.eql('Topic name');
-            res.body.Field.should.be.eql('Topic field');
+            res.body.Name.should.be.eql('Historia Universal');
+            res.body.Field.should.be.eql('Ciencias Sociales');
             done();
         });
     });
