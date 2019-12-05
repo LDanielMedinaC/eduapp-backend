@@ -92,7 +92,7 @@ const validateTutoring = async (tutoring, required, td, st, et) => {
     if(tutoring.userId && !ObjectId.isValid(tutoring.userId))
         return ErrorFactory.buildError(Errors.INVALID_ID, 'userId', tutoring.userId);
     if(tutoring.tutorId && !ObjectId.isValid(tutoring.tutorId))
-        return ErrorFactory.buildError(Errors.INVALId_ID, 'tutorId', tutoring.tutorId);
+        return ErrorFactory.buildError(Errors.INVALID_ID, 'tutorId', tutoring.tutorId);
     if(tutoring.topicId){
         let topic = await Topic.findById(tutoring.topicId);
         if(!topic)
