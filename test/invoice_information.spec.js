@@ -784,6 +784,186 @@ describe('GET /users/:userId/invoices/:invoiceId', () => {
 
 });
 
+describe('PUT /invoices', () => {
+
+    let user;
+    let invoiceId;
+    before(done => {
+        db.connectDB()
+        .then(async () => {
+
+            user = await User.findById('5db48a252f3af03923defe7c').exec();
+            invoiceId = user.invoiceInformation[0]._id;
+            db.disconnectDB()
+
+            done();
+        })
+        .catch(err => {
+            done(new Error(err));
+        });
+
+    });
+
+    it('Valid invoice info', (done) => {
+        console.log(user._id)
+        chai.request(server)
+        .put(`/users/${user._id}/invoices/${invoiceId}`)
+        .send(validInvoice)
+        .end((err, res) => {
+
+            res.should.have.status(201);
+            res.body.should.be.an('object');
+
+            done();
+        });
+
+    });
+
+    
+    it('Invalid RFC Too long', (done) => {
+
+        chai.request(server)
+       .put(`/users/${user._id}/invoices/${invoiceId}`)
+        .send(invalidRFC1)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.LONG_STRING);
+        });
+
+    });
+    it('Invalid RFC Too short', (done) => {
+
+        chai.request(server)
+       .put(`/users/${user._id}/invoices/${invoiceId}`)
+        .send(invalidRFC2)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.SHORT_STRING);
+        });
+
+    });
+    it('Invalid Invoice Type', (done) => {
+
+        chai.request(server)
+       .put(`/users/${user._id}/invoices/${invoiceId}`)
+        .send(invalidInvoiceType)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_FIELD);
+        });
+
+    });
+    it('Street Too Long', (done) => {
+
+        chai.request(server)
+       .put(`/users/${user._id}/invoices/${invoiceId}`)
+        .send(invalidStreet)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.LONG_STRING);
+        });
+
+    });
+    it('Invalid Outdoor Number, not number', (done) => {
+
+        chai.request(server)
+       .put(`/users/${user._id}/invoices/${invoiceId}`)
+        .send(invalidExtNum1)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_DATA_TYPE);
+        });
+
+    });
+
+    it('Invalid Outdoor Number, too big', (done) => {
+
+        chai.request(server)
+       .put(`/users/${user._id}/invoices/${invoiceId}`)
+        .send(invalidExtNum2)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.NUMBER_UPPER_BOUND);
+        });
+
+    });
+    it('Invalid Indoor Number, not number', (done) => {
+
+        chai.request(server)
+       .put(`/users/${user._id}/invoices/${invoiceId}`)
+        .send(invalidIntNum1)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_DATA_TYPE);
+        });
+
+    });
+    it('Invalid Indoor Number, too big', (done) => {
+
+        chai.request(server)
+       .put(`/users/${user._id}/invoices/${invoiceId}`)
+        .send(invalidIntNum2)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.NUMBER_UPPER_BOUND);
+        });
+
+    });
+
+    it('Too Long Colony', (done) => {
+
+        chai.request(server)
+       .put(`/users/${user._id}/invoices/${invoiceId}`)
+        .send(invalidColony)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.LONG_STRING);
+        });
+
+    });
+    it('Too Long Country', (done) => {
+
+        chai.request(server)
+       .put(`/users/${user._id}/invoices/${invoiceId}`)
+        .send(invalidCountry)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.LONG_STRING);
+        });
+
+    });
+    it('Too Long State', (done) => {
+
+        chai.request(server)
+       .put(`/users/${user._id}/invoices/${invoiceId}`)
+        .send(invalidState)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.LONG_STRING);
+        });
+
+    });
+    it('Too Long City', (done) => {
+
+        chai.request(server)
+       .put(`/users/${user._id}/invoices/${invoiceId}`)
+        .send(invalidCity)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.LONG_STRING);
+        });
+
+    });
+    it('Too Long Municipality', (done) => {
+
+        chai.request(server)
+       .put(`/users/${user._id}/invoices/${invoiceId}`)
+        .send(invalidMunicipality)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.LONG_STRING);
+        });
+
+    });
+    it('Too Long PC', (done) => {
+
+        chai.request(server)
+       .put(`/users/${user._id}/invoices/${invoiceId}`)
+        .send(invalidPC)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.LONG_STRING);
+        });
+
+    });
+});
+
 describe('Delete /users/:userId/invoices/:invoiceId', () => {
     let userWithInvoice;
     let userWithoutInvoice; 
@@ -835,10 +1015,10 @@ describe('Delete /users/:userId/invoices/:invoiceId', () => {
         .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.an('object');
+            done();
         });
         
     });
 
 });
-
 
