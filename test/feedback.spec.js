@@ -39,7 +39,7 @@ describe('POST /feedback', () => {
         });
     });
     
-    it('Name too short', (done) => {
+    it('name too short', (done) => {
         let feedback = { ...validFeedback };
         feedback.name = 'a';
 
@@ -51,7 +51,7 @@ describe('POST /feedback', () => {
         });
     });
 
-    it('Name too long', (done) => {
+    it('name too long', (done) => {
         let feedback = { ...validFeedback };
         feedback.name = randomString(128);
 

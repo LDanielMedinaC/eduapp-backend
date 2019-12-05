@@ -18,7 +18,9 @@ const Errors = {
     NOT_AUTHORIZED: 16,
     INVALID_URL: 17,
     INVALID_CHARSET: 18,
-    DATE_IN_FUTURE: 19
+    DATE_IN_FUTURE: 19,
+    ROUTE_ERROR: 20,
+    CLIENT_ERROR: 21
 }
 
 module.exports = {

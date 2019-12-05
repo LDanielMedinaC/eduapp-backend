@@ -72,10 +72,6 @@ const userSchema = new mongoose.Schema({
     },
     tutorDetails: {
         type: {
-            taughtTopicsIDs: [{
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Topic'
-            }],
             paymentAccounts: {
                 type: [{
                     method: {
@@ -86,8 +82,14 @@ const userSchema = new mongoose.Schema({
             },
             skills: {
                 type: [{
-                    placeHolder: {
-                        type: String
+                    topic: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'Topic',
+                        required: true
+                    },
+                    experience:{
+                        type: Number,
+                        required: true
                     }
                 }]
             },

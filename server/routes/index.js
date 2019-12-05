@@ -6,6 +6,7 @@ const tutorController = require('../controllers').tutor;
 const topicController = require('../controllers').topic;
 const tutoringController = require('../controllers').tutoring;
 const feedbackController = require('../controllers').feedback;
+const skillController = require('../controllers').skill;
 const paymentAccountController = require('../controllers').paymentAccount;
 const invoiceController = require('../controllers').invoice;
 
@@ -16,7 +17,10 @@ const validateTutoring = require('../middleware/validations/tutoring-validation'
 const validateFeedback = require('../middleware/validations/feedback-validation');
 const validatePaymentAccount = require('../middleware/validations/paymentAccount-validation');
 const validateUser = require('../middleware/validations/user-validation');
+const validateSkill = require('../middleware/validations/skill-validation');
 const validateInvoice = require('../middleware/validations/invoice-validation');
+
+const Errors = require('../resources').Errors;
 
 module.exports = (app) => {
     // Test route
@@ -63,6 +67,16 @@ module.exports = (app) => {
     .patch(validateIds, validateStudy, tutorController.updateStudy)
     .delete(validateIds, tutorController.deleteStudy);
 
+    // Tutor skills
+    app.route('/tutors/:tutorId/skills')
+    .get(validateIds, skillController.list)
+    .post(validateIds, validateSkill, skillController.create);
+
+    app.route('/tutors/:tutorId/skills/:skillId')
+    .get(validateIds, skillController.get)
+    .put(validateIds, validateSkill, skillController.update)
+    .delete(validateIds, skillController.delete);
+    
     //Tutor Payment Accounts
     app.route('/tutors/:tutorId/paymentaccounts')
     .get(validateIds, paymentAccountController.list)
@@ -105,7 +119,7 @@ module.exports = (app) => {
         error: {
             status: 400,
             description: 'Bad request. No matching route.',
-            code: 0
+            code: Errors.ROUTE_ERROR
         }
     }));
 }

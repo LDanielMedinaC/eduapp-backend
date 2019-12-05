@@ -1,4 +1,5 @@
 require('dotenv').config();
+const mongoose = require('mongoose');
 
 const Topic = require('../server/models').Topic;
 const db = require('../server/models');
@@ -8,19 +9,26 @@ let seed = () => {
 
     console.log('>>> Seeding tutors');
     return new Promise(async (resolve) => {
-        let topic = await Topic.findOne({'Name': 'Álgebra Lineal'}).exec();
+        let topic = await Topic.findOne({'name': 'Álgebra Lineal'}).exec();
         let idTopic1 = topic._id;
 
-        topic = await Topic.findOne({'Name': 'Cálculo Vectorial'}).exec();
+        topic = await Topic.findOne({'name': 'Cálculo Vectorial'}).exec();
         let idTopic2 = topic._id;
 
-        topic = await Topic.findOne({'Name': 'Ecuaciones Diferenciales'}).exec();
+        topic = await Topic.findOne({'name': 'Ecuaciones Diferenciales'}).exec();
         let idTopic3 = topic._id;
 
         if(tutors[0]) {
             let topicIds = tutors[0].tutorDetails.taughtTopicsIDs;
             topicIds.push(idTopic1);
             topicIds.push(idTopic3);
+
+            let skills = tutors[0].tutorDetails.skills;
+            skills.push({
+                _id: new mongoose.mongo.ObjectId('5de553854d21e64b51fcedee'),
+                topic: new mongoose.mongo.ObjectId(idTopic1),
+                experience: 10
+            });
         }
 
         if(tutors[1]) {
