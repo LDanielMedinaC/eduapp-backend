@@ -83,7 +83,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies`)
             .end((err, res) => {
-                shouldBeError(res, done, 0);
+                shouldBeError(res, done, Errors.ROUTE_ERROR);
             });
         });
 
@@ -139,7 +139,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .get(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                shouldBeError(res, done, 0);
+                shouldBeError(res, done, Errors.ROUTE_ERROR);
             });
         });
 
@@ -241,13 +241,7 @@ describe('STUDIES', () => {
             .post(`/tutors/${tutorId}/studies`)
             .send(study)
             .end((err, res) => {
-                res.should.have.status(400);
-                res.body.should.be.an('object');
-                res.body.should.have.property('error');
-                res.body.error.should.have.property('code');
-                res.body.error.code.should.be.eql(0);
-    
-                done();
+                shouldBeError(res, done, Errors.ROUTE_ERROR);
             });
         });
 
@@ -352,7 +346,7 @@ describe('STUDIES', () => {
             });
         });
 
-        it('Field too short', (done) => {
+        it('field too short', (done) => {
             let tutorId = id;
             let study = { ...validStudy };
 
@@ -524,7 +518,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .patch(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                shouldBeError(res, done, 0);
+                shouldBeError(res, done, Errors.ROUTE_ERROR);
             });
         });
 
@@ -546,7 +540,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .patch(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                shouldBeError(res, done, 0);
+                shouldBeError(res, done, Errors.ROUTE_ERROR);
             });
         });
 
@@ -626,7 +620,7 @@ describe('STUDIES', () => {
             });
         });
 
-        it('Field too short', (done) => {
+        it('field too short', (done) => {
             let tutorId = id;
             let studyId = mockStudyId;
             let study = { ...validStudy };
@@ -825,7 +819,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .delete(`/tutors/${tutorId}/studies/${postedStudyId}`)
             .end((err, res) => {
-                shouldBeError(res, done, 0);
+                shouldBeError(res, done, Errors.ROUTE_ERROR);
             });
         });
 
@@ -856,7 +850,7 @@ describe('STUDIES', () => {
             chai.request(server)
             .delete(`/tutors/${tutorId}/studies/${studyId}`)
             .end((err, res) => {
-                shouldBeError(res, done, 0);
+                shouldBeError(res, done, Errors.ROUTE_ERROR);
             });
         });
 

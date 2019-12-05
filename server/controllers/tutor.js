@@ -203,11 +203,11 @@ module.exports = {
         }
     },
     async get(req, res) {
-        let topic = req.query.topic;
+        let topicName = req.query.topic;
 
-        if(typeof(topic) != "undefined") {
+        if(typeof(topicName) != "undefined") {
             // Validate topic length
-            if(topic.length == 0) {
+            if(topicName.length == 0) {
                 return res.status(400).send({
                     error: {
                         status: 400,
@@ -217,7 +217,7 @@ module.exports = {
                 });
             }
 
-            if(topic.length > 254) {
+            if(topicName.length > 254) {
                 return res.status(400).send({
                     error: {
                         status: 400,
@@ -228,15 +228,16 @@ module.exports = {
             }
 
             // Look for topic id
-            let topicId = await Topic.findOne({'name': topic}).exec();
-            topicId = topicId ? topicId._id : null;
-
-            if(!topicId)
-                return res.status(200).json([]);
-
-            let tutors = await User.where('tutorDetails').ne(null)
-            .where('tutorDetails.taughtTopicsIds').equals(topicId)
-            .exec();
+            let topic = await Topic.findOne({'name': topicName}).exec();
+            let tutors = [];
+            
+            if(topic) {
+                for(let tutorId of topic.tutors) {
+                    let tutor = await User.findById(tutorId).exec();
+                    if(tutor)
+                        tutors.push(tutor);
+                }
+            }
             
             return res.status(200).send(tutors);
         }

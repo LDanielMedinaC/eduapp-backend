@@ -30,13 +30,13 @@ module.exports = {
     // Method used to create a new topic
     create(req, res) {
         let topic = req.body;
-
         let validatorError = validateTopic(topic);
 
-        if(validatorError == null){
+        if(validatorError == null) {
             // Create app topic
-            return new Topic(topic)
-            .save()
+            let nTopic = new Topic(topic);
+            
+            nTopic.save()
             .then((postedTopic) => {
                 res.status(200).send(postedTopic);
             })
@@ -44,7 +44,7 @@ module.exports = {
                 res.status(500).send({
                     error: {
                         status: 500,
-                        description: `Database error: ${err.errmsg}`,
+                        description: `Database error: ${err.errmsg || err}`,
                         code: 10
                     }
                 });

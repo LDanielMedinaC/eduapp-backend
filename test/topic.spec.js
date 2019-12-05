@@ -11,8 +11,8 @@ chai.use(chaiHttp);
 describe('POST /topics', () => {
     it('Should create topic', (done) => {
         let topic = {
-            name: 'Topic name',
-            field: 'Topic field'
+            name: 'Historia Universal',
+            field: 'Ciencias Sociales'
         };
         chai.request(server)
         .post('/topics')
@@ -22,8 +22,8 @@ describe('POST /topics', () => {
             res.body.should.be.a('object');
             res.body.should.have.property('name');
             res.body.should.have.property('field');
-            res.body.name.should.be.eql('Topic name');
-            res.body.field.should.be.eql('Topic field');
+            res.body.name.should.be.eql('Historia Universal');
+            res.body.field.should.be.eql('Ciencias Sociales');
             done();
         });
     });
@@ -45,7 +45,7 @@ describe('POST /topics', () => {
         });
     });
 
-    it('Name too long', (done) => {
+    it('name too long', (done) => {
         let topic = {
             name: 'abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk',
             field: 'Topic field'

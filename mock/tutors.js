@@ -49,6 +49,7 @@ const tutors = [
         }
     }),
     new User({
+        _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe83'),
         uid: 'abff123',
         email: 'angel@tutor.mx',
         name: 'Angel Gecko',
