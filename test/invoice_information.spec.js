@@ -811,7 +811,7 @@ describe('PUT /invoices', () => {
         .send(validInvoice)
         .end((err, res) => {
 
-            res.should.have.status(201);
+            res.should.have.status(200);
             res.body.should.be.an('object');
 
             done();
