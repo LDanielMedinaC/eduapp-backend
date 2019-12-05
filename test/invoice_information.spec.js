@@ -678,3 +678,25 @@ describe('POST /invoices', () => {
 
     });
 });
+/*
+describe('GET /users/:userId/invoices', () => {
+    let userWithInvoice;
+    let userWithoutInvoice; 
+    before(done => {
+        db.connectDB()
+        .then(async () => {
+
+            userWithInvoice = await User.findById('5db48a252f3af03923defe7c').exec();
+            userWithoutInvoice = await User.findById('').exec();
+            db.disconnectDB()
+
+            done();
+        })
+        .catch(err => {
+            done(new Error(err));
+        });
+
+    });
+
+});
+*/
