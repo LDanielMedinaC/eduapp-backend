@@ -307,7 +307,7 @@ module.exports = {
             return res.status(error.status).send({ error: error });
         }
 
-        // Get payload
+        // Validate payload
         let certification = req.body;
         certification._id = new mongoose.mongo.ObjectId();
 

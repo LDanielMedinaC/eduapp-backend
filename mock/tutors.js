@@ -14,7 +14,10 @@ const tutors = [
         language: 'es',
         tutorDetails: {
             taughtTopicsIds: [],
-            paymentAccounts: [],
+            paymentAccounts: [{
+                _id: new mongoose.mongo.ObjectId('abcd91bdc3464f14678934ca'),
+                method: 'cash'
+            }],
             skills: [],
             workExperiences: [{
                 _id: new mongoose.mongo.ObjectId('aaaa91bdc3464f14678934ca'),
@@ -70,7 +73,10 @@ const tutors = [
         language: 'es',
         tutorDetails: {
             taughtTopicsIds: [],
-            paymentAccounts: [],
+            paymentAccounts: [{
+                _id: new mongoose.mongo.ObjectId('abcdefbdc3464f14678934ff'),
+                method: 'paypal'
+            }],
             skills: [],
             workExperiences: [{
                 _id: new mongoose.mongo.ObjectId('bcad91bdc3464f14678934ca'),

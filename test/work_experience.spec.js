@@ -59,6 +59,7 @@ describe('WorkExp POST', () => {
         .send(workExp)
         .end((err, res) => {
 
+            console.log(res.body);
             res.should.have.status(201);
             res.body.should.be.an('object');
 

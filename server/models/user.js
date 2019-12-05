@@ -1,5 +1,7 @@
 // Mongoose schema definition for user entity
 var mongoose = require('mongoose');
+const paymentMethods = require('../resources').paymentMethods;
+const invoiceTypes = require('../resources/index').invoiceTypes;
 
 const userSchema = new mongoose.Schema({
     uid: {
@@ -24,6 +26,50 @@ const userSchema = new mongoose.Schema({
     language: {
         type: String
     },
+    invoiceInformation: {
+        type: [{
+            rfc:{
+                type: String,
+                required: true
+            },
+            invoiceType: {
+                type: String,
+                enum: invoiceTypes,
+                required: true
+            },
+            street: {
+                type: String,
+                required: true
+            },
+            extNum: {
+                type: Number,
+                required: true
+            },
+            intNum: {
+                type: Number
+            },
+            colony: {
+                type: String,
+                required: true
+            },
+            country: {
+                type: String,
+                required: true
+            },
+            state:{
+                type: String,
+                required: true
+            },
+            municipality:{
+                type: String,
+                required: true
+            },
+            pc: {
+                type: String,
+                required: true
+            }
+        }]
+    },
     tutorDetails: {
         type: {
             taughtTopicsIds: [{
@@ -32,7 +78,10 @@ const userSchema = new mongoose.Schema({
             }],
             paymentAccounts: {
                 type: [{
-                    method: String
+                    method: {
+                        type: String,
+                        enum: paymentMethods
+                    }
                 }]
             },
             skills: {
@@ -44,26 +93,8 @@ const userSchema = new mongoose.Schema({
             },
             workExperiences: {
                 type: [{
-                    institution: {
-                        type: String,
-                        required: true
-                    },
-                    department: {
-                        type: String,
-                        required: true
-                    },
-                    beginDate: {
-                        type: Date,
-                        required: true
-                    },
-                    endDate: {
-                        type: Date,
-                        required: true
-                    },
-                    stillWorking: {
-                        type: Boolean,
-                        required: true,
-                        default: false
+                    placeHolder: {
+                        type: String
                     }
                 }]
             },

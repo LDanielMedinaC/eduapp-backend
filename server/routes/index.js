@@ -6,6 +6,8 @@ const tutorController = require('../controllers').tutor;
 const topicController = require('../controllers').topic;
 const tutoringController = require('../controllers').tutoring;
 const feedbackController = require('../controllers').feedback;
+const paymentAccountController = require('../controllers').paymentAccount;
+const invoiceController = require('../controllers').invoice;
 
 const validateIds = require('../middleware/validations/ids-validation');
 const validateStudy = require('../middleware/validations/study-validation');
@@ -13,7 +15,9 @@ const validateCertification = require('../middleware/validations/certification-v
 const validateWorkExp = require('../middleware/validations/workexperience-validation');
 const validateTutoring = require('../middleware/validations/tutoring-validation');
 const validateFeedback = require('../middleware/validations/feedback-validation');
+const validatePaymentAccount = require('../middleware/validations/paymentAccount-validation');
 const validateUser = require('../middleware/validations/user-validation');
+const validateInvoice = require('../middleware/validations/invoice-validation');
 
 module.exports = (app) => {
     // Test route
@@ -28,6 +32,16 @@ module.exports = (app) => {
     app.route('/users/:userId')
     .get(userController.getDetails)
     .put(validateUser, userController.update);
+
+    //User invoices
+    app.route('/users/:userId/invoices')
+    .get(validateIds, invoiceController.list)
+    .post(validateIds, validateInvoice, invoiceController.create);
+
+    app.route('/users/:userId/invoices/:invoiceId')
+    .get(validateIds, invoiceController.get)
+    .put(validateIds, validateInvoice, invoiceController.update)
+    .delete(validateIds, invoiceController.delete);
 
     // Landing Page routes
     app.route('/landingpages')
@@ -50,6 +64,16 @@ module.exports = (app) => {
     .patch(validateIds, validateStudy, tutorController.updateStudy)
     .delete(validateIds, tutorController.deleteStudy);
 
+    //Tutor Payment Accounts
+    app.route('/tutors/:tutorId/paymentaccounts')
+    .get(validateIds, paymentAccountController.list)
+    .post(validateIds, validatePaymentAccount, paymentAccountController.create);
+
+    app.route('/tutors/:tutorId/paymentaccounts/:accountId')
+    .get(validateIds, paymentAccountController.get)
+    .put(validateIds, validatePaymentAccount, paymentAccountController.update)
+    .delete(validateIds, paymentAccountController.delete);
+
     // Tutor certifications
     app.route('/tutors/:tutorId/certifications')
     .get(validateIds, tutorController.getAllCerts)
@@ -61,7 +85,6 @@ module.exports = (app) => {
     .delete(validateIds, tutorController.deleteCert);
 
     // Tutor work experience
-
     app.route('/tutors/:tutorId/workexperiences')
     .get(validateIds, tutorController.getAllWorkExps)
     .post(validateIds, validateWorkExp, tutorController.insertWorkExp);
