@@ -1,23 +1,36 @@
 require('dotenv').config();
+const mongoose = require('mongoose');
 
 const Topic = require('../server/models').Topic;
 
 const topics = [
     new Topic({
-        Name: 'Álgebra Lineal',
-        Field: 'Matemáticas'
+        _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe78'),
+        name: 'Álgebra Lineal',
+        field: 'Matemáticas',
+        tutors: [
+            new mongoose.mongo.ObjectId('5db48a252f3af03923defe82'),
+            new mongoose.mongo.ObjectId('5db48a252f3af03923defe83')
+        ]
     }),
     new Topic({
-        Name: 'Cálculo Vectorial',
-        Field: 'Matemáticas'
+        _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe79'),
+        name: 'Cálculo Vectorial',
+        field: 'Matemáticas',
+        tutors: [
+            new mongoose.mongo.ObjectId('5db48a252f3af03923defe82')
+        ]
     }),
     new Topic({
-        Name: 'Ecuaciones Diferenciales',
-        Field: 'Matemáticas'
+        _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe7a'),
+        name: 'Ecuaciones Diferenciales',
+        field: 'Matemáticas',
+        tutors: []
     }),
     new Topic({
-        Name: 'Smash Avanzado',
-        Field: 'Ciencias Sociales'
+        name: 'Smash Avanzado',
+        field: 'Ciencias Sociales',
+        tutors: []
     })
 ];
 

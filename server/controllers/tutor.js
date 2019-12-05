@@ -1,208 +1,11 @@
+'use strict'
+
 const mongoose = require('mongoose');
 const ObjectId = require('mongoose').Types.ObjectId;
 const User = require('../models').User;
 const Topic = require('../models').Topic;
-
-function validateId(id) {
-    if(!id || !ObjectId.isValid(id)) {
-        return {
-            status: 400,
-            description: "given id is not a valid ID",
-            code: 20
-        };
-    }
-}
-
-function validateStudy(study) {
-    // Should have study
-    if(Object.keys(study).length === 0) {
-        return {
-            error: {
-                status: 400,
-                description: 'No study provided',
-                code: 25
-            }
-        };
-    }
-
-    // Institution is required
-    if(!study.institution) {
-        return {
-            error: {
-                status: 400,
-                description: 'Institution is required',
-                code: 1
-            }
-        };
-    }
-
-    // Institution min length 2 characters
-    if(study.institution.length < 2) {
-        return {
-            error: {
-                status: 400,
-                description: 'Institution should be at least 2 characters long',
-                code: 2
-            }
-        };
-    }
-
-    // Degree is required
-    if(!study.degree) {
-        return {
-            error: {
-                status: 400,
-                description: 'Degree is required',
-                code: 3
-            }
-        };
-    }
-
-    // Degree min length 2 characters
-    if(study.degree.length < 2) {
-        return {
-            error: {
-                status: 400,
-                description: 'Degree min length is 2 characters',
-                code: 4
-            }
-        };
-    }
-
-    // Field is required
-    if(!study.field) {
-        return {
-            error: {
-                status: 400,
-                description: 'Field is required',
-                code: 5
-            }
-        };
-    }
-
-    // Field min length 2
-    if(study.field.length < 2) {
-        return {
-            error: {
-                status: 400,
-                description: 'Field min length is 2',
-                code: 6
-            }
-        };
-    }
-
-    // Grade is required
-    if(!study.grade) {
-        return {
-            error: {
-                status: 400,
-                description: 'Grade is required',
-                code: 7
-            }
-        };
-    }
-
-    // Grade is an integer
-    if(!Number.isInteger(study.grade)) {
-        return {
-            error: {
-                status: 400,
-                description: 'Grade must be an integer',
-                code: 8
-            }
-        };
-    }
-
-    // Grade length is 1 or 2
-    if((study.grade + '').length < 1 || (study.grade + '').length > 2) {
-        return {
-            error: {
-                status: 400,
-                description: 'Grade should be 1 or 2 digits long',
-                code: 9
-            }
-        };
-    }
-
-    // startDate is required
-    if(!study.startDate) {
-        return {
-            error: {
-                status: 400,
-                description: 'startDate is required',
-                code: 10
-            }
-        };
-    }
-
-    // startDate should be valid date
-    if(!Date.parse(study.startDate)) {
-        return {
-            error: {
-                status: 400,
-                description: 'startDate is not valid',
-                code: 11
-            }
-        };
-    }
-
-    // endDate is required
-    if(!study.endDate) {
-        return {
-            error: {
-                status: 400,
-                description: 'endDate is required',
-                code: 12
-            }
-        };
-    }
-
-    // endDate should be valid date
-    if(!Date.parse(study.endDate)) {
-        return {
-            error: {
-                status: 400,
-                description: 'endDate is not valid',
-                code: 13
-            }
-        };
-    }
-
-    // endDate should be after startDate
-    let startDate = Date.parse(study.startDate);
-    let endDate = Date.parse(study.endDate);
-    if(startDate >= endDate) {
-        return {
-            error: {
-                status: 400,
-                description: 'endDate should be after startDate',
-                code: 14
-            }
-        };
-    }
-
-    // validationDate is required
-    if(!study.validationDate) {
-        return {
-            error: {
-                status: 400,
-                description: 'validationDate is required',
-                code: 15
-            }
-        };
-    }
-
-    // validationDate should be valid date
-    if(!Date.parse(study.validationDate)) {
-        return {
-            error: {
-                status: 400,
-                description: 'validationDate is not valid',
-                code: 16
-            }
-        };
-    }
-}
+const ErrorFactory = require('../resources').ErrorFactory;
+const Errors = require('../resources').Errors;
 
 module.exports = {
     async getDetails(req, res){
@@ -247,35 +50,16 @@ module.exports = {
     async getStudy(req, res) {
         let tutorId = req.params.tutorId;
         let studyId = req.params.studyId;
-        let tutorIdError = validateId(tutorId);
-        let studyIdError = validateId(studyId);
-
-        let idError = tutorIdError ? tutorIdError : studyIdError ? studyIdError : null;
-        if(idError)
-            return res.status(idError.status).send({ error: idError });
 
         // Validate tutor exists
         let tutor = await User.findById(tutorId).exec();
         if(!tutor || !tutor.tutorDetails ) {
-            return res.status(404).send({
-                error: {
-                    status: 404,
-                    description: "No tutor with given ID was found",
-                    code: 21
-                }
-            });
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
         }
 
         // Validate study exists
         let studies = tutor.tutorDetails.studies;
-        if(!studies)
-            return {
-                error: {
-                    status: 404,
-                    description: 'Requested study was not found for given tutor',
-                    code: 30
-                }
-            };
 
         let matchingStudy;
         for(let study of studies) {
@@ -283,62 +67,37 @@ module.exports = {
                 matchingStudy = study;
         }
 
-        if(!matchingStudy)
-            return res.status(404).send({
-                error: {
-                    status: 404,
-                    description: 'Requested study was not found for given tutor',
-                    code: 30
-                }
-            });
+        if(!matchingStudy) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'study');
+            return res.status(error.status).send({ error: error });
+        }
         
         res.status(200).send(matchingStudy);
     },
     async getStudies(req, res) {
         let tutorId = req.params.tutorId;
-        let idError = validateId(tutorId);
-
-        if(idError)
-            return res.status(idError.status).send({ error: idError });
 
         // Validate tutor exists
         let tutor = await User.findById(tutorId).exec();
         if(!tutor || !tutor.tutorDetails ) {
-            return res.status(404).send({
-                error: {
-                    status: 404,
-                    description: "No tutor with given ID was found",
-                    code: 21
-                }
-            });
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
         }
 
         res.status(200).send(tutor.tutorDetails.studies);
     },
     async addStudy(req, res) {
         let tutorId = req.params.tutorId;
-        let idError = validateId(tutorId);
-
-        if(idError)
-            return res.status(idError.status).send({ error: idError });
 
         // Validate tutor exists
         let tutor = await User.findById(tutorId).exec();
         if(!tutor || !tutor.tutorDetails ) {
-            return res.status(404).send({
-                error: {
-                    status: 404,
-                    description: "No tutor with given ID was found",
-                    code: 21
-                }
-            });
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
         }
 
         // Validate payload
         let study = req.body;
-        let firstStudyError = validateStudy(study);
-        if(firstStudyError)
-            return res.status(firstStudyError.error.status).send(firstStudyError);
 
         // Insert into array
         study._id = new mongoose.mongo.ObjectId();
@@ -346,49 +105,29 @@ module.exports = {
         tutor.markModified('tutorDetails.studies');
         try {
             await tutor.save();
-            res.status(201).send(tutor);
+            return res.status(201).send(tutor);
         } catch(err) {
-            res.status(500).send({
-                error: {
-                    status: 500,
-                    description: `Database error: ${err.errmsg || err}`,
-                    code: 0
-                }
-            });
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            return res.status(error.status).send({ error: error });
         }
     },
     async deleteStudy(req, res) {
         let tutorId = req.params.tutorId;
         let studyId = req.params.studyId;
-        let tutorIdError = validateId(tutorId);
-        let studyIdError = validateId(studyId);
-
-        let idError = tutorIdError ? tutorIdError : studyIdError ? studyIdError : null;
-        if(idError)
-            return res.status(idError.status).send({ error: idError });
 
         // Validate tutor exists
         let tutor = await User.findById(tutorId).exec();
         if(!tutor || !tutor.tutorDetails ) {
-            return res.status(404).send({
-                error: {
-                    status: 404,
-                    description: "No tutor with given ID was found",
-                    code: 21
-                }
-            });
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
         }
 
         // Validate study exists
         let studies = tutor.tutorDetails.studies;
-        if(!studies.filter(study => study._id == studyId).length)
-            return res.status(404).send({
-                error: {
-                    status: 404,
-                    description: 'Requested study was not found for given tutor',
-                    code: 30
-                }
-            });
+        if(!studies.filter(study => study._id == studyId).length) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'study');
+            return res.status(error.status).send({ error: error });
+        }
 
         studies = studies.filter((study) => {
             return study._id != studyId;
@@ -400,197 +139,59 @@ module.exports = {
             await tutor.save();
             res.status(200).send(tutor);
         } catch(err) {
-            res.status(500).send({
-                error: {
-                    status: 500,
-                    description: `Database error: ${err.errmsg || err}`,
-                    code: 0
-                }
-            });
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            res.status(error.status).send({ error: error });
         }
     },
     async updateStudy(req, res) {
         let tutorId = req.params.tutorId;
         let studyId = req.params.studyId;
-        let tutorIdError = validateId(tutorId);
-        let studyIdError = validateId(studyId);
         let payloadStudy = req.body;
-
-        let idError = tutorIdError ? tutorIdError : studyIdError ? studyIdError : null;
-        if(idError)
-            return res.status(idError.status).send({ error: idError });
 
         // Validate tutor exists
         let tutor = await User.findById(tutorId).exec();
         if(!tutor || !tutor.tutorDetails ) {
-            return res.status(404).send({
-                error: {
-                    status: 404,
-                    description: "No tutor with given ID was found",
-                    code: 21
-                }
-            });
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
         }
 
         // Validate study exists
         let studies = tutor.tutorDetails.studies;
         let matchingStudies = studies.filter(study => study._id == studyId);
-        if(!matchingStudies.length)
-            return res.status(404).send({
-                error: {
-                    status: 404,
-                    description: 'Requested study was not found for given tutor',
-                    code: 30
-                }
-            });
-
-        // validate payload
-        // Should have study
-        if(Object.keys(payloadStudy).length === 0) {
-            return res.status(400).send({
-                error: {
-                    status: 400,
-                    description: 'No study provided',
-                    code: 25
-                }
-            });
+        if(!matchingStudies.length) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'study');
+            return res.status(error.status).send({ error: error });
         }
 
-        if(payloadStudy.institution) {
-            // Institution min length 2 characters
-            if(payloadStudy.institution.length < 2) {
-                return res.status(400).send({
-                    error: {
-                        status: 400,
-                        description: 'Institution should be at least 2 characters long',
-                        code: 2
-                    }
-                });
-            }
-        }
-
-        if(payloadStudy.degree) {
-            // Degree min length 2 characters
-            if(payloadStudy.degree.length < 2) {
-                return res.status(400).send({
-                    error: {
-                        status: 400,
-                        description: 'Degree min length is 2 characters',
-                        code: 4
-                    }
-                });
-            }
-        }
-
-        if(payloadStudy.field) {
-            // Field min length 2
-            if(payloadStudy.field.length < 2) {
-                return res.status(400).send({
-                    error: {
-                        status: 400,
-                        description: 'Field min length is 2',
-                        code: 6
-                    }
-                });
-            }
-        }
-
-        if(payloadStudy.grade) {
-            // Grade is an integer
-            if(!Number.isInteger(payloadStudy.grade)) {
-                return res.status(400).send({
-                    error: {
-                        status: 400,
-                        description: 'Grade must be an integer',
-                        code: 8
-                    }
-                });
-            }
-
-            // Grade length is 1 or 2
-            if((payloadStudy.grade + '').length < 1 || (payloadStudy.grade + '').length > 2) {
-                return res.status(400).send({
-                    error: {
-                        status: 400,
-                        description: 'Grade should be 1 or 2 digits long',
-                        code: 9
-                    }
-                });
-            }
-        }
-
-        if(payloadStudy.startDate) {
-            // startDate should be valid date
-            if(!Date.parse(payloadStudy.startDate)) {
-                return res.status(400).send({
-                    error: {
-                        status: 400,
-                        description: 'startDate is not valid',
-                        code: 11
-                    }
-                });
-            }
-        }
-
-        if(payloadStudy.endDate) {
-            // endDate should be valid date
-            if(!Date.parse(payloadStudy.endDate)) {
-                return res.status(400).send({
-                    error: {
-                        status: 400,
-                        description: 'endDate is not valid',
-                        code: 13
-                    }
-                });
-            }
-        }
-
-        if(payloadStudy.startDate && payloadStudy.endDate) {
-            // endDate should be after startDate
-            let startDate = Date.parse(payloadStudy.startDate);
-            let endDate = Date.parse(payloadStudy.endDate);
-            if(startDate >= endDate) {
-                return res.status(400).send({
-                    error: {
-                        status: 400,
-                        description: 'endDate should be after startDate',
-                        code: 14
-                    }
-                });
-            }
-        }
-
-        if(payloadStudy.validationDate) {
-            // validationDate should be valid date
-            if(!Date.parse(payloadStudy.validationDate)) {
-                return res.status(400).send({
-                    error: {
-                        status: 400,
-                        description: 'validationDate is not valid',
-                        code: 16
-                    }
-                });
-            }
-        }
-
+        // Get the study
         studies = studies.filter((study) => {
             return study._id != studyId;
         });
-
         let study = matchingStudies[0];
-        for(prop in study) {
-            if(Object.prototype.hasOwnProperty.call(study, prop)) {
-                study.prop = payloadStudy.prop ? payloadStudy.prop : study.prop;
-            }
+
+        // Update study fields
+        for(let prop in study) {
+            if(Object.prototype.hasOwnProperty.call(study, prop))
+                study[prop] = payloadStudy[prop] ? payloadStudy[prop] : study[prop];
+        }
+        
+        // Validate dates
+        if(study.endDate <= study.startDate) {
+            let error = ErrorFactory.buildError(Errors.DATE_ORDER, 'endDate', 'startDate');
+            return res.status(error.status).send({ error: error });
         }
 
+        if(study.validationDate < study.endDate) {
+            let error = ErrorFactory.buildError(Errors.DATE_ORDER, 'validationDate', 'endDate');
+            return res.status(error.status).send({ error: error });
+        }
+        
         studies.push(study);
-
         tutor.tutorDetails.studies = studies;
-        tutor.markModified('tutorDetails.studies');
         try {
+            tutor.markModified('tutorDetails.studies');
             await tutor.save();
-            res.status(200).send(study);
+            return res.status(200).send(study);
         } catch(err) {
             res.status(500).send({
                 error: {
@@ -602,11 +203,11 @@ module.exports = {
         }
     },
     async get(req, res) {
-        let topic = req.query.topic;
+        let topicName = req.query.topic;
 
-        if(typeof(topic) != "undefined") {
+        if(typeof(topicName) != "undefined") {
             // Validate topic length
-            if(topic.length == 0) {
+            if(topicName.length == 0) {
                 return res.status(400).send({
                     error: {
                         status: 400,
@@ -616,7 +217,7 @@ module.exports = {
                 });
             }
 
-            if(topic.length > 254) {
+            if(topicName.length > 254) {
                 return res.status(400).send({
                     error: {
                         status: 400,
@@ -627,15 +228,16 @@ module.exports = {
             }
 
             // Look for topic id
-            let topicId = await Topic.findOne({'Name': topic}).exec();
-            topicId = topicId ? topicId._id : null;
-
-            if(!topicId)
-                return res.status(200).json([]);
-
-            let tutors = await User.where('tutorDetails').ne(null)
-            .where('tutorDetails.taughtTopicsIDs').equals(topicId)
-            .exec();
+            let topic = await Topic.findOne({'name': topicName}).exec();
+            let tutors = [];
+            
+            if(topic) {
+                for(let tutorId of topic.tutors) {
+                    let tutor = await User.findById(tutorId).exec();
+                    if(tutor)
+                        tutors.push(tutor);
+                }
+            }
             
             return res.status(200).send(tutors);
         }
@@ -645,5 +247,332 @@ module.exports = {
         .then(tutors => {
             return res.status(200).send(tutors);
         });
-    }
+    },
+
+    /*
+    ##########################
+    ##### CERTIFICATIONS #####
+    ##########################
+    
+    */
+
+    async getCert(req, res) {
+        let tutorId = req.params.tutorId;
+        let certId = req.params.certificationId;
+
+         // Validate tutor exists
+         let tutor = await User.findById(tutorId).exec();
+         if(!tutor || !tutor.tutorDetails ) {
+             let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+             return res.status(error.status).send({ error: error });
+         }
+ 
+         // Validate cert exists
+         let certifications = tutor.tutorDetails.certifications;
+ 
+         let martchingCert;
+         for(let cert of certifications) {
+             if(cert._id == certId)
+                martchingCert = cert;
+         }
+ 
+         if(!martchingCert) {
+             let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'certification');
+             return res.status(error.status).send({ error: error });
+         }
+         
+         res.status(200).send(martchingCert);
+    },
+
+
+    async getAllCerts(req, res) {
+        let tutorId = req.params.tutorId;
+
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        res.status(200).send(tutor.tutorDetails.certifications);
+    },
+
+    async insertCert(req, res) {
+        let tutorId = req.params.tutorId;
+
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        // Validate payload
+        let certification = req.body;
+        certification._id = new mongoose.mongo.ObjectId();
+
+        // Insert into array
+        if(!tutor.tutorDetails.certifications)
+            tutor.tutorDetails.certifications = [];
+        tutor.tutorDetails.certifications.push(certification);
+        
+        tutor.markModified('tutorDetails.certifications');
+
+        tutor.save()
+        .then( (tutor) => {
+            const insertedCertIndex = tutor.tutorDetails.certifications.length - 1;
+            const cert = tutor.tutorDetails.certifications[insertedCertIndex]
+
+            res.status(201).send(cert);
+        })
+        .catch((err) => {
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            return res.status(error.status).send({ error: error });
+        });
+    },
+
+    async updateCert(req, res) {
+        let tutorId = req.params.tutorId;
+        let certId = req.params.certificationId;
+        let updatedCert = req.body;
+
+         // Validate tutor exists
+        const tutor = await User.findById(tutorId)
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        // Validate certification exists
+        let certifications = tutor.tutorDetails.certifications;
+        let dbCert = certifications.find(cert => {
+            return cert._id == certId;
+        });
+
+        if (!dbCert)
+        {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'certification');
+            return res.status(error.status).send({ error: error });
+        }
+
+        //Replace certification 
+        let certIndex =  certifications.findIndex(cert => {
+            return cert._id == certId;
+        });
+        updatedCert._id = certId;
+        certifications[certIndex] = updatedCert;
+
+        //Save
+        tutor.markModified('tutorDetails.certifications');
+
+        tutor.save()
+        .then( (tutor) => {
+
+            res.status(200).send(updatedCert);
+        })
+        .catch((err) => {
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            return res.status(error.status).send({ error: error });
+        });
+    },
+
+    async deleteCert(req, res) {
+        let tutorId = req.params.tutorId;
+        let certId = req.params.certificationId;
+
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        // Validate cert exists
+        let certifications = tutor.tutorDetails.certifications;
+        if(!certifications.filter(cert => cert._id == certId).length) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'certification');
+            return res.status(error.status).send({ error: error });
+        }
+
+        //Create new array without the deleted certification and save
+        let newArray = tutor.tutorDetails.certifications.filter(cert => cert._id != certId);
+        tutor.tutorDetails.certifications = newArray;
+
+        tutor.markModified('tutorDetails.certifications');
+
+        tutor.save()
+        .then( (tutor) => {
+            res.status(200).send();
+        })
+        .catch((err) => {
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            return res.status(error.status).send({ error: error });
+        });
+    },
+
+    /*
+    ##########################
+    #### WORK EXPERIENCE #####
+    ##########################
+    
+    */
+
+    async getWorkExp(req, res) {
+        let tutorId = req.params.tutorId;
+        let workExpId = req.params.workexperienceId;
+
+         // Validate tutor exists
+         let tutor = await User.findById(tutorId).exec();
+         if(!tutor || !tutor.tutorDetails ) {
+             let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+             return res.status(error.status).send({ error: error });
+         }
+ 
+         // Validate workExp exists
+         let workExpObjs = tutor.tutorDetails.workExperiences;
+ 
+         let matchingWorkExp;
+         for(let workExp of workExpObjs) {
+             if(workExp._id == workExpId)
+                matchingWorkExp = workExp;
+         }
+ 
+         if(!matchingWorkExp) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'workExperience');
+            return res.status(error.status).send({ error: error });
+         }
+         
+         res.status(200).send(matchingWorkExp);
+    },
+
+    async getAllWorkExps(req, res) {
+        let tutorId = req.params.tutorId;
+
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        res.status(200).send(tutor.tutorDetails.workExperiences);
+    },
+
+    async insertWorkExp(req, res) {
+        let tutorId = req.params.tutorId;
+
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        // Get payload
+        let workExp = req.body;
+        workExp._id = new mongoose.mongo.ObjectId();
+
+        // Insert into array
+        if(!tutor.tutorDetails.workExperiences)
+            tutor.tutorDetails.workExperiences = [];
+        tutor.tutorDetails.workExperiences.push(workExp);
+        
+        tutor.markModified('tutorDetails.workExperiences');
+
+        tutor.save()
+        .then( (tutor) => {
+            const insertedWEIndex = tutor.tutorDetails.workExperiences.length - 1;
+            const WE = tutor.tutorDetails.workExperiences[insertedWEIndex]
+
+            res.status(201).send(WE);
+        })
+        .catch((err) => {
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            return res.status(error.status).send({ error: error });
+        });
+    },
+
+    async updateWorkExp(req, res) {
+        let tutorId = req.params.tutorId;
+        let workdExpId = req.params.workexperienceId;
+        let updatedWorkExp = req.body;
+
+         // Validate tutor exists
+        const tutor = await User.findById(tutorId)
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        // Validate workExp exists
+        let workExperienceObjs = tutor.tutorDetails.workExperiences;
+        let dbWorkExp = workExperienceObjs.find(WE => {
+            return WE._id == workdExpId;
+        });
+
+        if (!dbWorkExp)
+        {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'workExperience');
+            return res.status(error.status).send({ error: error });
+        }
+
+        //Replace work experience 
+        let weIndex =  workExperienceObjs.findIndex(cert => {
+            return cert._id == workdExpId;
+        });
+        updatedWorkExp._id = workdExpId;
+        workExperienceObjs[weIndex] = updatedWorkExp;
+
+        //Save
+        tutor.markModified('tutorDetails.workExperiences');
+
+        tutor.save()
+        .then( (tutor) => {
+
+            const dbWorkExpObjs = tutor.tutorDetails.workExperiences;
+            let updatedWE = dbWorkExpObjs[dbWorkExpObjs.length - 1];
+
+            res.status(200).send(updatedWE);
+        })
+        .catch((err) => {
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            return res.status(error.status).send({ error: error });
+        });
+    },
+
+    async deleteWorkExp(req, res) {
+        let tutorId = req.params.tutorId;
+        let workExpId = req.params.workexperienceId;
+
+        // Validate tutor exists
+        let tutor = await User.findById(tutorId).exec();
+        if(!tutor || !tutor.tutorDetails ) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'tutor');
+            return res.status(error.status).send({ error: error });
+        }
+
+        // Validate work exp exists
+        let workExpObjs = tutor.tutorDetails.workExperiences;
+        if(!workExpObjs.filter(we => we._id == workExpId).length) {
+            let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, 'workExperience');
+            return res.status(error.status).send({ error: error });
+        }
+
+        //Create new array without the deleted certification and save
+        let newArray = tutor.tutorDetails.workExperiences.filter(we => we._id != workExpId);
+        tutor.tutorDetails.workExperiences = newArray;
+
+        tutor.markModified('tutorDetails.workExperiences');
+
+        tutor.save()
+        .then( (tutor) => {
+            res.status(200).send();
+        })
+        .catch((err) => {
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            return res.status(error.status).send({ error: error });
+        });
+    },
+
 };

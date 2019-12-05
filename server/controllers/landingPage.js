@@ -8,32 +8,24 @@ module.exports = {
 
     // Method to show landing page
     show(req, res){
-
-        var query;
         
-        query = LandingPage.findOne();
-
-        /*//If requesting for a particular ID
-        if (req.body._id)
-            query = LandingPage.findById(req.body._id);
-        else //if no id specified, return latest
-            query = LandingPage.findOne({}, {}, {sort: {'created_at' : -1}});*/
-
-        query.exec((err, lp) => {
+        LandingPage.findOne()
+            .populate('showcasedTopicsIds')
+            .exec((err, lp) => {
             
-            if (err)
-            { 
-                err.status = 404;
-                err.description = "No landing page was found";
-                err.code = 1;
-                res.send(err);
-            }
-            else
-            {
-                res.status = 200;
-                res.json(lp);
-            }
-        });
+                if (err)
+                { 
+                    err.status = 404;
+                    err.description = "No landing page was found";
+                    err.code = 1;
+                    res.send(err);
+                }
+                else
+                {
+                    res.status = 200;
+                    res.json(lp);
+                }
+            });
     },
 
     // Method used to update landing page
@@ -54,9 +46,10 @@ module.exports = {
                 });
             } else {
                 // Landing page exists, update
-                page.LogoImgURL = landingPage.LogoImgURL || page.LogoImgURL;
-                page.ShowcasedTopicsIDs = landingPage.ShowcasedTopicsIDs || page.ShowcasedTopicsIDs;
-                page.Sections = landingPage.Sections || page.Sections || [];
+                page.logoImgURL = landingPage.logoImgURL || page.logoImgURL;
+                page.showcasedTopicsIds = landingPage.showcasedTopicsIds || page.showcasedTopicsIds;
+                page.carrousel = landingPage.carrousel || page.carrousel;
+                page.sections = landingPage.sections || page.sections || [];
 
                 //run validators on fields, return if error occurs
                 var err = page.validateSync();

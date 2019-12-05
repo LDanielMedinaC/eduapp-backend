@@ -1,5 +1,7 @@
 // Mongoose schema definition for user entity
 var mongoose = require('mongoose');
+const paymentMethods = require('../resources').paymentMethods;
+const invoiceTypes = require('../resources/index').invoiceTypes;
 
 const userSchema = new mongoose.Schema({
     uid: {
@@ -24,29 +26,95 @@ const userSchema = new mongoose.Schema({
     language: {
         type: String
     },
+    invoiceInformation: {
+        type: [{
+            rfc:{
+                type: String,
+                required: true
+            },
+            invoiceType: {
+                type: String,
+                enum: invoiceTypes,
+                required: true
+            },
+            street: {
+                type: String,
+                required: true
+            },
+            extNum: {
+                type: Number,
+                required: true
+            },
+            intNum: {
+                type: Number
+            },
+            colony: {
+                type: String,
+                required: true
+            },
+            country: {
+                type: String,
+                required: true
+            },
+            state:{
+                type: String,
+                required: true
+            },
+            municipality:{
+                type: String,
+                required: true
+            },
+            pc: {
+                type: String,
+                required: true
+            }
+        }]
+    },
     tutorDetails: {
         type: {
-            taughtTopicsIDs: [{
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Topic'
-            }],
             paymentAccounts: {
                 type: [{
-                    UUID: String,
-                    Method: String
+                    method: {
+                        type: String,
+                        enum: paymentMethods
+                    }
                 }]
             },
             skills: {
                 type: [{
-                    placeHolder: {
-                        type: String
+                    topic: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'Topic',
+                        required: true
+                    },
+                    experience:{
+                        type: Number,
+                        required: true
                     }
                 }]
             },
-            workExperience: {
+            workExperiences: {
                 type: [{
-                    placeHolder: {
-                        type: String
+                    institution: {
+                        type: String,
+                        required: true
+                    },
+                    department: {
+                        type: String,
+                        required: true
+                    },
+                    beginDate: {
+                        type: Date,
+                        required: true
+                    },
+                    endDate: {
+                        type: Date,
+                        required: true
+                    },
+                    stillWorking: {
+                        type: Boolean,
+                        required: true,
+                        default: false
                     }
                 }]
             },
@@ -70,11 +138,13 @@ const userSchema = new mongoose.Schema({
                     },
                     startDate: {
                         required: true,
-                        type: Date
+                        type: Date,
+                        validate: [datesOrder, 'endDate should be after startDate']
                     },
                     endDate: {
                         required: true,
-                        type: Date
+                        type: Date,
+                        validate: [datesOrder, 'endDate should be after startDate']
                     },
                     proofDocURL: {},
                     validationDate: {
@@ -83,9 +153,21 @@ const userSchema = new mongoose.Schema({
                     }
                 }]
             },
-            awards: {
+            certifications: {
                 type: [{
-                    placeHolder: {
+                    institution: {
+                        type: String,
+                        required: true
+                    },
+                    title: {
+                        type: String,
+                        required: true
+                    },
+                    date: {
+                        type: Date,
+                        required: true
+                    },
+                    diplomaURL: {
                         type: String
                     }
                 }]
@@ -94,6 +176,10 @@ const userSchema = new mongoose.Schema({
         }
     }
 });
+
+function datesOrder() {
+    return this.endDate > this.startDate;
+}
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

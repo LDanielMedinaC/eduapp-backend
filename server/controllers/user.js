@@ -1,4 +1,6 @@
 const User = require('../models').User;
+const Errors = require('../resources').Errors;
+const ErrorFactory = require('../resources').ErrorFactory;
 
 function validateUser(user) {
     // Should validate user
@@ -131,6 +133,70 @@ module.exports = {
                     code: 10
                 }
             });
+        });
+    },
+
+    // Method used to get a User by ID
+
+    getDetails(req, res){
+        let userId = req.params.userId;
+
+        User.findById(userId)
+        .then((user) => {
+            if (!user)
+            {   
+                let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, userId, user);
+
+                return res.status(error.status).send({ error: error });
+            }
+
+            return res.status(200).send(user);
+        })
+        .catch( (err) => 
+        {
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            return res.status(error.status).send({ error: error });
+        });
+    },
+
+    //Method used to update a user
+
+    update(req, res){
+        let user = req.body;
+
+        let userId = req.params.userId;
+
+        User.findById(userId)
+        .then((userFound) => {
+            if (!userFound)
+            {   
+                let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, userId, userFound);
+
+                return res.status(error.status).send({ error: error });
+
+            } else {
+                //User exists, update
+                userFound.name = user.name || userFound.name;
+                userFound.email = user.email || userFound.email;
+                userFound.phone = user.phone || userFound.phone;
+                userFound.country = user.country || userFound.country;
+                userFound.language = user.language || userFound.language;
+
+                //SAVE THE UPDATE
+
+                userFound.save()
+                .then((updatedUser) => res.status(200).send(updatedUser))
+                .catch((err) => {
+                    let error = ErrorFactory.buildError(err);
+                    return res.status(error.status).send({ error: error });
+                });
+
+
+            }
+        })
+        .catch((err) => {
+            let error = ErrorFactory.buildError(Errors.DATABASE_ERROR, err.errmsg || err);
+            return res.status(error.status).send({ error: error });
         });
     }
 }
