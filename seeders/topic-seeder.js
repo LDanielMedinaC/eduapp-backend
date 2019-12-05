@@ -9,22 +9,28 @@ const topics = [
         name: 'Álgebra Lineal',
         field: 'Matemáticas',
         tutors: [
-            new mongoose.mongo.ObjectId('5db48a252f3af03923defe82')
+            new mongoose.mongo.ObjectId('5db48a252f3af03923defe82'),
+            new mongoose.mongo.ObjectId('5db48a252f3af03923defe83')
         ]
     }),
     new Topic({
         _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe79'),
         name: 'Cálculo Vectorial',
-        field: 'Matemáticas'
+        field: 'Matemáticas',
+        tutors: [
+            new mongoose.mongo.ObjectId('5db48a252f3af03923defe82')
+        ]
     }),
     new Topic({
         _id: new mongoose.mongo.ObjectId('5db48a252f3af03923defe7a'),
         name: 'Ecuaciones Diferenciales',
-        field: 'Matemáticas'
+        field: 'Matemáticas',
+        tutors: []
     }),
     new Topic({
         name: 'Smash Avanzado',
-        field: 'Ciencias Sociales'
+        field: 'Ciencias Sociales',
+        tutors: []
     })
 ];
 

@@ -5,18 +5,18 @@ const LandingPage = require('../server/models').LandingPage;
 const Topic = require('../server/models').Topic;
 
 const lp = new LandingPage({
-    LogoImgURL: 'https://yt3.ggpht.com/a/AGF-l7-ED38XcwKwiqauuL6Ps7nkQyVlDesbohBfGA=s900-c-k-c0xffffffff-no-rj-mo',
-    Carrousel: ['https://smiletutor.sg/wp-content/uploads/2018/10/6-advantages-of-online-tutoring.jpeg', 'https://images.ctfassets.net/p0qf7j048i0q/599C41259E6A4444BB7E1CBB24D1BB81/cd75bc40999bf5a1dca2fae66cc8c144/i609086966.jpg?w=1000&fm=webp'],
-    Sections: [
+    logoImgURL: 'https://yt3.ggpht.com/a/AGF-l7-ED38XcwKwiqauuL6Ps7nkQyVlDesbohBfGA=s900-c-k-c0xffffffff-no-rj-mo',
+    carrousel: ['https://smiletutor.sg/wp-content/uploads/2018/10/6-advantages-of-online-tutoring.jpeg', 'https://images.ctfassets.net/p0qf7j048i0q/599C41259E6A4444BB7E1CBB24D1BB81/cd75bc40999bf5a1dca2fae66cc8c144/i609086966.jpg?w=1000&fm=webp'],
+    sections: [
         {
-            Title: 'La vida de los dioses griegos',
-            Elements: [{
-                IconImgURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Zeus_arte.jpg/220px-Zeus_arte.jpg',
-                ElementTitle: 'El primer dios griego, Zeus',
-                ElementDescription: 'Una mirada a uno de los grandes dioses griegos'
+            title: 'La vida de los dioses griegos',
+            elements: [{
+                iconImgURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Zeus_arte.jpg/220px-Zeus_arte.jpg',
+                elementTitle: 'El primer dios griego, Zeus',
+                elementDescription: 'Una mirada a uno de los grandes dioses griegos'
             }],
-            BackgroundImgURL: 'https://st2.ning.com/topology/rest/1.0/file/get/3001370672?profile=RESIZE_1024x1024',
-            Description: 'Conozcamos más acerca de los dioses'
+            backgroundImgURL: 'https://st2.ning.com/topology/rest/1.0/file/get/3001370672?profile=RESIZE_1024x1024',
+            description: 'Conozcamos más acerca de los dioses'
         }
     ]
 });
@@ -36,7 +36,7 @@ let seed = () => {
         topic = await Topic.findOne({'name': 'Ecuaciones Diferenciales'}).exec();
         let idTopic3 = topic._id;
 
-        lp.ShowcasedTopicsIDs = [idTopic1, idTopic2, idTopic3];
+        lp.showcasedTopicsIds = [idTopic1, idTopic2, idTopic3];
 
         let seedingLPs = [new Promise((resolve, reject) => {
             lp.save()

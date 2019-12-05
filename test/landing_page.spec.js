@@ -15,21 +15,21 @@ chai.use(chaiHttp);
 describe('PUT /landingpage', () => {
     it('Should update', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
-                    Title: 'Titulo',
-                    Description: 'Description',
-                    BackgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    title: 'Titulo',
+                    description: 'Description',
+                    backgroundImgURL: 'ftp::algo',
+                    elements: [
                         {
-                            IconImgURL: 'ftp::algo',
-                            ElementTitle: 'Title',
-                            Description: 'Description'
+                            iconImgURL: 'ftp::algo',
+                            elementTitle: 'Title',
+                            description: 'Description'
                         }
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -37,29 +37,29 @@ describe('PUT /landingpage', () => {
         .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
-            res.body.should.have.property('Sections');
-            res.body.should.have.property('LogoImgURL');
+            res.body.should.have.property('sections');
+            res.body.should.have.property('logoImgURL');
             done();
         });
     });
 
     it('Title too short', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
-                    Title: '',
-                    Description: 'Description',
-                    BackgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    title: '',
+                    description: 'Description',
+                    backgroundImgURL: 'ftp::algo',
+                    elements: [
                         {
-                            IconImgURL: 'ftp::algo',
-                            ElementTitle: 'Title',
-                            Description: 'Description'
+                            iconImgURL: 'ftp::algo',
+                            elementTitle: 'Title',
+                            description: 'Description'
                         }
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -76,21 +76,21 @@ describe('PUT /landingpage', () => {
 
     it('Title too LONG', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
-                    Title: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
-                    Description: 'Description',
-                    BackgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    title: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
+                    description: 'Description',
+                    backgroundImgURL: 'ftp::algo',
+                    elements: [
                         {
-                            IconImgURL: 'ftp::algo',
-                            ElementTitle: 'Title',
-                            Description: 'Description'
+                            iconImgURL: 'ftp::algo',
+                            elementTitle: 'Title',
+                            description: 'Description'
                         }
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -107,21 +107,21 @@ describe('PUT /landingpage', () => {
 
     it('Description too long', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
-                    Title: 'Title',
-                    Description: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
-                    BackgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    title: 'Title',
+                    description: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
+                    backgroundImgURL: 'ftp::algo',
+                    elements: [
                         {
-                            IconImgURL: 'ftp::algo',
-                            ElementTitle: 'Title',
-                            Description: 'Description'
+                            iconImgURL: 'ftp::algo',
+                            elementTitle: 'Title',
+                            description: 'Description'
                         }
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -138,21 +138,21 @@ describe('PUT /landingpage', () => {
 
     it('Invalid image url', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
-                    Title: 'Title',
-                    Description: 'Description',
-                    BackgroundImgURL: 'Lol',
-                    Elements: [
+                    title: 'Title',
+                    description: 'Description',
+                    backgroundImgURL: 'Lol',
+                    elements: [
                         {
-                            IconImgURL: 'ftp::algo',
-                            ElementTitle: 'Title',
-                            Description: 'Description'
+                            iconImgURL: 'ftp::algo',
+                            elementTitle: 'Title',
+                            description: 'Description'
                         }
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -169,8 +169,8 @@ describe('PUT /landingpage', () => {
 
     it('No sections', (done) => {
         let update_lp = {
-            Sections: [],
-            LogoImgURL: 'http::algo'
+            sections: [],
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -187,21 +187,21 @@ describe('PUT /landingpage', () => {
 
     it('Invalid URL', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
-                    Title: 'Title',
-                    Description: 'Description',
-                    BackgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    title: 'Title',
+                    description: 'Description',
+                    backgroundImgURL: 'ftp::algo',
+                    elements: [
                         {
-                            IconImgURL: 'lol',
-                            ElementTitle: 'Title',
-                            Description: 'Description'
+                            iconImgURL: 'lol',
+                            elementTitle: 'Title',
+                            description: 'Description'
                         }
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -218,21 +218,21 @@ describe('PUT /landingpage', () => {
 
     it('Title too long', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
-                    Title: 'Title',
-                    Description: 'Description',
-                    BackgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    title: 'Title',
+                    description: 'Description',
+                    backgroundImgURL: 'ftp::algo',
+                    elements: [
                         {
-                            IconImgURL: 'ftp::algo',
-                            ElementTitle: '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
-                            Description: 'Description'
+                            iconImgURL: 'ftp::algo',
+                            elementTitle: '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
+                            description: 'Description'
                         }
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -249,21 +249,21 @@ describe('PUT /landingpage', () => {
 
     it('Description too long', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
-                    Title: 'Title',
-                    Description: 'This description is too long for the mongoose validation to pass, so it should be rejected and produce a bad response when sent as a payload in the post request for landingpages. If this landing page section description is validated and saved then something is wrong.',
-                    BackgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    title: 'Title',
+                    description: 'This description is too long for the mongoose validation to pass, so it should be rejected and produce a bad response when sent as a payload in the post request for landingpages. If this landing page section description is validated and saved then something is wrong.',
+                    backgroundImgURL: 'ftp::algo',
+                    elements: [
                         {
-                            IconImgURL: 'ftp::algo',
-                            ElementTitle: 'Title',
-                            Description: 'Whatever'
+                            iconImgURL: 'ftp::algo',
+                            elementTitle: 'Title',
+                            description: 'Whatever'
                         }
                     ]
                 }
             ],
-            LogoImgURL: 'http::algo'
+            logoImgURL: 'http::algo'
         };
         chai.request(server)
         .put('/landingpages')
@@ -280,21 +280,21 @@ describe('PUT /landingpage', () => {
 
     it('Invalid URL', (done) => {
         let update_lp = {
-            Sections: [
+            sections: [
                 {
-                    Title: 'Title',
-                    Description: 'Description',
-                    BackgroundImgURL: 'ftp::algo',
-                    Elements: [
+                    title: 'Title',
+                    description: 'Description',
+                    backgroundImgURL: 'ftp::algo',
+                    elements: [
                         {
-                            IconImgURL: 'ftp::algo',
-                            ElementTitle: 'Title',
-                            Description: 'Description'
+                            iconImgURL: 'ftp::algo',
+                            elementTitle: 'Title',
+                            description: 'Description'
                         }
                     ]
                 }
             ],
-            LogoImgURL: 'lol'
+            logoImgURL: 'lol'
         };
         chai.request(server)
         .put('/landingpages')
@@ -309,9 +309,9 @@ describe('PUT /landingpage', () => {
         });
     });
 
-    it('Valid Carrousel URL', (done) => {
+    it('Valid carrousel URL', (done) => {
         let update_lp = {
-            Carrousel: ['https::myimageurl']
+            carrousel: ['https::myimageurl']
         };
         chai.request(server)
         .put('/landingpages')
@@ -323,9 +323,9 @@ describe('PUT /landingpage', () => {
         });
     });
 
-    it('Invalid Carrousel URL', (done) => {
+    it('Invalid carrousel URL', (done) => {
         let update_lp = {
-            Carrousel: 'Htt:invalid'
+            carrousel: 'Htt:invalid'
         };
         chai.request(server)
         .put('/landingpages')
@@ -341,9 +341,9 @@ describe('PUT /landingpage', () => {
         });
     });
 
-    it('No Carrousel updated, remains the same after', (done) => {
+    it('No carrousel updated, remains the same after', (done) => {
         let update_lp = {
-            Carrousel: 'http::url'
+            carrousel: 'http::url'
         };
         chai.request(server)
         .put('/landingpages')
@@ -353,7 +353,7 @@ describe('PUT /landingpage', () => {
             res.body.should.be.a('object');
             
             let newLP = {
-                Carrousel: []
+                carrousel: []
             };
 
             chai.request(server)
@@ -363,8 +363,8 @@ describe('PUT /landingpage', () => {
 
                 res.should.have.status(200);
                 res.body.should.be.a('object');
-                res.body.should.have.property('Carrousel');
-                res.body.Carrousel.should.be.eql(['http::url']);
+                res.body.should.have.property('carrousel');
+                res.body.carrousel.should.be.eql(['http::url']);
 
                 done();
             });

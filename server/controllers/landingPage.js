@@ -10,7 +10,7 @@ module.exports = {
     show(req, res){
         
         LandingPage.findOne()
-            .populate('ShowcasedTopicsIDs')
+            .populate('showcasedTopicsIds')
             .exec((err, lp) => {
             
                 if (err)
@@ -46,10 +46,10 @@ module.exports = {
                 });
             } else {
                 // Landing page exists, update
-                page.LogoImgURL = landingPage.LogoImgURL || page.LogoImgURL;
-                page.ShowcasedTopicsIDs = landingPage.ShowcasedTopicsIDs || page.ShowcasedTopicsIDs;
-                page.Carrousel = landingPage.Carrousel || page.Carrousel;
-                page.Sections = landingPage.Sections || page.Sections || [];
+                page.logoImgURL = landingPage.logoImgURL || page.logoImgURL;
+                page.showcasedTopicsIds = landingPage.showcasedTopicsIds || page.showcasedTopicsIds;
+                page.carrousel = landingPage.carrousel || page.carrousel;
+                page.sections = landingPage.sections || page.sections || [];
 
                 //run validators on fields, return if error occurs
                 var err = page.validateSync();

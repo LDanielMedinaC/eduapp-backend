@@ -15,28 +15,32 @@ const shouldBeNotFound = require('./helpers').shouldBeNotFound;
 
 chai.use(chaiHttp);
 
-let validCertificationNoDiploma = {
-    institution: 'Oracle Academy',
-    title: 'Java Fundamentals',
-    date: new Date('2015-12-08').toISOString(),
-}
-let validCertificationWDiploma = {
-    institution: 'Oracle Academy',
-    title: 'Database Design',
-    date: new Date('2016-01-10').toISOString(),
-    diplomaURL: 'https::storage.container.com/867348dfj'
+let workExpStillWorking = {
+    institution: 'CD Project Red',
+    department: 'Game Director',
+    beginDate: new Date('2012-05-28').toISOString(),
+    endDate: new Date('2020-08-17').toISOString(),
+    stillWorking: true
 }
 
-describe('Tutor Certification POST', () => {
+let workExp = {
+    institution: 'Lucid Inc.',
+    department: 'Software Enginner Intern',
+    beginDate: new Date('2019-05-28').toISOString(),
+    endDate: new Date('2019-08-18').toISOString(),
+    stillWorking: false
+}
+
+describe('WorkExp POST', () => {
 
     let dbTutor;
-    let noCertTutor;
+    let noWETutor;
     before(done => {
         db.connectDB()
         .then(async () => {
 
             dbTutor = await User.findOne({ 'email': tutors[0].email }).exec();
-            noCertTutor = await User.findOne({ 'email': tutors[1].email }).exec();
+            noWETutor = await User.findOne({ 'email': tutors[1].email }).exec();
 
             db.disconnectDB()
 
@@ -48,11 +52,33 @@ describe('Tutor Certification POST', () => {
 
     });
 
-    it('Valid certification POST no diploma', (done) => {
+    it('Valid work exp POST no stillWorking', (done) => {
 
         chai.request(server)
-        .post(`/tutors/${dbTutor._id}/certifications`)
-        .send(validCertificationNoDiploma)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
+        .send(workExp)
+        .end((err, res) => {
+
+            console.log(res.body);
+            res.should.have.status(201);
+            res.body.should.be.an('object');
+
+            done();
+        });
+
+    });
+
+    it('Valid work exp POST still working (beginDate is after endDate)', (done) => {
+
+        let we = {...workExpStillWorking};
+        we.beginDate = new Date(we.beginDate);
+        we.endDate = new Date(we.endDate);
+
+        we.endDate.setDate(we.beginDate.getDate() + 1);
+
+        chai.request(server)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
+        .send(we)
         .end((err, res) => {
             res.should.have.status(201);
             res.body.should.be.an('object');
@@ -62,11 +88,17 @@ describe('Tutor Certification POST', () => {
 
     });
 
-    it('Valid certification POST w diploma', (done) => {
+    it('Valid work exp POSt still working (endDate is in the future)', (done) => {
+
+        let we = {...workExpStillWorking};
+        we.beginDate = new Date(we.beginDate);
+        we.endDate = new Date(we.endDate);
+
+        we.endDate.setDate((new Date()).getDate() + 10);
 
         chai.request(server)
-        .post(`/tutors/${dbTutor._id}/certifications`)
-        .send(validCertificationWDiploma)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
+        .send(we)
         .end((err, res) => {
             res.should.have.status(201);
             res.body.should.be.an('object');
@@ -76,22 +108,31 @@ describe('Tutor Certification POST', () => {
 
     });
 
-    it('Correct insertion', (done) => {
+    it('Correct insertion no "stillWorking" field', (done) => {
+
+        let we = {
+            institution: 'Google',
+            department: 'Intern',
+            beginDate: new Date('2019-01-01').toISOString(),
+            endDate: new Date('2019-06-01').toISOString(),
+        }
 
         chai.request(server)
-        .post(`/tutors/${dbTutor._id}/certifications`)
-        .send(validCertificationWDiploma)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
+        .send(we)
         .end((err, res) => {
             res.should.have.status(201);
             res.body.should.be.an('object');
 
             const returnedObj = {
                 institution: res.body.institution,
-                title: res.body.title,
-                date: res.body.date,
-                diplomaURL: res.body.diplomaURL
+                department: res.body.department,
+                beginDate: res.body.beginDate,
+                endDate: res.body.endDate,
+                stillWorking: false //field is added in controller if not present
             }
-            _.isEqual(returnedObj, validCertificationWDiploma).should.be.eql(true);
+            we.stillWorking = false;
+            _.isEqual(returnedObj, we).should.be.eql(true);
 
             done();
         });
@@ -101,8 +142,8 @@ describe('Tutor Certification POST', () => {
     it('Invalid tutor Id', (done) => {
 
         chai.request(server)
-        .post(`/tutors/qwerty/certifications`)
-        .send(validCertificationNoDiploma)
+        .post(`/tutors/qwerty/workexperiences`)
+        .send(workExp)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
         });
@@ -111,10 +152,9 @@ describe('Tutor Certification POST', () => {
 
     it('Tutor not found', (done) => {
 
-
         chai.request(server)
-        .post(`/tutors/ffffffffffffff0123456789/certifications`)
-        .send(validCertificationNoDiploma)
+        .post(`/tutors/ffffffffffffff0123456789/workexperiences`)
+        .send(workExp)
         .end((err, res) => {
             shouldBeNotFound(res, done);
         });
@@ -123,11 +163,11 @@ describe('Tutor Certification POST', () => {
 
     it('Failed insert: no institution', (done) => {
 
-        let noInstCert = {...validCertificationWDiploma};
+        let noInstCert = {...workExp};
         delete noInstCert.institution;
 
         chai.request(server)
-        .post(`/tutors/${dbTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
         .send(noInstCert)
         .end((err, res) => {
             shouldBeError(res, done, Errors.MISSING_FIELD);
@@ -136,13 +176,13 @@ describe('Tutor Certification POST', () => {
 
     });
 
-    it('Failed insert: no title', (done) => {
+    it('Failed insert: no department', (done) => {
 
-        let noTitleCert = {...validCertificationWDiploma};
-        delete noTitleCert.title;
+        let noTitleCert = {...workExp};
+        delete noTitleCert.department;
 
         chai.request(server)
-        .post(`/tutors/${dbTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
         .send(noTitleCert)
         .end((err, res) => {
             shouldBeError(res, done, Errors.MISSING_FIELD);
@@ -151,13 +191,13 @@ describe('Tutor Certification POST', () => {
 
     });
 
-    it('Failed insert: no date', (done) => {
+    it('Failed insert: no begin Date', (done) => {
 
-        let noDateCert = {...validCertificationWDiploma};
-        delete noDateCert.date;
+        let noDateCert = {...workExp};
+        delete noDateCert.beginDate;
 
         chai.request(server)
-        .post(`/tutors/${dbTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
         .send(noDateCert)
         .end((err, res) => {
             shouldBeError(res, done, Errors.MISSING_FIELD);
@@ -166,13 +206,73 @@ describe('Tutor Certification POST', () => {
 
     });
 
+    it('Failed insert: no end Date', (done) => {
+
+        let noDateCert = {...workExp};
+        delete noDateCert.endDate;
+
+        chai.request(server)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
+        .send(noDateCert)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.MISSING_FIELD);
+
+        });
+
+    });
+
+    it('Failed insert: endDate before beginDate (limit range)', (done) => {
+
+        let we = {...workExp};
+        we.beginDate = new Date('1990-04-12').toISOString();
+        we.endDate = new Date('1990-04-11').toISOString();
+
+        chai.request(server)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
+        .send(we)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.DATE_ORDER);
+
+        });
+    });
+
+    it('Failed insert: endDate before beginDate (lower range)', (done) => {
+
+        let we = {...workExp};
+        we.beginDate = new Date('1990-04-12').toISOString();
+        we.endDate = new Date('1900-01-01').toISOString();
+
+        chai.request(server)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
+        .send(we)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.DATE_ORDER);
+
+        });
+    });
+
+    it('Failed insert: endDate = beginDate', (done) => {
+
+        let we = {...workExp};
+        we.beginDate = new Date('1990-04-12').toISOString();
+        we.endDate = new Date('1900-04-12').toISOString();
+
+        chai.request(server)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
+        .send(we)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.DATE_ORDER);
+
+        });
+    });
+
     it('Failed insert: institution too short', (done) => {
 
-        let certCopy = {...validCertificationWDiploma};
+        let certCopy = {...workExp};
         certCopy.institution = "l";
 
         chai.request(server)
-        .post(`/tutors/${dbTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
         .send(certCopy)
         .end((err, res) => {
             shouldBeError(res, done, Errors.SHORT_STRING);
@@ -181,13 +281,13 @@ describe('Tutor Certification POST', () => {
 
     });
 
-    it('Failed insert: title too short', (done) => {
+    it('Failed insert: department too short', (done) => {
 
-        let certCopy = {...validCertificationWDiploma};
-        certCopy.title = "l";
+        let certCopy = {...workExp};
+        certCopy.department = "l";
 
         chai.request(server)
-        .post(`/tutors/${dbTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
         .send(certCopy)
         .end((err, res) => {
             shouldBeError(res, done, Errors.SHORT_STRING);
@@ -196,13 +296,15 @@ describe('Tutor Certification POST', () => {
 
     });
 
-    it('Failed insert: date wrong format', (done) => {
+    it('Failed insert: beginDate wrong format', (done) => {
 
-        let certCopy = {...validCertificationWDiploma};
-        certCopy.date = "1999-30-15";
+        let certCopy = {...workExp};
+        certCopy.beginDate = "99/1212";
+
+        certCopy.stillWorking = true;
 
         chai.request(server)
-        .post(`/tutors/${dbTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
         .send(certCopy)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_FORMAT);
@@ -211,14 +313,64 @@ describe('Tutor Certification POST', () => {
 
     });
 
-    it('Failed insert: date is in the future', (done) => {
+    it('Failed insert: endDate wrong format', (done) => {
 
-        let certCopy = {...validCertificationWDiploma};
-        certCopy.date = new Date();
-        certCopy.date.setDate(certCopy.date.getDate() + 1);
+        let certCopy = {...workExp};
+        certCopy.endDate = "99/1212";
 
         chai.request(server)
-        .post(`/tutors/${dbTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
+        .send(certCopy)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_FORMAT);
+
+        });
+
+    });
+
+    it('Failed insert: beginDate invalid value', (done) => {
+
+        let certCopy = {...workExp};
+        certCopy.beginDate = '1999-200-200';
+
+        certCopy.stillWorking = true;
+
+        chai.request(server)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
+        .send(certCopy)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_FORMAT);
+
+        });
+
+    });
+
+    it('Failed insert: endDate invalid value', (done) => {
+
+        let certCopy = {...workExp};
+        certCopy.endDate = '2020-200-100';
+
+        chai.request(server)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
+        .send(certCopy)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_FORMAT);
+
+        });
+
+    });
+
+    it('Failed insert: beginDate is in the future', (done) => {
+
+        let certCopy = {...workExp};
+        certCopy.beginDate = new Date();
+        certCopy.beginDate.setDate(certCopy.beginDate.getDate() + 1);
+
+        certCopy.endDate = new Date();
+        certCopy.endDate.setDate(certCopy.beginDate.getDate() + 10);
+
+        chai.request(server)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
         .send(certCopy)
         .end((err, res) => {
             shouldBeError(res, done, Errors.DATE_IN_FUTURE);
@@ -227,27 +379,30 @@ describe('Tutor Certification POST', () => {
 
     });
 
-    it('Failed insert: diploma url is invalid', (done) => {
+    it('Failed insert: endDate is in the future', (done) => {
 
-        let certCopy = {...validCertificationWDiploma};
-        certCopy.diplomaURL = 'agjkgjadk';
+        let certCopy = {...workExp};
+
+        certCopy.endDate = new Date();
+        certCopy.endDate.setDate(certCopy.endDate.getDate() + 10);
 
         chai.request(server)
-        .post(`/tutors/${dbTutor._id}/certifications`)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
         .send(certCopy)
         .end((err, res) => {
-            shouldBeError(res, done, Errors.INVALID_URL);
+            shouldBeError(res, done, Errors.DATE_IN_FUTURE);
 
         });
 
     });
 
+
 });
 
-describe ('Tutor Certification GET/:id', () => {
+describe ('WorkExp GET/:id', () => {
 
     let dbTutor;
-    let existingCert;
+    let existingWE;
 
     before(done => {
         db.connectDB()
@@ -255,7 +410,7 @@ describe ('Tutor Certification GET/:id', () => {
 
             dbTutor = await User.findOne({ 'email': tutors[0].email }).exec();
 
-            existingCert = dbTutor.tutorDetails.certifications[0];
+            existingWE = dbTutor.tutorDetails.workExperiences[0];
 
             db.disconnectDB()
 
@@ -270,7 +425,7 @@ describe ('Tutor Certification GET/:id', () => {
     it('Invalid tutor Id', (done) => {
 
         chai.request(server)
-        .get(`/tutors/qwerty/certifications/${existingCert._id}`)
+        .get(`/tutors/qwerty/workexperiences/${existingWE._id}`)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
         });
@@ -281,28 +436,28 @@ describe ('Tutor Certification GET/:id', () => {
 
 
         chai.request(server)
-        .get(`/tutors/ffffffffffffff0123456789/certifications/${existingCert._id}`)
+        .get(`/tutors/ffffffffffffff0123456789/workexperiences/${existingWE._id}`)
         .end((err, res) => {
             shouldBeNotFound(res, done);
         });
 
     });
 
-    it('Invalid certification Id', (done) => {
+    it('Invalid workExp Id', (done) => {
 
         chai.request(server)
-        .get(`/tutors/${dbTutor._id}/certifications/qwerty`)
+        .get(`/tutors/${dbTutor._id}/workexperiences/qwerty`)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
         });
 
     });
 
-    it('Certification not found', (done) => {
+    it('workExp not found', (done) => {
 
 
         chai.request(server)
-        .get(`/tutors/${dbTutor._id}/certifications/ffffffffffffff0123456789`)
+        .get(`/tutors/${dbTutor._id}/workexperiences/ffffffffffffff0123456789`)
         .end((err, res) => {
             shouldBeNotFound(res, done);
         });
@@ -312,15 +467,15 @@ describe ('Tutor Certification GET/:id', () => {
     it('Valid GET/:id', (done) => {
 
         chai.request(server)
-        .post(`/tutors/${dbTutor._id}/certifications`)
-        .send(validCertificationWDiploma)
+        .post(`/tutors/${dbTutor._id}/workexperiences`)
+        .send(workExp)
         .end((err, res) => {
             res.should.have.status(201);
             res.body.should.be.an('object');
             res.body.should.have.property('_id');
 
             chai.request(server)
-            .get(`/tutors/${dbTutor._id}/certifications/${res.body._id}`)
+            .get(`/tutors/${dbTutor._id}/workexperiences/${res.body._id}`)
             .end ((err2, res2) => {
 
                 res2.should.have.status(200);
@@ -335,16 +490,14 @@ describe ('Tutor Certification GET/:id', () => {
 
 });
 
-describe ('Tutor Certification GET', () => {
-    let noCertTutor;
-    let dbTutor;
+describe ('WorkExp GET', () => {
+    let noWETutor;
 
     before(done => {
         db.connectDB()
         .then(async () => {
 
-            dbTutor = await User.findOne({ 'email': tutors[0].email }).exec();
-            noCertTutor = await User.findOne({ 'email': tutors[1].email }).exec();
+            noWETutor = await User.findOne({ 'email': tutors[1].email }).exec();
 
             db.disconnectDB()
 
@@ -359,7 +512,7 @@ describe ('Tutor Certification GET', () => {
     it('Invalid tutor Id', (done) => {
 
         chai.request(server)
-        .get(`/tutors/qwerty/certifications`)
+        .get(`/tutors/qwerty/workexperiences`)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
         });
@@ -369,17 +522,17 @@ describe ('Tutor Certification GET', () => {
     it('Tutor not found', (done) => {
 
         chai.request(server)
-        .get(`/tutors/ffffffffffffff0123456789/certifications`)
+        .get(`/tutors/ffffffffffffff0123456789/workexperiences`)
         .end((err, res) => {
             shouldBeNotFound(res, done);
         });
 
     });
 
-    it('GET of tutor with no certifications', (done) => {
+    it('GET of tutor with no work experiences', (done) => {
 
         chai.request(server)
-        .get(`/tutors/${noCertTutor._id}/certifications`)
+        .get(`/tutors/${noWETutor._id}/workexperiences`)
         .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.an('array').that.is.empty;
@@ -389,28 +542,28 @@ describe ('Tutor Certification GET', () => {
 
     });
 
-    it('Correct get of certifications', (done) => {
+    it('Correct get of work experiences', (done) => {
 
-        //Insert 1 cert in a tutor with none
+        //Insert 1 WE in a tutor with none
         chai.request(server)
-        .post(`/tutors/${noCertTutor._id}/certifications`)
-        .send(validCertificationWDiploma)
+        .post(`/tutors/${noWETutor._id}/workexperiences`)
+        .send(workExp)
         .end((err, res) => {
 
             res.should.have.status(201);
             res.body.should.be.an('object');
 
-            //Insert other cert in same tutor
+            //Insert other WE in same tutor
             chai.request(server)
-            .post(`/tutors/${noCertTutor._id}/certifications`)
-            .send(validCertificationNoDiploma)
+            .post(`/tutors/${noWETutor._id}/workexperiences`)
+            .send(workExpStillWorking)
             .end((err2, res2) => {
                 res2.should.have.status(201);
                 res2.body.should.be.an('object');
 
-                //Verify GET of both certifications 
+                //Verify GET of both work experiences 
                 chai.request(server)
-                .get(`/tutors/${noCertTutor._id}/certifications`)
+                .get(`/tutors/${noWETutor._id}/workexperiences`)
                 .end((err3, res3) => {
 
                     res3.should.have.status(200);
@@ -419,19 +572,21 @@ describe ('Tutor Certification GET', () => {
 
                     const resCert1 = {
                         institution: res3.body[0].institution,
-                        title: res3.body[0].title,
-                        date: res3.body[0].date,
-                        diplomaURL: res3.body[0].diplomaURL
+                        department: res3.body[0].department,
+                        beginDate: res3.body[0].beginDate,
+                        endDate: res3.body[0].endDate,
+                        stillWorking: false
                     }
                     const resCert2 = {
                         institution: res3.body[1].institution,
-                        title: res3.body[1].title,
-                        date: res3.body[1].date,
+                        department: res3.body[1].department,
+                        beginDate: res3.body[1].beginDate,
+                        endDate: res3.body[1].endDate,
+                        stillWorking: true
                     }
 
-
-                    _.isEqual(resCert1, validCertificationWDiploma).should.be.eql(true); 
-                    _.isEqual(resCert2, validCertificationNoDiploma).should.be.eql(true); 
+                    _.isEqual(resCert1, workExp).should.be.eql(true); 
+                    _.isEqual(resCert2, workExpStillWorking).should.be.eql(true); 
 
                     done();
                 });
@@ -444,17 +599,17 @@ describe ('Tutor Certification GET', () => {
 
 });
 
-describe('Tutor Certification PUT', () => {
+describe('WorkExp PUT', () => {
 
     let dbTutor;
-    let updateCert;
+    let updateWE;
 
     before(done => {
         db.connectDB()
         .then(async () => {
 
             dbTutor = await User.findOne({ 'email': tutors[2].email }).exec();
-            updateCert = dbTutor.tutorDetails.certifications[0];
+            updateWE = dbTutor.tutorDetails.workExperiences[0];
 
             db.disconnectDB()
 
@@ -466,11 +621,11 @@ describe('Tutor Certification PUT', () => {
 
     });
 
-    it('Valid certification PUT no diploma', (done) => {
+    it('Valid work exp PUT no stillWorking', (done) => {
 
         chai.request(server)
-        .put(`/tutors/${dbTutor._id}/certifications/${updateCert._id}`)
-        .send(validCertificationNoDiploma)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
+        .send(workExp)
         .end((err, res) => {
 
             res.should.have.status(200);
@@ -481,11 +636,17 @@ describe('Tutor Certification PUT', () => {
 
     });
 
-    it('Valid certification PUT w diploma', (done) => {
+    it('Valid work exp PUT still working (beginDate is after endDate)', (done) => {
+
+        let we = {...workExpStillWorking};
+        we.beginDate = new Date(we.beginDate);
+        we.endDate = new Date(we.endDate);
+
+        we.endDate.setDate(we.beginDate.getDate() + 1);
 
         chai.request(server)
-        .put(`/tutors/${dbTutor._id}/certifications/${updateCert._id}`)
-        .send(validCertificationWDiploma)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
+        .send(we)
         .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.an('object');
@@ -495,22 +656,51 @@ describe('Tutor Certification PUT', () => {
 
     });
 
-    it('Correct update', (done) => {
+    it('Valid work exp PUT still working (endDate is in the future)', (done) => {
+
+        let we = {...workExpStillWorking};
+        we.beginDate = new Date(we.beginDate);
+        we.endDate = new Date(we.endDate);
+
+        we.endDate.setDate((new Date()).getDate() + 10);
 
         chai.request(server)
-        .put(`/tutors/${dbTutor._id}/certifications/${updateCert._id}`)
-        .send(validCertificationWDiploma)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
+        .send(we)
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.an('object');
+
+            done();
+        });
+
+    });
+
+    it('Correct update no "stillWorking" field', (done) => {
+
+        let we = {
+            institution: 'Google',
+            department: 'Intern',
+            beginDate: new Date('2019-01-01').toISOString(),
+            endDate: new Date('2019-06-01').toISOString(),
+        }
+
+        chai.request(server)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
+        .send(we)
         .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.an('object');
 
             const returnedObj = {
                 institution: res.body.institution,
-                title: res.body.title,
-                date: res.body.date,
-                diplomaURL: res.body.diplomaURL
+                department: res.body.department,
+                beginDate: res.body.beginDate,
+                endDate: res.body.endDate,
+                stillWorking: false //field is added in controller if not present
             }
-            _.isEqual(returnedObj, validCertificationWDiploma).should.be.eql(true);
+            we.stillWorking = false;
+            _.isEqual(returnedObj, we).should.be.eql(true);
 
             done();
         });
@@ -520,8 +710,8 @@ describe('Tutor Certification PUT', () => {
     it('Invalid tutor Id', (done) => {
 
         chai.request(server)
-        .put(`/tutors/qwerty/certifications/${updateCert._id}`)
-        .send(validCertificationNoDiploma)
+        .put(`/tutors/qwerty/workexperiences/${updateWE._id}`)
+        .send(workExp)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
         });
@@ -530,33 +720,31 @@ describe('Tutor Certification PUT', () => {
 
     it('Tutor not found', (done) => {
 
-
         chai.request(server)
-        .put(`/tutors/ffffffffffffff0123456789/certifications/${updateCert._id}`)
-        .send(validCertificationNoDiploma)
+        .put(`/tutors/ffffffffffffff0123456789/workexperiences/${updateWE._id}`)
+        .send(workExp)
         .end((err, res) => {
             shouldBeNotFound(res, done);
         });
 
     });
 
-    it('Invalid certification Id', (done) => {
+    it('Invalid WorkExp Id', (done) => {
 
         chai.request(server)
-        .put(`/tutors/${dbTutor._id}/certifications/qwerty`)
-        .send(validCertificationNoDiploma)
+        .put(`/tutors/${dbTutor._id}/workexperiences/qwerty`)
+        .send(workExp)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
         });
 
     });
 
-    it('Certification not found', (done) => {
-
+    it('WorkExp not found', (done) => {
 
         chai.request(server)
-        .put(`/tutors/${dbTutor._id}/certifications/ffffffffffffff0123456789`)
-        .send(validCertificationNoDiploma)
+        .put(`/tutors/${dbTutor._id}/workexperiences/ffffffffffffff0123456789`)
+        .send(workExp)
         .end((err, res) => {
             shouldBeNotFound(res, done);
         });
@@ -565,11 +753,11 @@ describe('Tutor Certification PUT', () => {
 
     it('Failed update: no institution', (done) => {
 
-        let noInstCert = {...validCertificationWDiploma};
+        let noInstCert = {...workExp};
         delete noInstCert.institution;
 
         chai.request(server)
-        .put(`/tutors/${dbTutor._id}/certifications/${updateCert._id}`)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
         .send(noInstCert)
         .end((err, res) => {
             shouldBeError(res, done, Errors.MISSING_FIELD);
@@ -578,13 +766,13 @@ describe('Tutor Certification PUT', () => {
 
     });
 
-    it('Failed update: no title', (done) => {
+    it('Failed update: no department', (done) => {
 
-        let noTitleCert = {...validCertificationWDiploma};
-        delete noTitleCert.title;
+        let noTitleCert = {...workExp};
+        delete noTitleCert.department;
 
         chai.request(server)
-        .put(`/tutors/${dbTutor._id}/certifications/${updateCert._id}`)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
         .send(noTitleCert)
         .end((err, res) => {
             shouldBeError(res, done, Errors.MISSING_FIELD);
@@ -593,13 +781,13 @@ describe('Tutor Certification PUT', () => {
 
     });
 
-    it('Failed update: no date', (done) => {
+    it('Failed update: no begin Date', (done) => {
 
-        let noDateCert = {...validCertificationWDiploma};
-        delete noDateCert.date;
+        let noDateCert = {...workExp};
+        delete noDateCert.beginDate;
 
         chai.request(server)
-        .put(`/tutors/${dbTutor._id}/certifications/${updateCert._id}`)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
         .send(noDateCert)
         .end((err, res) => {
             shouldBeError(res, done, Errors.MISSING_FIELD);
@@ -608,13 +796,73 @@ describe('Tutor Certification PUT', () => {
 
     });
 
+    it('Failed update: no end Date', (done) => {
+
+        let noDateCert = {...workExp};
+        delete noDateCert.endDate;
+
+        chai.request(server)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
+        .send(noDateCert)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.MISSING_FIELD);
+
+        });
+
+    });
+
+    it('Failed update: endDate before beginDate (limit range)', (done) => {
+
+        let we = {...workExp};
+        we.beginDate = new Date('1990-04-12').toISOString();
+        we.endDate = new Date('1990-04-11').toISOString();
+
+        chai.request(server)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
+        .send(we)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.DATE_ORDER);
+
+        });
+    });
+
+    it('Failed update: endDate before beginDate (lower range)', (done) => {
+
+        let we = {...workExp};
+        we.beginDate = new Date('1990-04-12').toISOString();
+        we.endDate = new Date('1900-01-01').toISOString();
+
+        chai.request(server)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
+        .send(we)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.DATE_ORDER);
+
+        });
+    });
+
+    it('Failed update: endDate = beginDate', (done) => {
+
+        let we = {...workExp};
+        we.beginDate = new Date('1990-04-12').toISOString();
+        we.endDate = new Date('1900-04-12').toISOString();
+
+        chai.request(server)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
+        .send(we)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.DATE_ORDER);
+
+        });
+    });
+
     it('Failed update: institution too short', (done) => {
 
-        let certCopy = {...validCertificationWDiploma};
+        let certCopy = {...workExp};
         certCopy.institution = "l";
 
         chai.request(server)
-        .put(`/tutors/${dbTutor._id}/certifications/${updateCert._id}`)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
         .send(certCopy)
         .end((err, res) => {
             shouldBeError(res, done, Errors.SHORT_STRING);
@@ -623,13 +871,13 @@ describe('Tutor Certification PUT', () => {
 
     });
 
-    it('Failed update: title too short', (done) => {
+    it('Failed update: department too short', (done) => {
 
-        let certCopy = {...validCertificationWDiploma};
-        certCopy.title = "l";
+        let certCopy = {...workExp};
+        certCopy.department = "l";
 
         chai.request(server)
-        .put(`/tutors/${dbTutor._id}/certifications/${updateCert._id}`)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
         .send(certCopy)
         .end((err, res) => {
             shouldBeError(res, done, Errors.SHORT_STRING);
@@ -638,13 +886,15 @@ describe('Tutor Certification PUT', () => {
 
     });
 
-    it('Failed update: date wrong format', (done) => {
+    it('Failed update: beginDate wrong format', (done) => {
 
-        let certCopy = {...validCertificationWDiploma};
-        certCopy.date = "1999-30-15";
+        let certCopy = {...workExp};
+        certCopy.beginDate = "99/1212";
+
+        certCopy.stillWorking = true;
 
         chai.request(server)
-        .put(`/tutors/${dbTutor._id}/certifications/${updateCert._id}`)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
         .send(certCopy)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_FORMAT);
@@ -653,14 +903,64 @@ describe('Tutor Certification PUT', () => {
 
     });
 
-    it('Failed update: date is in the future', (done) => {
+    it('Failed update: endDate wrong format', (done) => {
 
-        let certCopy = {...validCertificationWDiploma};
-        certCopy.date = new Date();
-        certCopy.date.setDate(certCopy.date.getDate() + 1);
+        let certCopy = {...workExp};
+        certCopy.endDate = "99/1212";
 
         chai.request(server)
-        .put(`/tutors/${dbTutor._id}/certifications/${updateCert._id}`)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
+        .send(certCopy)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_FORMAT);
+
+        });
+
+    });
+
+    it('Failed update: beginDate invalid value', (done) => {
+
+        let certCopy = {...workExp};
+        certCopy.beginDate = '1999-200-200';
+
+        certCopy.stillWorking = true;
+
+        chai.request(server)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
+        .send(certCopy)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_FORMAT);
+
+        });
+
+    });
+
+    it('Failed update: endDate invalid value', (done) => {
+
+        let certCopy = {...workExp};
+        certCopy.endDate = '2020-200-100';
+
+        chai.request(server)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
+        .send(certCopy)
+        .end((err, res) => {
+            shouldBeError(res, done, Errors.INVALID_FORMAT);
+
+        });
+
+    });
+
+    it('Failed update: beginDate is in the future', (done) => {
+
+        let certCopy = {...workExp};
+        certCopy.beginDate = new Date();
+        certCopy.beginDate.setDate(certCopy.beginDate.getDate() + 1);
+
+        certCopy.endDate = new Date();
+        certCopy.endDate.setDate(certCopy.beginDate.getDate() + 10);
+
+        chai.request(server)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
         .send(certCopy)
         .end((err, res) => {
             shouldBeError(res, done, Errors.DATE_IN_FUTURE);
@@ -669,27 +969,30 @@ describe('Tutor Certification PUT', () => {
 
     });
 
-    it('Failed update: diploma url is invalid', (done) => {
+    it('Failed update: endDate is in the future', (done) => {
 
-        let certCopy = {...validCertificationWDiploma};
-        certCopy.diplomaURL = 'agjkgjadk';
+        let certCopy = {...workExp};
+
+        certCopy.endDate = new Date();
+        certCopy.endDate.setDate(certCopy.endDate.getDate() + 10);
 
         chai.request(server)
-        .put(`/tutors/${dbTutor._id}/certifications/${updateCert._id}`)
+        .put(`/tutors/${dbTutor._id}/workexperiences/${updateWE._id}`)
         .send(certCopy)
         .end((err, res) => {
-            shouldBeError(res, done, Errors.INVALID_URL);
+            shouldBeError(res, done, Errors.DATE_IN_FUTURE);
 
         });
 
     });
 
+
 });
 
-describe ('Tutor Certification DELETE', () => {
+describe ('WorkExp DELETE', () => {
 
     let dbTutor;
-    let existingCert;
+    let existingWE;
 
     before(done => {
         db.connectDB()
@@ -697,7 +1000,7 @@ describe ('Tutor Certification DELETE', () => {
 
             dbTutor = await User.findOne({ 'email': tutors[2].email }).exec();
 
-            existingCert = dbTutor.tutorDetails.certifications[0];
+            existingWE = dbTutor.tutorDetails.workExperiences[0];
 
             db.disconnectDB()
 
@@ -713,7 +1016,7 @@ describe ('Tutor Certification DELETE', () => {
     it('Invalid tutor Id', (done) => {
 
         chai.request(server)
-        .delete(`/tutors/qwerty/certifications/${existingCert._id}`)
+        .delete(`/tutors/qwerty/workexperiences/${existingWE._id}`)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
         });
@@ -724,7 +1027,7 @@ describe ('Tutor Certification DELETE', () => {
 
 
         chai.request(server)
-        .delete(`/tutors/ffffffffffffff0123456789/certifications/${existingCert._id}`)
+        .delete(`/tutors/ffffffffffffff0123456789/workexperiences/${existingWE._id}`)
         .end((err, res) => {
             shouldBeNotFound(res, done);
         });
@@ -734,7 +1037,7 @@ describe ('Tutor Certification DELETE', () => {
     it('Invalid certification Id', (done) => {
 
         chai.request(server)
-        .delete(`/tutors/${dbTutor._id}/certifications/qwerty`)
+        .delete(`/tutors/${dbTutor._id}/workexperiences/qwerty`)
         .end((err, res) => {
             shouldBeError(res, done, Errors.INVALID_ID);
         });
@@ -745,7 +1048,7 @@ describe ('Tutor Certification DELETE', () => {
 
 
         chai.request(server)
-        .delete(`/tutors/${dbTutor._id}/certifications/ffffffffffffff0123456789`)
+        .delete(`/tutors/${dbTutor._id}/workexperiences/ffffffffffffff0123456789`)
         .end((err, res) => {
             shouldBeNotFound(res, done);
         });
@@ -755,12 +1058,12 @@ describe ('Tutor Certification DELETE', () => {
     it('Correct deletion', (done) => {
 
         chai.request(server)
-        .delete(`/tutors/${dbTutor._id}/certifications/${existingCert._id}`)
+        .delete(`/tutors/${dbTutor._id}/workexperiences/${existingWE._id}`)
         .end((err, res) => {
             res.should.have.status(200);
 
             chai.request(server)
-            .get(`/tutors/${dbTutor._id}/certifications/`)
+            .get(`/tutors/${dbTutor._id}/workexperiences/`)
             .end((err, res) => {
 
                 res.should.have.status(200);

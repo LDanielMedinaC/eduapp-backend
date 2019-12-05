@@ -139,13 +139,13 @@ module.exports = {
     // Method used to get a User by ID
 
     getDetails(req, res){
-        let userID = req.params.userId;
+        let userId = req.params.userId;
 
-        User.findById(userID)
+        User.findById(userId)
         .then((user) => {
             if (!user)
             {   
-                let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, userID, user);
+                let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, userId, user);
 
                 return res.status(error.status).send({ error: error });
             }
@@ -164,13 +164,13 @@ module.exports = {
     update(req, res){
         let user = req.body;
 
-        let userID = req.params.userId;
+        let userId = req.params.userId;
 
-        User.findById(userID)
+        User.findById(userId)
         .then((userFound) => {
             if (!userFound)
             {   
-                let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, userID, userFound);
+                let error = ErrorFactory.buildError(Errors.OBJECT_NOT_FOUND, userId, userFound);
 
                 return res.status(error.status).send({ error: error });
 
