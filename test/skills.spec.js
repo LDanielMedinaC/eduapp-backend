@@ -466,5 +466,16 @@ describe('SKILLS', () => {
                 canBeMissing: true
             }
         });
+
+        it('Delete skill', (done) => {
+            chai.request(server)
+            .delete(`/tutors/${mockTutorId}/skills/${mockSkillId}`)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.an('object');
+
+                done();
+            });
+        });
     });
 });
