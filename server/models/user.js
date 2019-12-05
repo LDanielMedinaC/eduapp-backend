@@ -1,5 +1,6 @@
 // Mongoose schema definition for user entity
 var mongoose = require('mongoose');
+const paymentMethods = require('../resources').paymentMethods;
 
 const userSchema = new mongoose.Schema({
     uid: {
@@ -28,8 +29,10 @@ const userSchema = new mongoose.Schema({
         type: {
             paymentAccounts: {
                 type: [{
-                    UUID: String,
-                    Method: String
+                    method: {
+                        type: String,
+                        enum: paymentMethods
+                    }
                 }]
             },
             skills: {
@@ -45,28 +48,10 @@ const userSchema = new mongoose.Schema({
                     }
                 }]
             },
-            workExperiences: {
+            workExperience: {
                 type: [{
-                    institution: {
-                        type: String,
-                        required: true
-                    },
-                    department: {
-                        type: String,
-                        required: true
-                    },
-                    beginDate: {
-                        type: Date,
-                        required: true
-                    },
-                    endDate: {
-                        type: Date,
-                        required: true
-                    },
-                    stillWorking: {
-                        type: Boolean,
-                        required: true,
-                        default: false
+                    placeHolder: {
+                        type: String
                     }
                 }]
             },
